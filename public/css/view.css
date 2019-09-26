@@ -1,0 +1,15 @@
+.noRecord {
+    font-size: 32px;
+    color: #CECECE;
+    text-align: center;
+    padding-top: 10%;
+    margin: 0px;
+}
+.dataTable {
+  clear: both;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+  max-width: none !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+}
