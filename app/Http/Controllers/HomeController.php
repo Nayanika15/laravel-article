@@ -16,18 +16,13 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $popular_articles = Article::where('approve_status',1)->orderByDesc('created_at')->Paginate(env('PAGINATE',4));
-        return view('site.wordify.home')->with('popular_articles',$popular_articles);
+        $article = new Article;
+        $category = new category;
+        $data = array();
+        $data['popular_articles'] = $article->popular();
+        $data['active_categories'] = $category->activeCategories();
+        $data['latest_articles'] = Article::where('approve_status', '1')->latest()->Paginate(env('PAGINATE_LIMIT', 4));
+        return view('site.wordify.home')->with('data', $data);
     }
-     /**
-     * Show the detail of article.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function show($slug)
-    {   
-        $article = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])->where('slug', $slug)->first();
-        return view('site.wordify.articles.detail')->with('article', $article);
-       
-    }
+     
 }

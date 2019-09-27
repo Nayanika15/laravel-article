@@ -1,7 +1,7 @@
 @extends('layouts.wordify')
 
 @section('title')
-    View Article - {{ env('SITE_TITLE') }}
+    All Articles - {{ env('SITE_TITLE') }}
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Title</th>
-                                <th>Details</th>
+                                <!-- <th>Details</th> -->
                                 <!-- <th>Categories</th> -->
                                 <th>Status</th>
                                 <th>Created By</th>
@@ -55,8 +55,6 @@
         "columns": [
             {data: 'id', name: 'id'},
             {data: 'title', name: 'title'},
-            {data: 'details', name:'details'},
-           /* {data: 'categories', name:'categories'},*/
             {data: 'approve_status', name:'approve_status'},
             {data: 'user_id', name:'user_id'},
             {data: 'created_at', name:'created_at'},

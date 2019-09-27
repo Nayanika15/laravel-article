@@ -12,7 +12,7 @@
 */
 
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('homepage');
 
 Route::group(['middleware' => 'auth'], function()
 {
@@ -47,6 +47,6 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', 'UserController@index')->name('login');
 	Route::post('/login', 'UserController@login')->name('dologin');
 });
-Route::get('article/{slug}', 'HomeController@show')->name('detail-article');
+Route::get('article/{slug}', 'ArticleController@detail')->name('detail-article');
 
  

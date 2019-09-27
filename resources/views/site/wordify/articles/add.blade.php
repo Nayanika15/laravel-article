@@ -62,6 +62,11 @@
                   </span>
                 @enderror
               </div>
+              @if(!empty($article) && $article->getMedia('articles')->count() > 0)
+              <div class="col-md-12 form-group">
+                <img src="{{$article->getFirstMedia('articles')->getUrl('homepage')}}" alt="{{ $article->getFirstMedia('articles')->name }}">
+              </div>
+              @endif
               @if(auth()->user()->is_admin)
                <div class="col-md-12 form-group">
                 {{ Form::label ('Status') }}
