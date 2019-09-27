@@ -26,9 +26,9 @@ class UserRequest extends FormRequest
         return [
             'name'                 => 'sometimes|required|max:50',
             'email'                => 'sometimes|required|email',
-            'mobile'               => 'sometimes|required|max:10',
+            'mobile'               => 'sometimes|required|unique:users,mobile|max:10',
             'password'             => 'sometimes|required',
-            'password_confirmation'=> 'sometimes|required|confirmed',
+            'password_confirmation'=> 'sometimes|required',
         ];
     }
 }

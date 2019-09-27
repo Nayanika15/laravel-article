@@ -16,7 +16,28 @@ class Category extends Model
     protected $fillable = [
         'name'
     ];
-    
+
+    /**
+     * get the slug value for the provided name
+     */
+    public function setSlugAttribute($value)
+    {   
+        $slug_value = str_slug($value);
+        $this->attributes['slug'] = $slug_value;
+               
+    }
+
+    /**
+     * get the module permalink
+     */
+    public function getPermalinkAttribute()
+    {
+        return 'category/' . $this->slug;
+    }
+
+    /**
+     * To get articles related to categories
+     */
  	  public function countArticles()
     {   
         return $this->hasMany(ArticleCategories::class);
@@ -111,6 +132,7 @@ class Category extends Model
             else
             {  
                 $category->name = ucfirst($data['name']);
+                $category->slug = $data['name'];
                 $action = ($id == 0) ? 'Added' : 'Updated';
                 $saved = $category->save();
                 if($saved)
@@ -149,5 +171,23 @@ class Category extends Model
         $query->where('approve_status', '1');
      })->withCount('articles')->get();    
     
+    }
+    /**
+     * To fetch the category from slug
+     */
+    public function getSlugCategory($slug)
+    {
+       return Category::where('slug', $slug)->first();
+    }
+     /**
+     * to fetch the active articles in a particular category
+     */
+    public function categoryDetail($slug)
+    {
+
+    $data = Category::where('slug', $slug)->whereHas('articles', function($query){
+        $query->where('approve_status', '1');
+     })->first();
+    return $data->articles()->latest()->Paginate(env('PAGINATE_LIMIT', 4));
     }
 }

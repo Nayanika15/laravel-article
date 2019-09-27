@@ -16,7 +16,7 @@
             <div class="row">
               <div class="col-md-12 form-group">
                 {{ Form::label ('E-Mail Address') }}
-                {{ Form::text ('email', null,array ('placeholder'=>'Enter email address','maxlength'=>50, 'class' => 'form-control')) }}
+                {{ Form::email ('email', null,array ('placeholder'=>'Enter email address','maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
                 
                 @error('email')
                   <span class="validate-error" role="alert">
@@ -26,7 +26,7 @@
               </div>
               <div class="col-md-12 form-group">
                 {{ Form::label ('Password') }}
-                {{ Form::password ('password', array ('placeholder'=>'Enter password', 'maxlength'=>50, 'class' => 'form-control')) }}
+                {{ Form::password ('password', array ('placeholder'=>'Enter password', 'maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
                 
                 @error('password')
                   <span class="validate-error" role="alert">

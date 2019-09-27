@@ -12,7 +12,7 @@
                         <div class="text">
                           <h4>{{ $article->title }}</h4>
                           <div class="post-meta">
-                            <span class="mr-2">{{ $article->created_at }}</span>
+                            <span class="mr-2">{{ date('d-M-Y', strtotime($article->created_at)) }}</span>
                           </div>
                         </div>
                       </a>
@@ -29,7 +29,7 @@
                 @if($active_categories)
                 <ul class="categories">
                   @foreach($active_categories as $category)
-                    <li><a href="#">{{ $category->name }}<span>{{ $category->articles_count }}</span></a></li>
+                    <li><a href="{{ url($category->permalink) }}">{{ $category->name }}<span>{{ $category->articles_count }}</span></a></li>
                   @endforeach
                 </ul>
                 @endif

@@ -117,6 +117,7 @@ class ArticleController extends Controller
         $data['popular_articles'] = $article->popular();
         $data['active_categories'] = $category->activeCategories();
         $data['article'] = $article->articleDetail($slug);
+        
         if(!empty($data['article']))
         {
             return view('site.wordify.articles.detail')->with('data', $data); 

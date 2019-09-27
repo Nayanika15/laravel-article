@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 
 use App\Models\Category;
+use App\Models\Article;
 
 class CategoryController extends Controller
 {
@@ -78,5 +79,30 @@ class CategoryController extends Controller
                     ->with('ErrorMessage', $result['msg'])
                     ->withInput();
         }
+    }
+      /**
+     * Fetch active articles in a particular category.
+     * @param string $slug
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function detail($slug)
+    {   
+        $article = new Article;
+        $category = new Category;
+        $data = array();
+        $data['popular_articles'] = $article->popular();
+        $data['active_categories'] = $category->activeCategories();
+        $data['categoryArticles'] = $category->categoryDetail($slug);
+        $data['category']=$category->getSlugCategory($slug);
+
+        if(!empty($data['categoryArticles']))
+        {
+            return view('site.wordify.categories.show')->with('data', $data); 
+        }
+        else
+        {
+            return redirect()->route('homepage');
+        }
+              
     }
 }

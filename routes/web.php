@@ -46,7 +46,10 @@ Route::group(['middleware' => 'auth'], function()
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', 'UserController@index')->name('login');
 	Route::post('/login', 'UserController@login')->name('dologin');
+	Route::get('/register', 'UserController@create')->name('do-registration');
+	Route::post('/register', 'UserController@register')->name('register');
 });
 Route::get('article/{slug}', 'ArticleController@detail')->name('detail-article');
+Route::get('category/{slug}', 'CategoryController@detail')->name('detail-category');
 
  

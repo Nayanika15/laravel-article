@@ -4,7 +4,7 @@
             <div class="row">
               <div class="col-9 social">
                 @guest
-                  <a href="#">Register</a>
+                  <a href="{{ route('do-registration') }}">Register</a>
                   <a href="{{ route('login') }}">Login</a>
                 @else
                   <span class="user">Welcome <strong>{{ auth()->user()->name }}</strong>!</span> 
@@ -48,8 +48,8 @@
                     <a class="dropdown-item" href="category.html">Travel</a>
                     <a class="dropdown-item" href="category.html">Business</a>
                   </div>
-
                 </li>
+                
                 <li class="nav-item">
                   <a class="nav-link" href="about.html">About</a>
                 </li>

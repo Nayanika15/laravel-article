@@ -88,6 +88,10 @@ class Article extends Model implements HasMedia
         $this->addMediaConversion('slider')
             ->width(110)
             ->height(500);
+        //to generate the image required for category detail page
+        $this->addMediaConversion('category')
+            ->width(200)
+            ->height(168);
     }
 
     /**
@@ -183,7 +187,7 @@ class Article extends Model implements HasMedia
                 if($saved)
                 {
                     $article->categories()->sync($data['categories']);
-                    if($request->has(file('image')))
+                    if($request->hasFile('image'))
                     {   
                         $images = $article->getMedia();
                         if(empty($images))
@@ -266,7 +270,7 @@ class Article extends Model implements HasMedia
      */
     public function popular()
     {   
-        $articles = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at', 'views_count'])
+        $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
             ->orderBy('views_count', 'desc')
             ->limit(4)
             ->get();

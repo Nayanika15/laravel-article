@@ -78,6 +78,7 @@
               <div class="col-md-6 form-group">
 
                 {{ Form::submit((isset($article->id)?'Submit':'Add'), array('class'=>'btn btn-primary')) }}
+                <a href="{{ url('/dashboard') }}" class="btn btn-danger">Cancel</a>
               </div>
             </div>
           {!! Form::close() !!}
