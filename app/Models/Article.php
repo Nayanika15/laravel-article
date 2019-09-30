@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Illuminate\Support\Str;
 
 use DataTables;
 
@@ -52,6 +53,14 @@ class Article extends Model implements HasMedia
     }
 
     /**
+     * get the excerpt
+     */
+    public function getExcerptAttribute()
+    {
+        return str::words($this->details, 25);
+    }
+
+    /**
      * Defining relationship with category table
      * 
      */
@@ -69,6 +78,15 @@ class Article extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Defining relationship with comments table
+     * 
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     /**

@@ -7,6 +7,7 @@
 @php($popular_articles = $data['popular_articles'])
 @php($active_categories = $data['active_categories'])
 @php($article = $data['article'])
+@php($comments = $data['comments'])
 <section class="site-section py-lg">
   <div class="container">        
     <div class="row blog-entries element-animate">
@@ -32,125 +33,53 @@
           <a href="{{ url($category->permalink) }}">{{ $category->name }}</a>
         @endforeach
         </div>
+
         <div class="pt-5">
-          <h3 class="mb-5">6 Comments</h3>
+          @if($comments->count() >0 )
+          <h3 class="mb-5">{{ $comments->count() }} comments</h3>
           <ul class="comment-list">
+            @foreach($comments as $comment)
             <li class="comment">
-              <div class="vcard">
-                <img src="images/person_1.jpg" alt="Image placeholder">
-              </div>
-              <div class="comment-body">
-                <h3>Jean Doe</h3>
-                <div class="meta">January 9, 2018 at 2:21pm</div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                <p><a href="#" class="reply rounded">Reply</a></p>
+               <div class="comment-body">
+                <h3>{{ (($comment->user_id) >0)? $comment->user->name : $comment->name }}</h3>
+                <div class="meta">{{ date('d-M-Y', strtotime($comment->created_at)) }}</div>
+                <p>{!! $comment->comment !!}</p>
               </div>
             </li>
-
-            <li class="comment">
-              <div class="vcard">
-                <img src="images/person_1.jpg" alt="Image placeholder">
-              </div>
-              <div class="comment-body">
-                <h3>Jean Doe</h3>
-                <div class="meta">January 9, 2018 at 2:21pm</div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                <p><a href="#" class="reply rounded">Reply</a></p>
-              </div>
-
-              <ul class="children">
-                <li class="comment">
-                  <div class="vcard">
-                    <img src="images/person_1.jpg" alt="Image placeholder">
-                  </div>
-                  <div class="comment-body">
-                    <h3>Jean Doe</h3>
-                    <div class="meta">January 9, 2018 at 2:21pm</div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                    <p><a href="#" class="reply rounded">Reply</a></p>
-                  </div>
-
-
-                  <ul class="children">
-                    <li class="comment">
-                      <div class="vcard">
-                        <img src="images/person_1.jpg" alt="Image placeholder">
-                      </div>
-                      <div class="comment-body">
-                        <h3>Jean Doe</h3>
-                        <div class="meta">January 9, 2018 at 2:21pm</div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                        <p><a href="#" class="reply rounded">Reply</a></p>
-                      </div>
-
-                    <ul class="children">
-                      <li class="comment">
-                        <div class="vcard">
-                          <img src="images/person_1.jpg" alt="Image placeholder">
-                        </div>
-                        <div class="comment-body">
-                          <h3>Jean Doe</h3>
-                          <div class="meta">January 9, 2018 at 2:21pm</div>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                          <p><a href="#" class="reply rounded">Reply</a></p>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li class="comment">
-              <div class="vcard">
-                <img src="images/person_1.jpg" alt="Image placeholder">
-              </div>
-              <div class="comment-body">
-                <h3>Jean Doe</h3>
-                <div class="meta">January 9, 2018 at 2:21pm</div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                <p><a href="#" class="reply rounded">Reply</a></p>
-              </div>
-            </li>
+            @endforeach
           </ul>
+          @endif
           <!-- END comment-list -->
           
           <div class="comment-form-wrap pt-5">
             <h3 class="mb-5">Leave a comment</h3>
-            <form action="#" class="p-5 bg-light">
+              {!! Form::open(['url' => 'comment/add/'.$article->id, 'id' => 'comment-form', 'class' => 'p-5 bg-light']) !!}
+              @guest
               <div class="form-group">
-                <label for="name">Name *</label>
-                <input type="text" class="form-control" id="name">
+                {{ Form::label ('Name') }}
+                {{ Form::text ('name','',array ('placeholder'=>'Enter your name', 'maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
               </div>
               <div class="form-group">
-                <label for="email">Email *</label>
-                <input type="email" class="form-control" id="email">
+                {{ Form::label ('Email') }}
+                {{ Form::text ('email','',array ('placeholder'=>'Enter your email id', 'maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
               </div>
+               @endguest
               <div class="form-group">
-                <label for="website">Website</label>
-                <input type="url" class="form-control" id="website">
-              </div>
-
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
+                {{ Form::label ('Comment') }}
+                {{ Form::textarea ('comment','',array ('placeholder'=>'Enter your comment','class' => 'form-control', 'required' => 'required')) }}
               </div>
               <div class="form-group">
                 <input type="submit" value="Post Comment" class="btn btn-primary">
               </div>
-
-            </form>
+              {!! Form::close() !!}
           </div>
         </div>
-
-          </div>
-
+      </div>
           <!-- END main-content -->
         @include('site/wordify/side-bar')
           <!-- END sidebar -->
 
-        </div>
+   
   @endif
   </div>
 </section>

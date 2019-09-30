@@ -6,6 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 #use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Mail\sendMail;
+use Illuminate\Support\Facades\Mail;
+
 class User extends \Illuminate\Foundation\Auth\User
 {
   use Notifiable;
@@ -41,6 +44,15 @@ class User extends \Illuminate\Foundation\Auth\User
     {
         return $this->hasMany(Article::class);
     }
+
+    /**
+     * defining relationship with comments
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class); 
+    }
+
     /**
      * to register new user
      */
@@ -58,7 +70,8 @@ class User extends \Illuminate\Foundation\Auth\User
             $saved = $user->save();
                 
             if($saved)
-            {
+            {   
+                Mail::to($user->email)->send(new sendMail()); 
                 $result['errFlag']= 0;
                 $result['msg']= 'User has registered successfully.';
                 $result['route']= 'dashboard';

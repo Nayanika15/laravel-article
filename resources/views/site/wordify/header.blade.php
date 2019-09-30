@@ -61,9 +61,9 @@
                     @if(Auth::user()->is_admin == 1)
                       <a class="dropdown-item" href="{{ route('view-category') }}">
                     Categories</a>
+                    <a class="dropdown-item" href="{{ route('all-comments') }}">Comments</a>
                     @endif
-                      <a class="dropdown-item" href="{{ route('all-articles') }}">Articles</a>
-                      <a class="dropdown-item" href="category.html">Comments</a>                    
+                      <a class="dropdown-item" href="{{ route('all-articles') }}">Articles</a>                    
                   </div>
 
                 </li>

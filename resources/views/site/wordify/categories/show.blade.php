@@ -35,6 +35,8 @@
                         @endforeach                       
                       </div>
                       <h2>{!! $article->title !!}</h2>
+                      <p>{!! $article->excerpt !!}</p>
+                     <h5 class="button btn btn-info">Read more</h5>
                     </span>
                   </a>
                 </div>

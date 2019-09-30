@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->enum('approve_status',[0,1,2])->default(0)->comment('0 for unapproved, 1 for published, 2 for unapproved');
+            $table->enum('approve_status',[0,1,2])->default(0)->comment('0 for unpublished, 1 for published, 2 for unapproved');
             $table->timestamps();
         });
     }

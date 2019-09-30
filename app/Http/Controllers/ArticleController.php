@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\ArticleCategories;
+use App\Models\Comment;
 
 class ArticleController extends Controller
 {   
@@ -113,10 +114,12 @@ class ArticleController extends Controller
     {   
         $article = new Article;
         $category = new Category;
+        $comment = new Comment;
         $data = array();
         $data['popular_articles'] = $article->popular();
         $data['active_categories'] = $category->activeCategories();
         $data['article'] = $article->articleDetail($slug);
+        $data['comments']= $comment->activeComments($slug);
         
         if(!empty($data['article']))
         {

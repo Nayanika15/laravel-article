@@ -8,7 +8,7 @@
                      @foreach($popular_articles as $article)
                     <li>
                       <a href="{{ url($article->permalink) }}">
-                        <img src="{{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('homepage'): asset('images/img_2.jpg') }}" alt="{{ ($article->getMedia('articles')->first()->name) }}" class="mr-4">
+                        <img src="{{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('homepage'): asset('images/img_2.jpg') }}" alt="{{ ($article->getMedia('articles')->count() > 0) ?($article->getMedia('articles')->first()->name) : '' }}" class="mr-4">
                         <div class="text">
                           <h4>{{ $article->title }}</h4>
                           <div class="post-meta">

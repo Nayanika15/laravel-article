@@ -35,7 +35,21 @@
     <div class="wrap">
       @include('site.wordify.header')
       <!-- END header -->
-      
+      @if ($errors->any())
+          <div class="alert alert-danger">
+              <ul>
+                  @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+        @endif
+        <!-- TO CHECK IF MESSAGE IS SET IN SESSION AND ALERT THE MESSAGE -->
+        @if (session('ErrorMessage'))
+            <div class="alert alert-danger">
+                {{ session('ErrorMessage') }}
+            </div>
+        @endif
            @yield('content')
       
       @include('site.wordify.footer')
