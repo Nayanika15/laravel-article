@@ -24,11 +24,12 @@ class UserRequest extends FormRequest
     public function rules()
     {  
         return [
-            'name'                 => 'sometimes|required|max:50',
-            'email'                => 'sometimes|required|email',
-            'mobile'               => 'sometimes|required|unique:users,mobile|max:10',
-            'password'             => 'sometimes|required',
-            'password_confirmation'=> 'sometimes|required',
+            'name'                 => 'required|max:50',
+            'email'                => 'required|email|unique:users,email',
+            'mobile'               => 'required|unique:users,mobile|max:10',
+            'code'                 => 'required',
+            'password'             => 'required|confirmed',
+            'password_confirmation'=> 'required'
         ];
     }
 }

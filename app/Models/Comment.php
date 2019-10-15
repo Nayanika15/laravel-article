@@ -56,6 +56,7 @@ class Comment extends Model
             {  
                 $comment->name = $data['name'];
                 $comment->email = $data['email'];
+                $comment->mobile = $data['mobile'];
                 $result['msg']= 'Comment was submitted successfully and will be published after approval.';
             }
     		$article = Article::find($id);
@@ -63,8 +64,7 @@ class Comment extends Model
 
     		if($saved)
     		{   
-                $admin = User::where('is_admin', '1')->first();
-                Mail::to($admin->email)->send(new CommentMail($saved));
+                Mail::to($article->user->email)->send(new CommentMail($saved));
     			$result['errFlag']= 0;
                 $result['msgType'] = 'success';
     		}

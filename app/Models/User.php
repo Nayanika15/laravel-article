@@ -54,14 +54,22 @@ class User extends \Illuminate\Foundation\Auth\User
     {
         return $this->hasMany(Comment::class); 
     }
+    /**
+     * Defining relationship with payments table
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     /**
      * to register new user
      */
-    public function registerUser($request)
+    public function registerUser($data)
     {   
-        $data = $request->validated();//to validate the data
         $result = array();
+
+
         if (!empty($data))
         {   
             $user = new User;
@@ -77,19 +85,19 @@ class User extends \Illuminate\Foundation\Auth\User
                 Mail::to($admin->email)->send(new RegistrationMailAdmin($user));
                 Mail::to($user->email)->send(new RegistrationMailUser($user));
                 $result['errFlag']= 0;
-                $result['msg']= 'User has registered successfully.';
-                $result['route']= 'dashboard';
+                $result['msg']= 'Registration completed successfully.Please login to go to your dashboard.';
+                $result['route']= 'login';
                 
             }
             else
             {   
                 $result['errFlag'] = 1;
                 $result['msg'] = 'There is some error.';
-                $result['route'] = 'homepage';
+                $result['route'] = 'do-registration';
             }
             
         }
-
+        
         return $result;
     }
 }

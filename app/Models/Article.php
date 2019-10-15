@@ -8,6 +8,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Support\Str;
 
+use App\Mail\ArticleMail;
+use Illuminate\Support\Facades\Mail;
+
 use DataTables;
 
 class Article extends Model implements HasMedia
@@ -20,7 +23,7 @@ class Article extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'title', 'details', 'user_id'
+        'title', 'details', 'user_id', 'paid_status'
     ];
 
     /**
@@ -88,6 +91,13 @@ class Article extends Model implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
+    /**
+     * Defining relationship with payments table
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     /**
      * To change the image file to different size 
@@ -129,6 +139,22 @@ class Article extends Model implements HasMedia
         
         
         return Datatables::of($articles)
+            ->editColumn('paid_status', function($articles){
+                $paid_status= $articles->paid_status;
+
+                if($paid_status == 0)
+                {
+                    return "<p class='text-danger'>Unpaid </p>";
+                }
+                elseif ($paid_status == 1)
+                {
+                   return "<p class='text-success'> Paid </p>";
+                }
+                elseif ($paid_status == 1)
+                {
+                   return "<p class='text-warning'> Failed </p>";
+                }
+            })
             ->editColumn('approve_status', function($articles){
                 $status= $articles->approve_status;
 
@@ -170,6 +196,7 @@ class Article extends Model implements HasMedia
         $route = ($id == 0)? 'add-article' : 'edit-article';
         if (!empty($data))
         {   
+
             if($id == 0)
             {
                 $article = new Article;
@@ -199,7 +226,7 @@ class Article extends Model implements HasMedia
                     $article->approve_status=$data['approve_status'];
                 }
                 
-                $action = ($id == 0) ? 'Added' : 'Updated';
+                $action = ($id == 0) ? 'added' : 'updated';
                 $saved = $article->save();
                 
                 if($saved)
@@ -215,11 +242,18 @@ class Article extends Model implements HasMedia
                         
                         $article->addMedia($request->file('image'))
                                ->toMediaCollection('articles');
+                        if($id == 0)
+                        {
+                            $admin = User::where('is_admin', '1')->first();
+                            Mail::to($admin->email)->send(new ArticleMail($article));   
+                        }
+                        
                     }
 
                     $result['errFlag']= 0;
                     $result['msg']= 'Article was '. $action . ' successfully.';
                     $result['route']= 'all-articles';
+                    $result['article_id']= $article->id;
                     
                 }
                 else
@@ -244,7 +278,7 @@ class Article extends Model implements HasMedia
      */
     public function articleDetail($slug)
     {
-       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])->where('slug', $slug)->first();
+       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])->first();
 
        //to increase the view count on visting the view page
        if($data)
@@ -259,6 +293,12 @@ class Article extends Model implements HasMedia
     public function deleteArticle($id)
     {
         $article = Article::find($id);
+
+         if((auth()->user()->is_admin !== 1) && ($article->user_id !== auth()->user()->id))
+        {
+            return redirect()->route('all-articles')->with('ErrorMessage', 'You are not authorised for this action.');
+        }
+        
         $action = $article->delete();
         $result = array();
         $result['route'] = 'all-articles';
@@ -289,6 +329,7 @@ class Article extends Model implements HasMedia
     public function popular()
     {   
         $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
+            ->where(['approve_status'=> '1', 'paid_status'=>'1'])
             ->orderBy('views_count', 'desc')
             ->limit(4)
             ->get();
@@ -301,15 +342,15 @@ class Article extends Model implements HasMedia
      */
     public function related($slug)
     {   
-        $article_categories = Article::where('slug', $slug)
+         $article_categories = Article::where(['slug' => $slug, 'approve_status' =>'1', 'paid_status'=>'1'])
             ->first()
             ->categories
             ->pluck('id')->toArray();
 
         $related_articles = Article::wherehas('categories', function($query) use($article_categories){
-            $query->whereIn('id', $article_categories);
+                $query->whereIn('id', $article_categories);
             })->withCount(['comments' => function($query){
-                $query->where('approve_status', '1');
+                $query->where(['approve_status'=>'1']);
             }])->inRandomOrder()
             ->limit(3)
             ->get();
@@ -323,9 +364,29 @@ class Article extends Model implements HasMedia
      */
     public function latestArticle()
     {   
-        return Article::where('approve_status', '1')->withCount(['comments' => function($query){
+        return Article::where(['approve_status'=>'1', 'paid_status' => '1'])
+            ->withCount(['comments' => function($query){
                 $query->where('approve_status', '1');
             }])->latest();              
+    }
+    /**
+     * to update status after successful payment
+     */
+    public function updateStatus($article)
+    {   
+        $updated = $article->update(['paid_status'=> '1']);
+        $result = array();
+        
+        if($updated)
+        {   
+            $result['errFlag'] = 0; 
+        }
+        else
+        {   
+            $result['errFlag'] = 1;
+        }
+
+        return $result; 
     }
     
 }
