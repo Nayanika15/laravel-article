@@ -6,6 +6,8 @@
                 @guest
                   <a href="{{ route('do-registration') }}">Register</a>
                   <a href="{{ route('login') }}">Login</a>
+                  <a href="/redirect/facebook"><span class="fa fa-facebook"></span></a>
+                  <a href="redirect/google"><span class="fa fa-google"></span></a>
                 @else
                   <span class="user">Welcome <strong>{{ auth()->user()->name }}</strong>!</span> 
                   <a href="{{ route('logout') }}">Logout</a>
@@ -49,9 +51,6 @@
                 </li>
                 @endif
                 
-                <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
-                </li>
                 @if(!empty(Auth::user()))
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ (Auth::user()->is_admin == 1)?'Admin':'User' }}</a>

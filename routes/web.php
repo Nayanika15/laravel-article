@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('article/add/{id}', 'ArticleController@create')->name('edit-article');
 	Route::post('article/add/{id}', 'ArticleController@store')->name('update-article');
 	Route::get('article/destroy/{id}', 'ArticleController@destroy')->name('delete-article');
+	Route::get('payment', 'ArticleController@makePayment')->name('make-payment');
+	Route::post('payment', 'ArticleController@doPayment')->name('do-payment');
+	Route::get('payment/success', 'ArticleController@succesful')->name('successful-payment');
 	
 	Route::group(['middleware' => 'role'], function()
 	{
@@ -46,14 +49,18 @@ Route::group(['middleware' => 'auth'], function()
 
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/login', 'UserController@index')->name('login');
-	Route::post('/login', 'UserController@login')->name('dologin');
-	Route::get('/register', 'UserController@create')->name('do-registration');
-	Route::post('/register', 'UserController@register')->name('register');
+    Route::get('login', 'UserController@index')->name('login');
+	Route::post('login', 'UserController@login')->name('dologin');
+	Route::get('register', 'UserController@create')->name('do-registration');
+	Route::post('register',  'UserController@register')->name('register');
+	Route::get('verify-mobile/{mobile}',  'MobileVerificationController@SendCode')->name('verify-mobile');
 });
 
 Route::post('comment/add/{id}', 'CommentController@store')->name('add-comment');
 Route::get('article/{slug}', 'ArticleController@detail')->name('detail-article');
 Route::get('category/{slug}', 'CategoryController@detail')->name('detail-category');
+Route::get ('callback/{service}', 'UserController@callback');
+Route::get ('redirect/{service}', 'UserController@redirect');
 
- 
+Route::get ('terms', 'HomeController@index');
+Route::get ('policy', 'HomeController@index');

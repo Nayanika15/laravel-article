@@ -122,6 +122,17 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+    
+    /**
+     * Twilio global variables
+     */
+    'twilio' => [
+       'AUTHY_API_KEY'  => env('AUTHY_API_KEY'),
+       'TWILIO_ACCOUNT_SID'  => env('TWILIO_ACCOUNT_SID'),
+       'TWILIO_AUTH_TOKEN'  => env('TWILIO_AUTH_TOKEN'),
+       'TWILIO_PHONE'  => env('TWILIO_PHONE'),
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -186,6 +197,10 @@ return [
          * To register service provider to get data shared in view files
          */
         App\Providers\ViewServiceProvider::class,
+        /**
+         * for socialite
+         */
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -246,7 +261,14 @@ return [
          * laravel datatables
          */
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-
+        /**
+         * for socialite package
+         */
+        'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+        /**
+         * for stripe
+         */
+        'Stripe' => Stripe\Laravel\Facades\Stripe::class,
     ],
 
 ];

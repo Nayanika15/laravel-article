@@ -1,5 +1,5 @@
 @component('mail::message')
-Hi Admin,<br>
+Hi {{ $comment->article->user->name }},<br>
 A new comment was added to {{ $comment->article->title }} by 
 @if($comment->user_id >0)
 	{{ $comment->user->name }}

@@ -13,7 +13,15 @@
       
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-8 main-content">
-          Hi <span class="user">{{ Auth::user()->name }}</span> this is your dashboard.
+          @if(isset($service))
+          <div class="title m-b-md">
+              Welcome {{ $details->user['name']}} ! <br> Email id : {{
+              $details->user['email'] }} <br> This is your dashboard.
+          </div>
+          @else
+            Hi <span class="user">{{ Auth::user()->name }}</span> this is your dashboard.
+          @endif
+          
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@
       </div>
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-8 main-content">
+          @include('common.message')
           @if(isset($categories->id))
             {!! Form::open(['url' => 'admin/add-category/'.$categories->id, 'id' => 'category-form']) !!}
           @else

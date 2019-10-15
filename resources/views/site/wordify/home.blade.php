@@ -1,4 +1,7 @@
 @extends('layouts.wordify')
+@section('title')
+  Homepage - {{ env('SITE_TITLE') }}
+@endsection
 @section('content')
 
 @include('site.wordify.slider')

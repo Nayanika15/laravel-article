@@ -28,7 +28,7 @@
                                 <th>Id</th>
                                 <th>Title</th>
                                 <!-- <th>Details</th> -->
-                                <!-- <th>Categories</th> -->
+                                <th>Payment Status</th>
                                 <th>Status</th>
                                 <th>Created By</th>
                                 <th>Created On</th>
@@ -55,13 +55,14 @@
         "columns": [
             {data: 'id', name: 'id'},
             {data: 'title', name: 'title'},
+            {data: 'paid_status', name:'paid_status'},
             {data: 'approve_status', name:'approve_status'},
             {data: 'user_id', name:'user_id'},
             {data: 'created_at', name:'created_at'},
             {data: 'action', name:'action'}
         ],
         "columnDefs": [
-            { "orderable": false, "targets": 3 }
+            { "orderable": false, "targets": 6 }
         ]
     });
 }); 

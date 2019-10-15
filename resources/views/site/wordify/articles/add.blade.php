@@ -12,11 +12,16 @@
             <small>
               <a href=" {{ route('all-articles') }} " class="btn btn-primary btn-xs rounded">All Articles</a>
             </small>
-          </h1>           
+          </h1>
         </div>
       </div>
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-8 main-content">
+          @include('common.message')
+          
+          @if(isset($article->id) && ($article->paid_status == '0'))
+            @include('payment.form', ['article_id' => $article->id])
+          @endif
           @if(isset($article->id))
             {!! Form::open(['url' => 'article/add/'.$article->id, 'id' => 'article-form', 'files' => true]) !!}
           @else
@@ -67,18 +72,30 @@
                 <img src="{{$article->getFirstMedia('articles')->getUrl('homepage')}}" alt="{{ $article->getFirstMedia('articles')->name }}">
               </div>
               @endif
-              @if(auth()->user()->is_admin)
-               <div class="col-md-12 form-group">
-                {{ Form::label ('Status') }}
-                {{ Form::select('approve_status', [ 0 =>'Unpublished', 1 =>'Published', 2 =>'Unapproved' ],($article->approve_status)?? $article->approve_status ?? '', array('class' => 'form-control', 'required' => 'required')) }}
+              <div class="col-md-12 form-group">
+                @if(auth()->user()->is_admin)
+                  {{ Form::label ('Status : ') }}
+                  {{ Form::select('approve_status', [ 0 =>'Unpublished', 1 =>'Published', 2 =>'Unapproved' ],($article->approve_status)?? $article->approve_status ?? '', array('class' => 'form-control', 'required' => 'required')) }}
+                @elseif(isset($article->id))
+                  {{ Form::label ('Status : ') }}
+                  @switch($article->approve_status)
+                    @case(1)
+                      {{ Form::label ('Approved') }}
+                    @break
+                    @case(2)
+                      {{ Form::label ('Unapproved') }}
+                    @break
+                    @default
+                      {{ Form::label ('Unpublished') }}
+                  @endswitch
+                @endif
               </div>
-              @endif
               </div>
             <div class="row">
               <div class="col-md-6 form-group">
 
                 {{ Form::submit((isset($article->id)?'Submit':'Add'), array('class'=>'btn btn-primary')) }}
-                <a href="{{ url('/dashboard') }}" class="btn btn-danger">Cancel</a>
+                <a href="{{ route('all-articles') }}" class="btn btn-danger">Cancel</a>
               </div>
             </div>
           {!! Form::close() !!}
@@ -88,14 +105,18 @@
   </section>
 @endsection
 @section('scripts')
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
   <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
  <script>
    $(document).ready(function() {
-        $('.summernote').summernote();
+        $('.summernote').summernote({
+          height: 250,
+          popover: {
+          image: [],
+          link: [],
+          air: []
+          }
+        });
     });
   </script> 
 @endsection

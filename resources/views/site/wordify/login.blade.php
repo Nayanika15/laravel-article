@@ -12,12 +12,12 @@
       </div>
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-8 main-content">
-          {!! Form::open(['url' => 'login', 'id'=>'login-form']) !!}
+          @include('common.message')
+          {!! Form::open(['url' => 'login']) !!}
             <div class="row">
               <div class="col-md-12 form-group">
                 {{ Form::label ('E-Mail Address') }}
                 {{ Form::email ('email', null,array ('placeholder'=>'Enter email address','maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
-                
                 @error('email')
                   <span class="validate-error" role="alert">
                     <strong>{{ $message }}</strong>

@@ -7,32 +7,34 @@
 @php($article = $data['article'])
 @php($comments = $data['comments'])
 @php($related_articles = $data['related_articles'])
+
 <section class="site-section py-lg">
   <div class="container">        
     <div class="row blog-entries element-animate">
-    @if(isset($article))
+    @if(!empty($article))
       <div class="col-md-12 col-lg-8 main-content">
+        @include('common.message')
         @if($article->getMedia('articles')->count() > 0)
-        <img src="{{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('detail'): asset('images/img_2.jpg') }}" alt="Image" class="img-fluid mb-5">
+          <img src="{{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('detail'): asset('images/img_2.jpg') }}" alt="Image" class="img-fluid mb-5">
         @endif
         <div class="post-meta">
-          <span class="author mr-2"><img src="{{asset('images/person_1.jpg')}}" alt="{{ ($article->user()->first()->name) ?? $article->user()->first()->name ?? 'guest' }}" class="mr-2">{{ ($article->user()->first()->name) ?? $article->user()->first()->name ?? 'guest' }} </span>&bullet;
-          <span class="mr-2">{{ date('d-M-Y',strtotime($article->created_at)) }} </span> &bullet;
-          <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+          <span class="author mr-2">
+            <img src="{{asset('images/person_1.jpg')}}" alt="{{ ($article->user()->first()->name) ?? $article->user()->first()->name ?? 'guest' }}" class="mr-2">{{ ($article->user()->first()->name) ?? $article->user()->first()->name ?? 'guest' }}
+          </span>&bullet;
+          <span class="mr-2">
+            {{ date('d-M-Y',strtotime($article->created_at)) }} 
+          </span> &bullet;
+          <span class="ml-2">
+            <span class="fa fa-comments"></span>
+            {{ count($comments) }}
+          </span>
         </div>
         <h1 class="mb-4">{{ $article->title }}</h1>
-        @foreach($article->categories()->get() as $category)
-          <a class="category mb-5" href="{{ url($category->permalink) }}">{!! $category->name !!}</a>
-        @endforeach
+          @foreach($article->categories()->get() as $category)
+            <a class="category mb-5" href="{{ url($category->permalink) }}">{!! $category->name !!}</a>
+          @endforeach
         <div class="post-content-body">{!! $article->details !!}</div>
         
-        <div class="pt-5">
-          <p>Categories:
-        @foreach($article->categories()->get() as $category)
-          <a href="{{ url($category->permalink) }}">{{ $category->name }}</a>
-        @endforeach
-        </div>
-
         <div class="pt-5">
           @if($comments->count() >0 )
           <h3 class="mb-5">{{ $comments->count() }} comments</h3>
@@ -62,6 +64,18 @@
                 {{ Form::label ('Email') }}
                 {{ Form::text ('email','',array ('placeholder'=>'Enter your email id', 'maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
               </div>
+              <div class="form-group ">
+                {{Form::label ('Mobile No')}}
+                <div class="input-group">
+                  {{Form::text('mobile',null,array ('placeholder'=>'Enter mobile number','maxlength'=>'10','class' => 'form-control ', 'required' => 'required', 'id'=>'mobile'))}}
+                  {!! Form::button('Verify',['class' => 'btn btn-warning btn-sm input-group-btn', 'id' => 'verify']) !!}
+                </div>
+                <span class="alert-info status"></span>
+              </div>
+              <div class="form-group">
+                {{Form::label ('Verification code')}}
+                {{Form::text('code', null, array ('placeholder'=>'Enter mobile verification code', 'class' => 'form-control', 'required' => 'required'))}}
+              </div>
                @endguest
               <div class="form-group">
                 {{ Form::label ('Comment') }}
@@ -77,10 +91,32 @@
           <!-- END main-content -->
         @include('site/wordify/side-bar')
         @include('site/wordify/related-post')
-          <!-- END sidebar -->
-
-   
-  @endif
+          <!-- END sidebar -->   
+    @endif
+    </div>
   </div>
 </section>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function() {
+   $("#verify").click(function() {
+    var mobile= $('#mobile').val();
+    if( mobile != '')
+    {
+      $.ajax({
+                url: "{!! url('/verify-mobile/" + mobile + "') !!}",
+                method: 'GET',
+                success: function(data) {
+                    $('.status').html(data);
+                }
+            });
+    }
+    else
+    {
+      alert('please enter a valid mobile no');
+    }
+    });
+  });
+</script>
 @endsection

@@ -56,6 +56,7 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
    <script src="{{ asset('js/main.js') }}"></script>
    <script src="{{ asset('js/validatorFile.js') }}" ></script>
+   <script src="https://js.stripe.com/v3/"></script>
    @yield('scripts')
   </body>
     </html>
