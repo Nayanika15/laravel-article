@@ -104,7 +104,7 @@ class Article extends Model implements HasMedia
             ->height(487);
         //to generate the image required for slider
         $this->addMediaConversion('slider')
-            ->width(110)
+            ->width(1110)
             ->height(500);
         //to generate the image required for category detail page
         $this->addMediaConversion('category')
@@ -293,6 +293,39 @@ class Article extends Model implements HasMedia
             ->limit(4)
             ->get();
         return  $articles;
+    }
+    /**
+     * Show the related articles.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function related($slug)
+    {   
+        $article_categories = Article::where('slug', $slug)
+            ->first()
+            ->categories
+            ->pluck('id')->toArray();
+
+        $related_articles = Article::wherehas('categories', function($query) use($article_categories){
+            $query->whereIn('id', $article_categories);
+            })->withCount(['comments' => function($query){
+                $query->where('approve_status', '1');
+            }])->inRandomOrder()
+            ->limit(3)
+            ->get();
+            
+        return  $related_articles;
+    }
+    /**
+     * Show the latest article.
+     * @param string $slug
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function latestArticle()
+    {   
+        return Article::where('approve_status', '1')->withCount(['comments' => function($query){
+                $query->where('approve_status', '1');
+            }])->latest();              
     }
     
 }

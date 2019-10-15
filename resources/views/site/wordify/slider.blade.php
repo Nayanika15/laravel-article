@@ -2,56 +2,30 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12">
-
               <div class="owl-carousel owl-theme home-slider">
-                <div>
-                  <a href="{{asset('blog-single.html')}}" class="a-block d-flex align-items-center height-lg" style="background-image: {{asset('images/img_1.jpg')}}">
+                @if(!empty($latest_articles))
+                  @foreach($latest_articles as $article)
+                  <div>
+                  <a href="{{ url($article->permalink) }}" class="a-block d-flex align-items-center height-lg" style="background-image: url({{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('slider'): asset('images/img_2.jpg') }})">
                     <div class="text half-to-full">
-                      <span class="category mb-5">Food</span>
+                      @foreach($article->categories()->get() as $category)
+                        <span class="category mb-5">
+                          {!! $category->name !!}
+                        </span> &bullet;
+                        @endforeach
                       <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="{{asset('images/person_1.jpg')}}" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                        <span class="author mr-2"><img src="{{ asset('images/person_1.jpg') }}" alt="Colorlib"> {{ ($article->user()->first()->name && !empty($article->user())) ? $article->user()->first()->name : 'guest' }}</span>&bullet;
+                        <span class="mr-2">{{ date('d-M-Y',strtotime($article->created_at)) }}</span> &bullet;
+                        <span class="ml-2"><span class="fa fa-comments"></span>{{ $article->comments_count }}</span>
                         
                       </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
+                      <h3>{!! $article->title !!}</h3>
+                      <p>{!! $article->excerpt !!}</p>
                     </div>
                   </a>
                 </div>
-                <div>
-                  <a href="{{asset('blog-single.html')}}" class="a-block d-flex align-items-center height-lg" style="background-image: {{asset('images/img_2.jpg')}}">
-                    <div class="text half-to-full">
-                      <span class="category mb-5">Travel</span>
-                      <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="{{asset('images/person_1.jpg')}}" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                        
-                      </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                    </div>
-                  </a>
-                </div>
-                <div>
-                  <a href="{{asset('blog-single.html')}}" class="a-block d-flex align-items-center height-lg" style="background-image: {{asset('images/img_3.jpg')}}">
-                    <div class="text half-to-full">
-                      <span class="category mb-5">Sports</span>
-                      <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="{{asset('images/person_1.jpg')}}" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                        
-                      </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                    </div>
-                  </a>
-                </div>
+                  @endforeach
+                @endif
               </div>
               
             </div>

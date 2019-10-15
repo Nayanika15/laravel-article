@@ -3,9 +3,7 @@
   {{ ' Category-' . env('SITE_TITLE') }}
 @endsection
 
-@section('content')
-@php($popular_articles = $data['popular_articles'])
-@php($active_categories = $data['active_categories'])
+@section('content') 
 @php($categoryArticles = $data['categoryArticles'])
 @php($category = $data['category'])
     <section class="site-section pt-5">

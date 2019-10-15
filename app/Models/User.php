@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 #use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use App\Mail\sendMail;
+use App\Mail\RegistrationMailAdmin;
+use App\Mail\RegistrationMailUser;
 use Illuminate\Support\Facades\Mail;
 
 class User extends \Illuminate\Foundation\Auth\User
@@ -68,10 +70,12 @@ class User extends \Illuminate\Foundation\Auth\User
             $user->mobile = $data['mobile'];
             $user->password = Hash::make($data['password']);
             $saved = $user->save();
-                
+            
             if($saved)
             {   
-                Mail::to($user->email)->send(new sendMail()); 
+                $admin = User::where('is_admin', '1')->first();
+                Mail::to($admin->email)->send(new RegistrationMailAdmin($user));
+                Mail::to($user->email)->send(new RegistrationMailUser($user));
                 $result['errFlag']= 0;
                 $result['msg']= 'User has registered successfully.';
                 $result['route']= 'dashboard';

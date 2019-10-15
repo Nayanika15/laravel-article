@@ -116,8 +116,7 @@ class ArticleController extends Controller
         $category = new Category;
         $comment = new Comment;
         $data = array();
-        $data['popular_articles'] = $article->popular();
-        $data['active_categories'] = $category->activeCategories();
+        $data['related_articles'] = $article->related($slug);
         $data['article'] = $article->articleDetail($slug);
         $data['comments']= $comment->activeComments($slug);
         
@@ -131,5 +130,6 @@ class ArticleController extends Controller
         }
               
     }
+    
     
 }

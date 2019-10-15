@@ -4,10 +4,9 @@
 @endsection
 
 @section('content')
-@php($popular_articles = $data['popular_articles'])
-@php($active_categories = $data['active_categories'])
 @php($article = $data['article'])
 @php($comments = $data['comments'])
+@php($related_articles = $data['related_articles'])
 <section class="site-section py-lg">
   <div class="container">        
     <div class="row blog-entries element-animate">
@@ -77,6 +76,7 @@
       </div>
           <!-- END main-content -->
         @include('site/wordify/side-bar')
+        @include('site/wordify/related-post')
           <!-- END sidebar -->
 
    

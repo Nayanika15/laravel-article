@@ -17,12 +17,7 @@ class HomeController extends Controller
     public function index()
     {   
         $article = new Article;
-        $category = new category;
-        $data = array();
-        $data['popular_articles'] = $article->popular();
-        $data['active_categories'] = $category->activeCategories();
-        $data['latest_articles'] = Article::where('approve_status', '1')->latest()->Paginate(env('PAGINATE_LIMIT', 4));
-        return view('site.wordify.home')->with('data', $data);
+        return view('site.wordify.home')->with('latest_articles', $article->latestArticle()->Paginate(env('PAGINATE_LIMIT', 4)));
     }
      
 }

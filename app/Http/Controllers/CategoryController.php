@@ -90,8 +90,6 @@ class CategoryController extends Controller
         $article = new Article;
         $category = new Category;
         $data = array();
-        $data['popular_articles'] = $article->popular();
-        $data['active_categories'] = $category->activeCategories();
         $data['categoryArticles'] = $category->categoryDetail($slug);
         $data['category']=$category->getSlugCategory($slug);
 

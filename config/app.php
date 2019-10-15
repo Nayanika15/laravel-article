@@ -182,6 +182,10 @@ return [
          * datatable package
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        /**
+         * To register service provider to get data shared in view files
+         */
+        App\Providers\ViewServiceProvider::class,
 
     ],
 

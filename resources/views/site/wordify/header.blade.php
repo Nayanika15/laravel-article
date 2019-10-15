@@ -38,17 +38,16 @@
                 <li class="nav-item">
                   <a class="nav-link active" href="/">Home</a>
                 </li>
-
+                @if($active_categories)
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                  <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>                  
                   <div class="dropdown-menu" aria-labelledby="dropdown05">
-                    <a class="dropdown-item" href="category.html">Lifestyle</a>
-                    <a class="dropdown-item" href="category.html">Food</a>
-                    <a class="dropdown-item" href="category.html">Adventure</a>
-                    <a class="dropdown-item" href="category.html">Travel</a>
-                    <a class="dropdown-item" href="category.html">Business</a>
-                  </div>
+                    @foreach($active_categories as $category)
+                    <a class="dropdown-item" href="{{ url($category->permalink) }}">{{ $category->name }}</a>
+                    @endforeach
+                  </div>                  
                 </li>
+                @endif
                 
                 <li class="nav-item">
                   <a class="nav-link" href="about.html">About</a>

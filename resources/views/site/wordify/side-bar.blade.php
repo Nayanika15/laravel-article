@@ -3,7 +3,7 @@
               <div class="sidebar-box">
                 <h3 class="heading">Popular Article</h3>
                 <div class="post-entry-sidebar">
-                  @if($popular_articles)
+                  @if(!empty($popular_articles))
                   <ul>
                      @foreach($popular_articles as $article)
                     <li>
