@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index()
     { 
         $article = new Article;
-        return view('site.wordify.home')->with('latest_articles', $article->latestArticle()->Paginate(env('PAGINATE_LIMIT', 4)));
+        return view('site.wordify.home')->with(['latest_articles' => $article->latestArticle()->Paginate(env('PAGINATE_LIMIT', 4)), 'featured_articles' =>$article->featuredArticles()]);
     }
      
 }

@@ -23,7 +23,7 @@ class Article extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'title', 'details', 'user_id', 'paid_status'
+        'title', 'details', 'user_id', 'paid_status', 'is_featured'
     ];
 
     /**
@@ -130,7 +130,7 @@ class Article extends Model implements HasMedia
         //To fetch all articles for admin and for other users only the articles posted by them
         if(auth()->user()->is_admin)
         {
-            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at']);
+            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured']);
         }
         else
         {  
@@ -178,9 +178,20 @@ class Article extends Model implements HasMedia
                 return date("d-M-Y", strtotime($articles->created_at));
             })
             ->addColumn('action', function($articles){
-                $edit_route=route('edit-article', $articles->id);
-                $delete_route=route('delete-article', $articles->id);
-                return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='" . $delete_route . "' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
+                $edit_route = route('edit-article', $articles->id);
+                $delete_route = route('delete-article', $articles->id);
+                if(auth()->user()->is_admin == 1)
+                {
+                    $feature_class = ($articles->is_featured == 1) ? 'star': 'star-o';
+                    $make_featured = "<a href='".route('feature-article', $articles->id)."' class='btn btn-warning'><i class='fa fa-".$feature_class."'></i></a> ";
+                }
+                else
+                {
+                    $make_featured='';
+                }
+                
+
+                return "<a href='" . $edit_route . "' class='btn btn-primary'><i class='fa fa-edit'></i></a>" . " <a href='" . $delete_route . "' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' ><i class='fa fa-trash'></i></a> ".$make_featured;
             })
             ->escapeColumns(['action'])
             ->make(true);
@@ -387,6 +398,24 @@ class Article extends Model implements HasMedia
         }
 
         return $result; 
+    }
+    /**
+     * To make articles featured
+     */
+    public function makeFeatured($article)
+    {
+        $article->is_featured = !($article->is_featured);
+        return $article->save();
+    }
+    /**
+     * to fetch the featured articles
+     */
+    public function featuredArticles()
+    {
+        $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
+                ->where(['approve_status'=> '1', 'paid_status'=>'1', 'is_featured'=> '1'])
+                ->get();
+            return  $articles;
     }
     
 }

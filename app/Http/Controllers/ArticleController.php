@@ -234,4 +234,33 @@ class ArticleController extends Controller
         $payment->savePayment($e, $request->article_id, '0');
         return back()->withErrors($errorMessages)->withInput();
     }
+    /**
+     * to make article featured article
+     */
+    public function featured($id)
+    {
+      $article = Article::find($id);
+            
+      if(!empty($article))
+      {
+
+        $result = $article->makeFeatured($article);
+        if($result)
+        {
+          return redirect()->route('all-articles')
+                          ->with('success', 'Article featured successfully.');
+        }
+        else
+        {
+          return redirect()->route('all-articles')
+                          ->with('ErrorMessage', 'There is some error.');
+        }
+      }
+      else
+      {
+        return redirect()->route('all-articles')
+                          ->with('ErrorMessage', 'Article was not found.');
+      }
+      
+    }
 }

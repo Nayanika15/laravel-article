@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
         );
 
         View::composer('site.wordify.side-bar', 'App\Http\Composer\PopularArticleComposer');
-        View::composer(['site.wordify.footer', 'site.wordify.slider'], 'App\Http\Composer\LatestArticleComposer');
+        View::composer(['site.wordify.footer'], 'App\Http\Composer\LatestArticleComposer');
 
     }
 }

@@ -3,8 +3,8 @@
           <div class="row">
             <div class="col-md-12">
               <div class="owl-carousel owl-theme home-slider">
-                @if(!empty($latest_articles))
-                  @foreach($latest_articles as $article)
+                @if(!empty($featured_articles))
+                  @foreach($featured_articles as $article)
                   <div>
                     <a href="{{ url($article->permalink) }}" class="a-block d-flex align-items-center height-lg" style="background-image: url({{ ($article->getMedia('articles')->count() > 0)?$article->getFirstMedia('articles')->getUrl('slider'): asset('images/img_2.jpg') }})">
                       <div class="text half-to-full">

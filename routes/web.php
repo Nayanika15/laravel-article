@@ -30,7 +30,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('payment/success', 'ArticleController@succesful')->name('successful-payment');
 	
 	Route::group(['middleware' => 'role'], function()
-	{
+	{	
+		Route::get('article/{id}', 'ArticleController@featured')->name('feature-article');
+
 		Route::prefix('admin')->group(function () 
 		{
 			Route::get('view-category', 'CategoryController@index')->name('view-category');
