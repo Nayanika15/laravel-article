@@ -17,7 +17,8 @@
     
     <!-- Theme Style -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    
     <style type="text/css">
       .validate-error{
         width: 100%;

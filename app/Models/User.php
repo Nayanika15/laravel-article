@@ -100,4 +100,35 @@ class User extends \Illuminate\Foundation\Auth\User
         
         return $result;
     }
+    /**
+     * to add mobile number to users details if not provided
+     */
+    public function addMobile($data)
+    {   
+        $result = array();
+
+        if (!empty($data))
+        {   
+            $user = User::find(auth()->user()->id);
+            $user->mobile = $data['mobile'];
+            $saved = $user->save();
+            
+            if($saved)
+            {   
+                $result['errFlag']= 0;
+                $result['msg']= 'Registration completed successfully.Please login to go to your dashboard.';
+                $result['route']= 'login';
+                
+            }
+            else
+            {   
+                $result['errFlag'] = 1;
+                $result['msg'] = 'There is some error.';
+                $result['route'] = 'add-phone';
+            }
+            
+        }
+        
+        return $result;
+    }
 }

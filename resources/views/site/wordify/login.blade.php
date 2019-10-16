@@ -42,7 +42,15 @@
             </div>
           {!! Form::close() !!}
         </div>
-      </div>
+        <div class="col-md-12 col-lg-4 sidebar">
+          <div class="sidebar-box">
+          <legend class="text-muted text-center">or</legend>
+          <div class="text-center">
+            <a class="btn btn-lg btn-social-icon btn-google" href="/redirect/google" title="Sign in with Google" rel="nofollow"> <img src="{{ asset('images/google.png') }}"> Sign in with Google </a>
+          </div>
+        </div>
+        </div>
+        </div>
     </div>
   </section>
 @endsection

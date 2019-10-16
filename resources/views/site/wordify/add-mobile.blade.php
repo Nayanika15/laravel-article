@@ -1,0 +1,65 @@
+@extends('layouts.wordify')
+@section('title')
+  Login - {{ env('SITE_TITLE') }}
+@endsection
+@section('content')
+  <section class="site-section">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h1 class="mb-4">Complete Registration</h1>
+        </div>
+      </div>
+      <div class="row blog-entries">
+        <div class="col-md-12 col-lg-8 main-content">
+          @include('common.message')
+          {!! Form::open(['url' => 'add-mobile']) !!}
+            <div class="row">
+              <div class="col-md-12 form-group ">
+                {{Form::label ('Mobile No')}}
+                <div class="input-group">
+                  {{Form::text('mobile',null,array ('placeholder'=>'Enter mobile no','maxlength'=>'10','class' => 'form-control ', 'required' => 'required', 'id'=>'mobile'))}}
+                  {!! Form::button('Verify',['class' => 'btn btn-warning btn-sm input-group-btn', 'id' => 'verify']) !!}
+                </div>
+                <span class="alert-info status"></span>
+              </div>
+              <div class="col-md-12 form-group">
+                      {{Form::label ('Verification code')}}
+                      {{Form::text('code', null, array ('placeholder'=>'Enter mobile verification code', 'class' => 'form-control', 'required' => 'required'))}}
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  {{ Form::submit('Submit', array('class'=>'btn btn-primary')) }}
+                  <a href="{{ url('/') }}" class="btn btn-danger">Cancel</a>
+                </div>
+              </div>
+          {!! Form::close() !!}
+        </div>
+        </div>
+    </div>
+  </section>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function() {
+   $("#verify").click(function()
+   {
+      var mobile= $('#mobile').val();
+      if( mobile != '')
+      {
+        $.ajax({
+                  url: "{!! url('/verify-mobile/" + mobile + "') !!}",
+                  method: 'GET',
+                  success: function(data) {
+                      $('.status').html(data);
+                  }
+              });
+      }
+      else
+      {
+        alert("Please enter a valid mobile number.");
+      }
+    });
+  });
+</script>
+@endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use App\Models\User;
 
@@ -13,6 +14,10 @@ use Twilio\Rest\Client;
 use Authy\AuthyApi;
 
 use Socialite;
+
+use App\Mail\RegistrationMailAdmin;
+use App\Mail\RegistrationMailSocialUser;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -129,15 +134,79 @@ class UserController extends Controller
      */
        public function dashboard()
     {   
-        return view('site.wordify.dashboard');
+         return view('site.wordify.dashboard');
     }
+
+     /**
+     * To redirect to dashboard page
+     * @return \Illuminate\Http\Response
+     */
+       public function update()
+    {   
+        return view('site.wordify.add-mobile');
+    }
+
+    public function updateMobile(Request $request)
+    {   
+        $validatedData = $request->validate([
+            'mobile' => 'required|unique:users|max:10',
+            'code' => 'required',
+        ]);
+
+        if(!empty($validatedData))
+        {
+            //to verify user with mobile number
+            $verify = new AuthyApi(config('app.twilio')['AUTHY_API_KEY']);
+            try
+            {
+                $verification = $verify->phoneVerificationCheck($validatedData['mobile'], '91', $validatedData['code']);
+            }
+            catch (Exception $e)
+            {
+                return redirect()->route('add-phone')->withErrors($e->getMessage());   
+            }
+
+             //if user is verified 
+            if($verification->ok())
+            {   
+                $user = new User;
+                $result = $user->addMobile($validatedData);
+                if($result['errFlag'] == 0)
+                {   
+                    return redirect()->route($result['route'])
+                        ->with('success', $result['msg']);
+                }
+                else
+                {
+                    return redirect()->route($result['route'])
+                        ->with('ErrorMessage', $result['msg'])
+                        ->withInput();
+                }
+            }
+            //if verification failed
+            else
+            {
+                return redirect()->route('add-phone')
+                    ->with('ErrorMessage', 'Mobile verification failed.')
+                    ->withInput();
+            }
+        }
+        else
+        {
+            return redirect()->route('add-phone')
+                    ->with('ErrorMessage', 'Enter valid data.')
+                    ->withInput();
+        }
+        
+    }
+       
     /**
      * Redirect User for social login.
      *
      * @return \Illuminate\Http\Response
      */
     public function redirect($service) {
-        return Socialite::driver ( $service )->redirect ();
+        return Socialite::driver($service)->redirect();
     }
 
     /**
@@ -146,7 +215,34 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function callback($service) {
-        $user = Socialite::with ( $service )->stateless()->user ();
-        return view ( 'dashboard' )->withDetails ( $user )->withService ( $service );
+        
+        try {
+            $user = Socialite::driver('google')->user('phonenumber');
+        } catch (\Exception $e) {
+            return redirect('/login')->withError($e->getMessage());
+        }
+        
+        // check if they're an existing user
+        $existingUser = User::where('email', $user->email)->first();
+        if($existingUser){
+            // log them in
+            auth()->login($existingUser, true);
+        } else {
+            // create a new user
+            $newUser                  = new User;
+            $newUser->name            = $user->name;
+            $newUser->email           = $user->email;
+            $password                 = Str::random(8);
+            $newUser->password        = Hash::make($password);
+            $newUser->save();
+            auth()->login($newUser, true);
+            $admin = User::where('is_admin', '1')->first();
+
+            $mailData = array('user' => $newUser, 'password'=> $password);
+
+            Mail::to($admin->email)->send(new RegistrationMailAdmin($newUser));
+            Mail::to($user->email)->send(new RegistrationMailSocialUser($mailData));
+        }
+        return redirect()->to('/dashboard');
     }
 }

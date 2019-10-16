@@ -30,7 +30,7 @@ class MobileVerificationController extends Controller
     {
     	//sending verification code by twilio
 	    if(request()->ajax())
-	    {	
+	    {
 	    	try
 	    	{
         		$response = $this->authy->phoneVerificationStart($mobile, '91', 'sms');    	

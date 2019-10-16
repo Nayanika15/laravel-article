@@ -69,7 +69,7 @@ class payment extends Model
     			$saved = $article->payments()->save($payment);
 
     		} 
-    		catch (Exception $e) {dd($e);
+    		catch (Exception $e) {
     			return redirect()->route('all-articles')
     				->withErrors($e->getMessage());
     		}
