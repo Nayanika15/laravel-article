@@ -1,35 +1,31 @@
- $("#category-form").validate({
+$(".validate-form").validate({
   rules:{
     name:{
-    required: true,
-    maxlength: 25,
+      required: true,
+      maxlength: 25,
+      aphabet: true
     },
-  },
-  messages: {
-  	name: {
-		required: "Please enter your category name.",
-		maxlength: "Length cannot exceed 25 character."
-			}
-		}
- 	
-});
-
-  $("#login-form").validate({
-  rules: {
-    email: {
-    required: true,
-    email: true,
+    email:{
+      required: true,
+      email: true,
     },
-    password: "required"
-	
-  },
-  messages: {
-  	email: {
-		required: "Enter your email-address."
-			},
-	password: {
-		required: "Enter your password."
-	},
-	email: "Enter a valid email address."
-		}
+    password:{
+      required: true,
+      minlength: 5,
+    },
+    con:{
+      required: true,
+      minlength: 5,
+    },
+    code:{
+      required: true
+    },
+    password_confirmation:{
+      required: true,
+      minlength: 5,
+    }
+  }
 });
+jQuery.validator.addMethod("aphabet", function(value, element) {
+  return this.optional(element) || /^[a-z]+$/i.test(value);
+}, "Should only include alphabets."); 

@@ -1,17 +1,16 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
+
+use DataTables;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Illuminate\Support\Str;
 
 use App\Mail\ArticleMail;
 use Illuminate\Support\Facades\Mail;
-
-use DataTables;
 
 class Article extends Model implements HasMedia
 {
@@ -32,6 +31,7 @@ class Article extends Model implements HasMedia
     public function setSlugAttribute($value)
     {   
         $slug_value = str_slug($value);
+
         //to check if any slug with the same name exists
         $count = Article::where('slug', $slug_value)->count();
         
@@ -67,7 +67,6 @@ class Article extends Model implements HasMedia
      * Defining relationship with category table
      * 
      */
-
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'article_categories');
@@ -77,7 +76,6 @@ class Article extends Model implements HasMedia
      * Defining relationship with user table
      * 
      */
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -125,23 +123,21 @@ class Article extends Model implements HasMedia
     /**
      * Function to fetch all articles depending on the user logged in
      */
-    Public function allArticles()
+    public static function allArticles()
     {   
         //To fetch all articles for admin and for other users only the articles posted by them
         if(auth()->user()->is_admin)
         {
-            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured']);
+            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status']);
         }
         else
         {  
             $articles=auth()->user()->articles()->get();
         }
         
-        
         return Datatables::of($articles)
             ->editColumn('paid_status', function($articles){
                 $paid_status= $articles->paid_status;
-
                 if($paid_status == 0)
                 {
                     return "<p class='text-danger'>Unpaid </p>";
@@ -150,7 +146,7 @@ class Article extends Model implements HasMedia
                 {
                    return "<p class='text-success'> Paid </p>";
                 }
-                elseif ($paid_status == 1)
+                elseif ($paid_status == 2)
                 {
                    return "<p class='text-warning'> Failed </p>";
                 }
@@ -166,7 +162,7 @@ class Article extends Model implements HasMedia
                 {
                    return "<p class='text-success'> Published </p>";
                 }
-                elseif ($status == 1)
+                elseif ($status == 2)
                 {
                    return "<p class='text-warning'> Unapproved </p>";
                 }
@@ -200,7 +196,7 @@ class Article extends Model implements HasMedia
     /**
      * to add and update articles
      */
-    public function addUpdateArticle($request, $id)
+    public static function addUpdateArticle($request, $id)
     {   
         $data = $request->validated();//to validate the data
         $result = array();
@@ -287,21 +283,24 @@ class Article extends Model implements HasMedia
     /**
      * To show the article detail and update the view count
      */
-    public function articleDetail($slug)
+    public static function articleDetail($slug)
     {
-       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])->first();
+       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])
+            ->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])
+            ->first();
 
-       //to increase the view count on visting the view page
+       //to increase the views count on visting the article details page
        if($data)
        {
             $data->increment('views_count');
        }
         return $data;
     }
+
     /**
      * To destroy the article
      */
-    public function deleteArticle($id)
+    public static function deleteArticle($id)
     {
         $article = Article::find($id);
 
@@ -332,12 +331,13 @@ class Article extends Model implements HasMedia
         }
         return $result;
     }
+
     /**
      * Show the popular articles.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function popular()
+    public static function popular()
     {   
         $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
             ->where(['approve_status'=> '1', 'paid_status'=>'1'])
@@ -346,12 +346,13 @@ class Article extends Model implements HasMedia
             ->get();
         return  $articles;
     }
+
     /**
      * Show the related articles.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function related($slug)
+    public static function related($slug)
     {   
          $article_categories = Article::where(['slug' => $slug, 'approve_status' =>'1', 'paid_status'=>'1'])
             ->first()
@@ -368,22 +369,24 @@ class Article extends Model implements HasMedia
             
         return  $related_articles;
     }
+
     /**
      * Show the latest article.
      * @param string $slug
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function latestArticle()
+    public static function latestArticle()
     {   
         return Article::where(['approve_status'=>'1', 'paid_status' => '1'])
             ->withCount(['comments' => function($query){
                 $query->where('approve_status', '1');
             }])->latest();              
     }
+
     /**
      * to update status after successful payment
      */
-    public function updateStatus($article)
+    public static function updateStatus($article)
     {   
         $updated = $article->update(['paid_status'=> '1']);
         $result = array();
@@ -402,7 +405,7 @@ class Article extends Model implements HasMedia
     /**
      * To make articles featured
      */
-    public function makeFeatured($article)
+    public static function makeFeatured($article)
     {
         $article->is_featured = !($article->is_featured);
         return $article->save();
@@ -410,12 +413,14 @@ class Article extends Model implements HasMedia
     /**
      * to fetch the featured articles
      */
-    public function featuredArticles()
+    public static function featuredArticles()
     {
-        $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
+        return Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
                 ->where(['approve_status'=> '1', 'paid_status'=>'1', 'is_featured'=> '1'])
+                ->withCount(['comments' => function($query){
+                    $query->where('approve_status', '1');
+                }])
                 ->get();
-            return  $articles;
     }
     
 }

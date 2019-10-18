@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category;
+
+use Illuminate\Http\Request;
    
 class HomeController extends Controller
 {
@@ -15,8 +16,6 @@ class HomeController extends Controller
      */
     public function index()
     { 
-        $article = new Article;
-        return view('site.wordify.home')->with(['latest_articles' => $article->latestArticle()->Paginate(env('PAGINATE_LIMIT', 4)), 'featured_articles' =>$article->featuredArticles()]);
+        return view('site.wordify.home')->with(['latest_articles' => Article::latestArticle()->Paginate(env('PAGINATE_LIMIT', 4)), 'featured_articles' =>Article::featuredArticles()]);
     }
-     
 }

@@ -17,7 +17,7 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {   
-        // dd(request()->route()->getName());
+        
         if( (Auth::user()->is_admin) !=1)
         {   
             return redirect()->route('dashboard')->with('ErrorMessage','You are not authorised for this action.');

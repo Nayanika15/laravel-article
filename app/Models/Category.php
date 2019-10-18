@@ -54,7 +54,7 @@ class Category extends Model
     /**
      * To fetch all categories
      */
-    public function allCategories()
+    public static function allCategories()
     {
         $category = Category::select(['id', 'name', 'created_at', 'updated_at']);
         return Datatables::of($category)
@@ -73,7 +73,7 @@ class Category extends Model
     /**
      * To delete category
      */
-    public function deleteCategory($id)
+    public static function deleteCategory($id)
     {
         $countArticles = Category::find($id)->countArticles()->count();
         $result = array();
@@ -104,7 +104,7 @@ class Category extends Model
       /**
      * To store or update category
      */
-    public function addUpdate($request,$id)
+    public static function addUpdate($request,$id)
     {
         
         $data = $request->validated();//to validate the data
@@ -155,7 +155,7 @@ class Category extends Model
     /**
      * To fetch the category
      */
-    public function getCategory($id)
+    public static function getCategory($id)
     {
        return Category::find($id);
     }
@@ -175,19 +175,28 @@ class Category extends Model
     /**
      * To fetch the category from slug
      */
-    public function getSlugCategory($slug)
+    public static function getSlugCategory($slug)
     {
        return Category::where('slug', $slug)->first();
     }
-     /**
+
+    /**
      * to fetch the active articles in a particular category
      */
-    public function categoryDetail($slug)
+    public static function categoryDetail($slug)
     {
 
     $data = Category::where('slug', $slug)->whereHas('articles', function($query){
         $query->where('approve_status', '1');
      })->first();
     return $data->articles()->latest()->Paginate(env('PAGINATE_LIMIT', 4));
+    }
+
+    /**
+     * To fetch all categories
+     */
+    public static function getAllCategories()
+    {
+        return Category::select('id', 'name')->pluck('name', 'id')->toArray();
     }
 }

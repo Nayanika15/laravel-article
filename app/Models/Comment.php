@@ -39,7 +39,7 @@ class Comment extends Model
      * To store comment for article
      * @param int article id, string comment content
      */
-    public function saveComment($data,$id)
+    public static function saveComment($data,$id)
     {   
         $article = Article::find($id);
         $result = array();
@@ -88,7 +88,7 @@ class Comment extends Model
     /**
      * get active comments
      */
-    public function activeComments($slug)
+    public static function activeComments($slug)
     {
     return Article::where('slug', $slug)->first()->comments()->where('approve_status', '1')->get();
     }
@@ -96,7 +96,7 @@ class Comment extends Model
     /**
      * All comments listing 
      */
-    public function allComments()
+    public static function allComments()
     {
        $comments = Comment::select(['id', 'comment', 'name', 'article_id', 'user_id', 'created_at', 'approve_status']);
 
@@ -151,7 +151,7 @@ class Comment extends Model
     /**
      * approve comments
      */
-    public function approveComment($id)
+    public static function approveComment($id)
     {   
         $updated = Comment::find($id)->update(['approve_status'=> '1']);
         $result = array();

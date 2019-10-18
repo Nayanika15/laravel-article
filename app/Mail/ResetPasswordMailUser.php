@@ -2,17 +2,17 @@
 
 namespace App\Mail;
 
+use App\Models\User;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Models\User;
 
-class RegistrationMailSocialUser extends Mailable
+class ResetPasswordMailUser extends Mailable
 {
     use Queueable, SerializesModels;
     public $userDetail;
-    
     /**
      * Create a new message instance.
      *
@@ -29,8 +29,8 @@ class RegistrationMailSocialUser extends Mailable
      * @return $this
      */
     public function build()
-    {   
-        return $this->markdown('mails.registration.new-social-registration')
+    {
+        return $this->markdown('mails.user.reset-password-user')
             ->with('mailData', $this->mailData);
     }
 }

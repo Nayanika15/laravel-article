@@ -18,7 +18,6 @@ class CheckMobile
      */
     public function handle($request, Closure $next)
     {
-        // dd(request()->route()->getName());
         if(is_null(Auth::user()->mobile))
         {   
             return redirect()->route('add-phone');

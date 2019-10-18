@@ -3,7 +3,7 @@
   Dashboard-{{ env('SITE_TITLE') }}
 @endsection
 @section('content')
-	<section class="site-section">
+  <section class="site-section">
     <div class="container">
       <div class="row mb-4">
         <div class="col-md-6">

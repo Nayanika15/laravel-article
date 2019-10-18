@@ -33,7 +33,7 @@ class PopularArticleComposer
      */
     public function compose(View $view)
     {   
-        $popular_articles = $this->article->popular();
+        $popular_articles = Article::popular();
         $view->with('popular_articles', $popular_articles);
     }
 }

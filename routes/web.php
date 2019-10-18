@@ -14,8 +14,8 @@
 
 Route::get('/', 'HomeController@index')->name('homepage');
 
-Route::get ('/callback/{service}', 'UserController@callback');
-Route::get ('/redirect/{service}', 'UserController@redirect');
+Route::get ('/callback/google', 'UserController@callback');
+Route::get ('/redirect', 'UserController@redirect');
 Route::get('add-mobile', 'UserController@update')->name('add-phone');
 Route::post('add-mobile', 'UserController@updateMobile')->name('update-phone');
 
@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth', 'check-mobile']], function()
 	
 	Route::group(['middleware' => 'role'], function()
 	{	
-		Route::get('article/{id}', 'ArticleController@featured')->name('feature-article');
+		Route::get('article/feature/{id}', 'ArticleController@featured')->name('feature-article');
 
 		Route::prefix('admin')->group(function () 
 		{
@@ -50,7 +50,6 @@ Route::group(['middleware' => ['auth', 'check-mobile']], function()
 			Route::get('comment/approve-comment/{id}', 'CommentController@approve')->name('approve-comment');
 		});
 	});
-		
 });
 
 
@@ -60,12 +59,10 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('login', 'UserController@login')->name('dologin');
 	Route::get('register', 'UserController@create')->name('do-registration');
 	Route::post('register',  'UserController@register')->name('register');
+	Route::get('reset-password', 'UserController@forgotPassword')->name('forgot-password');
+	Route::post('reset-password', 'UserController@updatePassword')->name('reset-password');
 });
 Route::get('verify-mobile/{mobile}',  'MobileVerificationController@SendCode')->name('verify-mobile');
-
 Route::post('comment/add/{id}', 'CommentController@store')->name('add-comment');
 Route::get('article/{slug}', 'ArticleController@detail')->name('detail-article');
 Route::get('category/{slug}', 'CategoryController@detail')->name('detail-category');
-
-Route::get ('terms', 'HomeController@index');
-Route::get ('policy', 'HomeController@index');

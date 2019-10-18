@@ -6,21 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Models\User;
 
-class RegistrationMailSocialUser extends Mailable
+use app\Models\User;
+
+class ResetPasswordMailAdmin extends Mailable
 {
     use Queueable, SerializesModels;
     public $userDetail;
-    
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mailData)
+    public function __construct(User $userDetail)
     {
-        $this->mailData = $mailData;
+        $this->userDetail = $userDetail;
     }
 
     /**
@@ -29,8 +29,8 @@ class RegistrationMailSocialUser extends Mailable
      * @return $this
      */
     public function build()
-    {   
-        return $this->markdown('mails.registration.new-social-registration')
-            ->with('mailData', $this->mailData);
+    {
+        return $this->markdown('mails.user.reset-password-admin')
+                ->with('userDetail', $this->userDetail);
     }
 }

@@ -13,7 +13,7 @@
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-8 main-content">
           @include('common.message')
-          {!! Form::open(['url' => 'add-mobile']) !!}
+          {!! Form::open(['url' => 'add-mobile', 'class' => 'validate-form']) !!}
             <div class="row">
               <div class="col-md-12 form-group ">
                 {{Form::label ('Mobile No')}}
@@ -33,26 +33,27 @@
                   <a href="{{ url('/') }}" class="btn btn-danger">Cancel</a>
                 </div>
               </div>
-          {!! Form::close() !!}
-        </div>
-        </div>
+          </div>        
+        {!! Form::close() !!}
+      </div>
     </div>
   </section>
 @endsection
 @section('scripts')
-<script type="text/javascript">
-  $(document).ready(function() {
+  <script type="text/javascript">
+  $(document).ready(function() 
+  {
    $("#verify").click(function()
    {
       var mobile= $('#mobile').val();
       if( mobile != '')
       {
         $.ajax({
-                  url: "{!! url('/verify-mobile/" + mobile + "') !!}",
-                  method: 'GET',
-                  success: function(data) {
-                      $('.status').html(data);
-                  }
+                url: "{!! url('/verify-mobile/" + mobile + "') !!}",
+                method: 'GET',
+                success: function(data) {
+                    $('.status').html(data);
+                }
               });
       }
       else
@@ -61,5 +62,5 @@
       }
     });
   });
-</script>
+  </script>
 @endsection

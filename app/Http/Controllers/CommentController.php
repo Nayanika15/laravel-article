@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 
-use Twilio\Rest\Client;
 use Authy\AuthyApi;
+use Twilio\Rest\Client;
 
 class CommentController extends Controller
 {	
@@ -31,19 +31,20 @@ class CommentController extends Controller
                     return false;   
                 }
             }
+
             //if user is registered or verified guest user
             if( auth()->check() || (!(auth()->check()) && $verification->ok()))
             {
                 if($data)
                 {   
-                    $comment = new Comment();
-                    $result = $comment->saveComment($data,$id);                    
+                    $result = Comment::saveComment($data,$id);                    
                     if($result)
                     {
                         return redirect()->back()->with($result['msgType'], $result['msg']);
                     }
                 }
             }
+
             //if verification failed
             else
             {
@@ -67,10 +68,9 @@ class CommentController extends Controller
     {
        if(request()->ajax())
         {  
-            $comments = new Comment;
-            $data = $comments->allComments();
-            return $data;
+            return Comment::allComments();
         }
+
         return view('site.wordify.comments.list');
     }
 
@@ -79,8 +79,7 @@ class CommentController extends Controller
      */
     public function approve($id)
     {
-        $comments = new Comment;
-        $result = $comments->approveComment($id);
+        $result = Comment::approveComment($id);
         return redirect()->route('all-comments')->with($result['msgType'], $result['msg']);
     }    
 
