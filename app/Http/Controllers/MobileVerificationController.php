@@ -31,27 +31,24 @@ class MobileVerificationController extends Controller
     public function SendCode($mobile)
     {
     	//sending verification code by twilio
-	    if(request()->ajax())
-	    {
-	    	try
-	    	{
-        		$response = $this->authy->phoneVerificationStart($mobile, '91', 'sms');    	
-		    	if($response->ok())
-				{
-					$msg = 'Verification code sent.';
-				}
-				else
-				{
-					$msg = 'Please enter a valid mobile number.';
-				}
+	    try
+    	{
+    		$response = $this->authy->phoneVerificationStart($mobile, '91', 'sms');    	
+	    	if($response->ok())
+			{
+				$msg = 'Verification code sent.';
+			}
+			else
+			{
+				$msg = 'Please enter a valid mobile number.';
+			}
 
-				return $msg; 
-		    } 
-		    catch (Exception $e)
-		    {	
-		    	return print($e->getMessage());
-		    }
-		}
+			return $msg; 
+	    }
+	    catch (Exception $e)
+	    {	
+	    	return print($e->getMessage());
+	    }
 	
     }
     

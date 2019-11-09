@@ -13,6 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', 'Api\UserController@login');
+Route::post('register', 'Api\UserController@register');
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::post('details', 'Api\UserController@details');
 });
+
+Route::prefix('article')->group(function () 
+{
+	Route::get('latest', 'Api\ArticleController@latest');
+	Route::get('{slug}', 'Api\ArticleController@detail');
+});
+
+Route::prefix('category')->group(function () 
+{	
+	Route :: post('add', 'Api\CategoryController@add');
+	Route::get('active', 'Api\CategoryController@activeCategories');
+	Route::get('{slug}', 'Api\CategoryController@detail');
+});
+
+Route::get('sideBar', 'Api\HomeController@sideBar');
+Route::post('feedback', 'Api\FeedbackController@add')->middleware('auth:api');
+Route::get('verify-mobile/{mobile}',  'Api\FeedbackController@verifyMobile');

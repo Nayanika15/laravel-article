@@ -201,6 +201,7 @@ return [
          * for socialite
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class
 
     ],
 

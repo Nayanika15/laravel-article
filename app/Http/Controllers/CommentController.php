@@ -28,7 +28,7 @@ class CommentController extends Controller
                 catch (Exception $e)
                 {
                     report($e);
-                    return false;   
+                    return false;
                 }
             }
 

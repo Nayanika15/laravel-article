@@ -19,8 +19,10 @@
         <div class="col-md-12 col-lg-8 main-content">
           @include('common.message')
           
-          @includewhen((isset($article->id) && ($article->paid_status == '0')), 'payment.form', ['article_id' => $article->id])
-          
+          @if(isset($article->id) && ($article->paid_status == '0'))
+            @include('payment.form', ['article_id' => $article->id])
+          @endif
+
           @if(isset($article->id))
             {!! Form::open(['url' => 'article/add/'.$article->id, 'class' => 'validate-form', 'files' => true]) !!}
           @else

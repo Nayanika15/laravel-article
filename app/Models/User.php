@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -13,9 +12,13 @@ use App\Mail\ResetPasswordMailAdmin;
 use App\Mail\RegistrationMailUser;
 use App\Mail\ResetPasswordMailUser;
 
-class User extends \Illuminate\Foundation\Auth\User
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
 {
-  use Notifiable;
+  use HasApiTokens,Notifiable;
 
   /**
    * The attributes that are mass assignable.
@@ -74,8 +77,6 @@ class User extends \Illuminate\Foundation\Auth\User
   public static function registerUser($data)
   {   
       $result = array();
-
-
       if (!empty($data))
       {   
         $user = new User;
@@ -93,6 +94,7 @@ class User extends \Illuminate\Foundation\Auth\User
           $result['errFlag']= 0;
           $result['msg']= 'Registration completed successfully.Please login to go to your dashboard.';
           $result['route']= 'login';
+          $result['user'] = $user;
             
         }
         else

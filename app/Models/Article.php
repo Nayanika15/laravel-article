@@ -24,6 +24,12 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title', 'details', 'user_id', 'paid_status', 'is_featured'
     ];
+    /**
+     * The attributes that will be appended to json response.
+     *
+     * @var array
+     */
+    protected $appends = ['added_by', 'detail_image', 'date', 'homepage_image', 'detail_image', 'category_image', 'excerpt'];
 
     /**
      * get the slug value for the provided title
@@ -52,9 +58,50 @@ class Article extends Model implements HasMedia
      */
     public function getPermalinkAttribute()
     {
-        return 'article/' . $this->slug;
+        return "article/" . $this->slug;
     }
 
+    /**
+     * get the module permalink
+     */
+    public function getAddedByAttribute()
+    {
+        return $this->user->name;
+    }
+
+     /**
+     * get the homepage image link for article
+     */
+    public function getHomepageImageAttribute()
+    {
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('homepage') : asset('/images/img_2.jpg'));
+    }
+
+    /**
+     * get the detail image link for article
+     */
+    public function getDetailImageAttribute()
+    {   
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('detail') : asset('images/img_2.jpg'));
+    }
+
+    /**
+     * get the homepage image link for article
+     */
+    public function getCategoryImageAttribute()
+    {
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('category') : asset('images/img_2.jpg'));
+    }
+
+    /**
+     * get the detail image link for article
+     */
+    public function getDateAttribute()
+    {
+        return date('d-M-Y', strtotime($this->created_at));
+    }
+
+    
     /**
      * get the excerpt
      */
@@ -285,15 +332,16 @@ class Article extends Model implements HasMedia
      */
     public static function articleDetail($slug)
     {
-       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])
+       $data = Article::select(['id', 'title', 'details', 'user_id', 'slug', 'approve_status', 'created_at', 'updated_at'])
             ->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])
             ->first();
 
        //to increase the views count on visting the article details page
        if($data)
        {
-            $data->increment('views_count');
+           $data->increment('views_count');
        }
+
         return $data;
     }
 
@@ -380,7 +428,7 @@ class Article extends Model implements HasMedia
         return Article::where(['approve_status'=>'1', 'paid_status' => '1'])
             ->withCount(['comments' => function($query){
                 $query->where('approve_status', '1');
-            }])->latest();              
+            }])->latest();
     }
 
     /**

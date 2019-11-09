@@ -164,7 +164,7 @@ class Category extends Model
     /**
      * to fetch the active articles
      */
-    public function activeCategories()
+    public static function activeCategories()
     {
 
     return Category::whereHas('articles', function($query){
