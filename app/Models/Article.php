@@ -8,14 +8,19 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Illuminate\Support\Facades\Auth;
 
 use App\Mail\ArticleMail;
 use Illuminate\Support\Facades\Mail;
 
+use JamesDordoy\LaravelVueDatatable\Traits\LaravelVueDatatableTrait;
+use Illuminate\Notifications\Notifiable;
+
 class Article extends Model implements HasMedia
 {
 
-    use HasMediaTrait;
+    use HasMediaTrait, Notifiable, LaravelVueDatatableTrait;
+
      /**
      * The attributes that are mass assignable.
      *
@@ -24,12 +29,36 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title', 'details', 'user_id', 'paid_status', 'is_featured'
     ];
+
     /**
      * The attributes that will be appended to json response.
      *
      * @var array
      */
-    protected $appends = ['added_by', 'detail_image', 'date', 'homepage_image', 'detail_image', 'category_image', 'excerpt'];
+    protected $appends = ['added_by', 'detail_image', 'date', 'homepage_image', 'detail_image', 'category_image', 'excerpt', 'slider_image', 'categories_tagged'];
+
+    /**
+     * datatable columns
+     */
+     protected $dataTableColumns = [
+        'id' => [
+            'searchable' => false,
+        ],
+        'title' => [
+            'searchable' => true,
+        ],
+        'paid_status' =>[
+            'searchable' => true,
+        ],
+
+        'approve_status' =>[
+            'searchable' => true,
+        ],
+        
+        'created_at' => [
+            'searchable' => true,
+        ]
+    ];
 
     /**
      * get the slug value for the provided title
@@ -80,9 +109,17 @@ class Article extends Model implements HasMedia
     /**
      * get the detail image link for article
      */
-    public function getDetailImageAttribute()
+    public function getSliderImageAttribute()
     {   
         return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('detail') : asset('images/img_2.jpg'));
+    }
+
+     /**
+     * get the slider image link for article
+     */
+    public function getDetailImageAttribute()
+    {   
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('slider') : asset('images/img_2.jpg'));
     }
 
     /**
@@ -102,6 +139,14 @@ class Article extends Model implements HasMedia
     }
 
     
+    /**
+     * get the excerpt
+     */
+    public function getCategoriesTaggedAttribute()
+    {
+        return $this->categories()->get();
+    }
+
     /**
      * get the excerpt
      */
@@ -272,7 +317,7 @@ class Article extends Model implements HasMedia
             {  
                 $article->title = $data['title'];
                 $article->details = $data['details'];
-                $article->user_id = auth()->user()->id;
+                $article->user_id = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
                 $article->slug = $data['title'];
 
                 if($request->has('approve_status'))
@@ -448,7 +493,7 @@ class Article extends Model implements HasMedia
             $result['errFlag'] = 1;
         }
 
-        return $result; 
+        return $result;
     }
     /**
      * To make articles featured

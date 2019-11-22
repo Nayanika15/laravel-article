@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "714020df9a5874f4ecb058c6e1108432",
+    "content-hash": "266c144c2a4db417c35a5794779e8aeb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -994,6 +994,45 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "jamesdordoy/laravelvuedatatable",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jamesdordoy/Laravel-Vue-Datatable_Laravel-Package.git",
+                "reference": "ebbb2133dfd5d7994277b8efd13a787eced24220"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jamesdordoy/Laravel-Vue-Datatable_Laravel-Package/zipball/ebbb2133dfd5d7994277b8efd13a787eced24220",
+                "reference": "ebbb2133dfd5d7994277b8efd13a787eced24220",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JamesDordoy\\LaravelVueDatatable\\Providers\\LaravelVueDatatableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JamesDordoy\\LaravelVueDatatable\\": "src/"
+                },
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Home",
+                    "email": "jamesdordoy@gmail.com"
+                }
+            ],
+            "time": "2019-10-13T10:48:28+00:00"
         },
         {
             "name": "laravel/framework",

@@ -20,7 +20,8 @@ use App\Mail\RegistrationMailSocialUser;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
-{
+{   
+    
     /**
      * Display a listing of the resource.
      *

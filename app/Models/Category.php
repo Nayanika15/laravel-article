@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use DataTables;
+use JamesDordoy\LaravelVueDatatable\Traits\LaravelVueDatatableTrait;
+use Illuminate\Notifications\Notifiable;
 
 class Category extends Model
-{
+{   
+
+    use Notifiable, LaravelVueDatatableTrait;
+
      /**
      * The attributes that are mass assignable.
      *
@@ -16,6 +21,34 @@ class Category extends Model
     protected $fillable = [
         'name'
     ];
+
+    /**
+     * datatable columns
+     */
+     protected $dataTableColumns = [
+        'id' => [
+            'searchable' => false,
+        ],
+        'name' => [
+            'searchable' => true,
+        ],
+        'created_at' => [
+            'searchable' => true,
+        ]
+    ];
+
+    /**
+     * append parameter to api response
+     */
+     protected $appends = ['date'];
+
+    /**
+     * get the data format
+     */
+    public function getDateAttribute()
+    {
+        return date('d-M-Y', strtotime($this->created_at));
+    }
 
     /**
      * get the slug value for the provided name
@@ -57,7 +90,9 @@ class Category extends Model
     public static function allCategories()
     {
         $category = Category::select(['id', 'name', 'created_at', 'updated_at']);
-        return Datatables::of($category)
+
+
+        return Datatables::of($category);/*
                 ->editColumn('created_at', function($category){
                     return date("d-M-Y", strtotime($category->created_at));
                 })
@@ -66,8 +101,7 @@ class Category extends Model
                     $delete_route=route('destroy-category', $category->id);
 
                     return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='".$delete_route."' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
-                })
-                ->make(true);
+                });*/
     }
 
     /**

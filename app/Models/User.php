@@ -48,6 +48,16 @@ class User extends Authenticatable
   ];
 
   /**
+     * fetch authenticated user details.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUser()
+    {
+      return Auth::guard('api')->user();
+    }
+    
+  /**
    * defining relationship with articles
    */
   public function articles()

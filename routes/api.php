@@ -20,18 +20,25 @@ Route::group(['middleware' => 'auth:api'], function(){
 });
 
 Route::prefix('article')->group(function () 
-{
+{	
+	Route::get('featured', 'Api\ArticleController@featuredArticles');
 	Route::get('latest', 'Api\ArticleController@latest');
+	Route::post('add', 'Api\ArticleController@add')->middleware('auth:api');
+	Route::any('list', 'Api\ArticleController@list');
 	Route::get('{slug}', 'Api\ArticleController@detail');
 });
 
 Route::prefix('category')->group(function () 
-{	
-	Route :: post('add', 'Api\CategoryController@add');
+{
+	Route::post('add', 'Api\CategoryController@add');
+	Route::get('edit/{id}', 'Api\CategoryController@editCategory');
+	Route::put('update/{id}', 'Api\CategoryController@update');
+	Route::any('list', 'Api\CategoryController@list');
 	Route::get('active', 'Api\CategoryController@activeCategories');
 	Route::get('{slug}', 'Api\CategoryController@detail');
 });
 
+Route::post('doPayment', 'Api\ArticleController@doPayment')->middleware('auth:api');;
 Route::get('sideBar', 'Api\HomeController@sideBar');
-Route::post('feedback', 'Api\FeedbackController@add')->middleware('auth:api');
+Route::post('feedback', 'Api\FeedbackController@add');//->middleware('auth:api');
 Route::get('verify-mobile/{mobile}',  'Api\FeedbackController@verifyMobile');

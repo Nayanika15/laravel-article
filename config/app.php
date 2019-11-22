@@ -201,8 +201,11 @@ return [
          * for socialite
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class
-
+        Barryvdh\Cors\ServiceProvider::class,
+        /**
+         * laravel-vue-datatable
+         */
+        JamesDordoy\LaravelVueDatatable\Providers\LaravelVueDatatableServiceProvider::class
     ],
 
     /*

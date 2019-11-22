@@ -21,6 +21,7 @@ class UserController extends Controller
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::user();
             $result['token'] =  $user->createToken('MyApp')-> accessToken;
+            $result['isAdmin'] = $user->is_admin;
             return response()->json([
             'message' => 'Success',
             'result' => $result

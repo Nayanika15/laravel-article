@@ -174,7 +174,8 @@ class ArticleController extends Controller
   public function doPayment(Request $request)
   {
     $payment = new Payment;
-   
+    \Log::info($request->all());
+
     try 
       {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -241,7 +242,8 @@ class ArticleController extends Controller
     //to save the transaction details even if failed
     $payment->savePayment($e, $request->article_id, '0');
 
-    //return with error message
+    \Log::info($errorMessages);
+     //return with error message  
     return redirect()->route('add-article')
         ->withErrors($errorMessages)
         ->withInput();

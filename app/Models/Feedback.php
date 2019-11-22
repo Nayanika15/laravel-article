@@ -30,11 +30,12 @@ class Feedback extends Model
         $feedback->email = $data['email'];
         $feedback->mobile = $data['mobile'];
         $feedback->message = $data['message'];
-        
-        if(Auth::check())
+        if(Auth::guard('api')->user())
         {
-            $feedback->user_id = Auth::user()->id;
+            $feedback->user_id = Auth::guard('api')->user()->id;
         }
+        
+        
         $saved = $feedback->save();
 
         if($saved)
