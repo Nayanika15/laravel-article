@@ -147,7 +147,7 @@ class UserController extends Controller
     }
 
     /**
-     *To update the mobile number if not provided 
+     *To update the mobile number if not provided
      */
     public function updateMobile(Request $request)
     {   

@@ -1,0 +1,11 @@
+{
+    "name": "nayanika/todo",
+    "description": "contains all functionality for admin and user",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+    	"psr-4":{
+            "Blog\\Todo" : "src"
+    	}
+    }
+}

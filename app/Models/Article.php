@@ -395,33 +395,48 @@ class Article extends Model implements HasMedia
      */
     public static function deleteArticle($id)
     {
-        $article = Article::find($id);
+        $article            = Article::find($id);
+        $result             = array();
+        $result['route']    = 'all-articles';
+        $user_id            = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
+        $is_admin           = Auth::guard('api')->user() ? Auth::guard('api')->user()->is_admin:auth()->user()->is_admin;
 
-         if((auth()->user()->is_admin !== 1) && ($article->user_id !== auth()->user()->id))
+         if(($is_admin !== 1) && ($article->user_id !== $user_id))
         {
-            return redirect()->route('all-articles')->with('ErrorMessage', 'You are not authorised for this action.');
+            //return redirect()->route('all-articles')->with('ErrorMessage', 'You are not authorised for this action.');
+            $result['errFlag'] = 2;
+            $result['msg'] = 'You are not authorised for this action.';
+            $result['msgType'] = 'ErrorMessage';
         }
-        
-        $action = $article->delete();
-        $result = array();
-        $result['route'] = 'all-articles';
-
-        //to delete the media associated on deleting the article successfully
-        if($action)
-        {   
-            $article->categories()->detach();
-            $article->clearMediaCollection();
-            $result['msg'] = 'Article has been deleted.';
-            $result['errFlag'] = 0;
-            $result['msgType'] = 'success';
+        else if(empty($article))
+        {
+            $result['errFlag'] =3;
+            $result['msg'] = 'Article was not found';
+            $result['msgType'] = 'ErrorMessage';
         }
         else
-        {   
-            $result['errFlag'] = 1;
-            $result['msg'] = 'There is some error.';
-            $result['msgType'] = 'ErrorMessage'; 
-              
+        {
+            $action = $article->delete();
+
+            //to delete the media associated on deleting the article successfully
+            if($action)
+            {  
+                $article->categories()->detach();
+                $article->clearMediaCollection();
+                $result['msg'] = 'Article has been deleted.';
+                $result['errFlag'] = 0;
+                $result['msgType'] = 'success';
+            }
+            else
+            {
+                $result['errFlag'] = 1;
+                $result['msg'] = 'There is some error.';
+                $result['msgType'] = 'ErrorMessage'; 
+                  
+            }
+                
         }
+        
         return $result;
     }
 

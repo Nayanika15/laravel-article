@@ -103,16 +103,7 @@ class ArticleController extends Controller
 	 */
 	public function list(Request $request)
 	{	
-		/*$length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $orderBy = $request->input('dir', 'asc');
-        $searchValue = $request->input('search');
-		$query = Article::dataTableQuery($column, $orderBy, $searchValue)
-			->paginate($length);
-
-        return new DataTableCollectionResource($query);*/
-
-        return response()->json(Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status'])->get(), 200);
+		return response()->json(Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status'])->get(), 200);
 	}
 
 	/**
@@ -232,5 +223,83 @@ class ArticleController extends Controller
   public function featuredArticles()
   {
   	return response()->json(Article::featuredArticles(), 200);
+  }
+
+  /**
+   * Add new category API
+   */
+  public function update(ArticleRequest $request, int $id)
+  {
+    $result = Article::addUpdateArticle($request, $id);
+    if($result)
+        {   
+          return response()->json([ 'result' =>
+            $result ], 200);
+        }
+        else
+        { 
+          $result['msg'] = 'There is some error.Please try again.';
+          $result['errFlag'] = 1;
+            $result['route'] = 'add-article';
+          return response()->json([
+            'result' => $result ], 200);
+        }
+  }
+
+  /**
+   * Api to delete article
+   */
+  public function delete(int $id)
+  {
+      $result = Article::deleteArticle($id);
+      return response()->json(['errFlag' => $result['errFlag']], 200);
+  }
+
+  /**
+   * Api to fetch article for edit
+   */
+  public function editArticle(int $id)
+  {
+    $article = Article::find($id);
+    if(empty($article))
+    {
+      return response()->json(['errFlag' => 1], 200);
+    }
+    else if($article->user_id == Auth::guard('api')->user()->id && Auth::guard('api')->user()->is_admin !=1)
+    {
+      return response()->json(['errFlag' => 2], 200);
+    }
+    else
+    {
+      return response()->json(['errFlag' => 0, 'result' => Article::find($id)], 200);
+    }
+  }
+
+  /**
+   * Api to make article featured and unfeatured
+   */
+  public function featured($id)
+  {
+    $article = Article::find($id);
+          
+    if(!empty($article))
+    {
+
+      $result = Article::makeFeatured($article);
+      
+      if($result)
+      {
+        return response()->json(['errFlag'=> 0],200);
+      }
+      else
+      {
+        return response()->json(['errFlag'=> 1],200);
+      }
+    }
+    else
+    {
+      return response()->json(['errFlag'=> 2],200);
+    }
+    
   }
 }

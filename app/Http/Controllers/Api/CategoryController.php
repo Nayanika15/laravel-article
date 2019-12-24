@@ -95,17 +95,7 @@ class CategoryController extends Controller
 	 */
 	public function list(Request $request)
 	{	
-		/*$length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $orderBy = $request->input('dir', 'asc');
-        $searchValue = $request->input('search');
-		$query = Category::dataTableQuery($column, $orderBy, $searchValue)
-			->paginate($length);
-
-        return new DataTableCollectionResource($query);*/
-
-        return response()->json(Category::select(['id', 'name', 'created_at', 'updated_at'])->paginate(10), 200);
-
+		return response()->json(Category::select(['id', 'name', 'created_at', 'updated_at'])->paginate(10), 200);
 	}
 
 	/**
@@ -114,6 +104,15 @@ class CategoryController extends Controller
 	public function editCategory(int $id)
 	{
 		return response()->json(Category::find($id),200);
+	}
+
+	/**
+	 * Api to delete article
+	 */
+	public function delete(int $id)
+	{
+		$result = Category::deleteCategory($id);
+		return response()->json(['message' => $result['msg']], 200);
 	}
 	
 }

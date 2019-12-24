@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DataTables;
 
+use Authy\AuthyApi;
 use App\Mail\CommentMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail; 
 
 class Comment extends Model
@@ -46,10 +48,10 @@ class Comment extends Model
     	if(!empty($data) && !empty($article))
     	{  
             $comment = new Comment(['comment' => $data['comment']]);
-            if(auth()->check())
+            if(auth()->check() || Auth::guard('api')->check())
             {
                 $comment->approve_status = '1';
-                $comment->user()->associate(auth()->user()->id);                
+                $comment->user()->associate(auth()->user() ? auth()->user()->id : Auth::guard('api')->user()->id);                
                 $result['msg']= 'Comment was submitted successfully.';
             }
             else

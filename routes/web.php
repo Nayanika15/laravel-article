@@ -13,6 +13,7 @@
 
 
 Route::get('/', 'HomeController@index')->name('homepage');
+Route::get('/notify', 'Api\PushController@push');
 
 Route::get ('/callback/google', 'UserController@callback');
 Route::get ('/redirect', 'UserController@redirect');

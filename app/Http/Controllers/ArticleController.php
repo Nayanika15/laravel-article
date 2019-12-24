@@ -69,7 +69,7 @@ class ArticleController extends Controller
 
       return view('site.wordify.articles.add')
                 ->with(['categories' => $all_categories, 'article' => $article, 'selected' => $sel_categories]);
-    }        
+    }       
   }
 
   /**

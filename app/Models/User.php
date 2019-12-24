@@ -15,10 +15,11 @@ use App\Mail\ResetPasswordMailUser;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
-  use HasApiTokens,Notifiable;
+  use HasApiTokens, Notifiable, HasPushSubscriptions;
 
   /**
    * The attributes that are mass assignable.
