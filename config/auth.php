@@ -41,10 +41,14 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
+        /*'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
+        ],*/
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
         ],
     ],
 
@@ -99,5 +103,12 @@ return [
             'expire' => 60,
         ],
     ],
+    
+    [
+        'models' => [
+            "search_term" => "searchable"
+            ],
+        "default_order_by" => "id"
+    ]
 
 ];

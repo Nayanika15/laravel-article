@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use DataTables;
+use JamesDordoy\LaravelVueDatatable\Traits\LaravelVueDatatableTrait;
+use Illuminate\Notifications\Notifiable;
 
 class Category extends Model
-{
+{   
+
+    use Notifiable, LaravelVueDatatableTrait;
+
      /**
      * The attributes that are mass assignable.
      *
@@ -16,6 +21,34 @@ class Category extends Model
     protected $fillable = [
         'name'
     ];
+
+    /**
+     * datatable columns
+     */
+     protected $dataTableColumns = [
+        'id' => [
+            'searchable' => false,
+        ],
+        'name' => [
+            'searchable' => true,
+        ],
+        'created_at' => [
+            'searchable' => true,
+        ]
+    ];
+
+    /**
+     * append parameter to api response
+     */
+     protected $appends = ['date'];
+
+    /**
+     * get the data format
+     */
+    public function getDateAttribute()
+    {
+        return date('d-M-Y', strtotime($this->created_at));
+    }
 
     /**
      * get the slug value for the provided name
@@ -54,10 +87,12 @@ class Category extends Model
     /**
      * To fetch all categories
      */
-    public function allCategories()
+    public static function allCategories()
     {
         $category = Category::select(['id', 'name', 'created_at', 'updated_at']);
-        return Datatables::of($category)
+
+
+        return Datatables::of($category);/*
                 ->editColumn('created_at', function($category){
                     return date("d-M-Y", strtotime($category->created_at));
                 })
@@ -66,14 +101,13 @@ class Category extends Model
                     $delete_route=route('destroy-category', $category->id);
 
                     return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='".$delete_route."' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
-                })
-                ->make(true);
+                });*/
     }
 
     /**
      * To delete category
      */
-    public function deleteCategory($id)
+    public static function deleteCategory($id)
     {
         $countArticles = Category::find($id)->countArticles()->count();
         $result = array();
@@ -104,7 +138,7 @@ class Category extends Model
       /**
      * To store or update category
      */
-    public function addUpdate($request,$id)
+    public static function addUpdate($request,$id)
     {
         
         $data = $request->validated();//to validate the data
@@ -155,7 +189,7 @@ class Category extends Model
     /**
      * To fetch the category
      */
-    public function getCategory($id)
+    public static function getCategory($id)
     {
        return Category::find($id);
     }
@@ -164,7 +198,7 @@ class Category extends Model
     /**
      * to fetch the active articles
      */
-    public function activeCategories()
+    public static function activeCategories()
     {
 
     return Category::whereHas('articles', function($query){
@@ -175,19 +209,28 @@ class Category extends Model
     /**
      * To fetch the category from slug
      */
-    public function getSlugCategory($slug)
+    public static function getSlugCategory($slug)
     {
        return Category::where('slug', $slug)->first();
     }
-     /**
+
+    /**
      * to fetch the active articles in a particular category
      */
-    public function categoryDetail($slug)
+    public static function categoryDetail($slug)
     {
 
     $data = Category::where('slug', $slug)->whereHas('articles', function($query){
         $query->where('approve_status', '1');
      })->first();
     return $data->articles()->latest()->Paginate(env('PAGINATE_LIMIT', 4));
+    }
+
+    /**
+     * To fetch all categories
+     */
+    public static function getAllCategories()
+    {
+        return Category::select('id', 'name')->pluck('name', 'id')->toArray();
     }
 }

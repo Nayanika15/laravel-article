@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 use app\Models\User;
 
 class RegistrationMailAdmin extends Mailable
@@ -30,6 +31,6 @@ class RegistrationMailAdmin extends Mailable
     public function build()
     {
         return $this->markdown('mails.registration.new-registration-admin')
-            ->with('userDetail', $this->userDetail);
+                ->with('userDetail', $this->userDetail);
     }
 }

@@ -33,7 +33,7 @@ class ActiveCategoriesComposer
      */
     public function compose(View $view)
     {   
-        $active_categories = $this->category->activeCategories();
+        $active_categories = Category::activeCategories();
         $view->with('active_categories', $active_categories);
     }
 }

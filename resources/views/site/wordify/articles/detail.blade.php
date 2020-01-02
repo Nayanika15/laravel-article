@@ -6,7 +6,6 @@
 @section('content')
 @php($article = $data['article'])
 @php($comments = $data['comments'])
-@php($related_articles = $data['related_articles'])
 
 <section class="site-section py-lg">
   <div class="container">        
@@ -54,7 +53,7 @@
           
           <div class="comment-form-wrap pt-5">
             <h3 class="mb-5">Leave a comment</h3>
-              {!! Form::open(['url' => 'comment/add/'.$article->id, 'id' => 'comment-form', 'class' => 'p-5 bg-light']) !!}
+              {!! Form::open(['url' => 'comment/add/'.$article->id, 'class' => 'validate-form', 'class' => 'p-5 bg-light']) !!}
               @guest
               <div class="form-group">
                 {{ Form::label ('Name') }}
@@ -90,7 +89,7 @@
       </div>
           <!-- END main-content -->
         @include('site/wordify/side-bar')
-        @include('site/wordify/related-post')
+        @includewhen($data['related_articles'], 'site/wordify/related-post', ['related_articles'=> $data['related_articles']])
           <!-- END sidebar -->   
     @endif
     </div>

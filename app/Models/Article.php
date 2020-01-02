@@ -1,29 +1,63 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
+
+use DataTables;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 use App\Mail\ArticleMail;
 use Illuminate\Support\Facades\Mail;
 
-use DataTables;
+use JamesDordoy\LaravelVueDatatable\Traits\LaravelVueDatatableTrait;
+use Illuminate\Notifications\Notifiable;
 
 class Article extends Model implements HasMedia
 {
 
-    use HasMediaTrait;
+    use HasMediaTrait, Notifiable, LaravelVueDatatableTrait;
+
      /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'details', 'user_id', 'paid_status'
+        'title', 'details', 'user_id', 'paid_status', 'is_featured'
+    ];
+
+    /**
+     * The attributes that will be appended to json response.
+     *
+     * @var array
+     */
+    protected $appends = ['added_by', 'detail_image', 'date', 'homepage_image', 'detail_image', 'category_image', 'excerpt', 'slider_image', 'categories_tagged'];
+
+    /**
+     * datatable columns
+     */
+     protected $dataTableColumns = [
+        'id' => [
+            'searchable' => false,
+        ],
+        'title' => [
+            'searchable' => true,
+        ],
+        'paid_status' =>[
+            'searchable' => true,
+        ],
+
+        'approve_status' =>[
+            'searchable' => true,
+        ],
+        
+        'created_at' => [
+            'searchable' => true,
+        ]
     ];
 
     /**
@@ -32,6 +66,7 @@ class Article extends Model implements HasMedia
     public function setSlugAttribute($value)
     {   
         $slug_value = str_slug($value);
+
         //to check if any slug with the same name exists
         $count = Article::where('slug', $slug_value)->count();
         
@@ -52,7 +87,64 @@ class Article extends Model implements HasMedia
      */
     public function getPermalinkAttribute()
     {
-        return 'article/' . $this->slug;
+        return "article/" . $this->slug;
+    }
+
+    /**
+     * get the module permalink
+     */
+    public function getAddedByAttribute()
+    {
+        return $this->user->name;
+    }
+
+     /**
+     * get the homepage image link for article
+     */
+    public function getHomepageImageAttribute()
+    {
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('homepage') : asset('/images/img_2.jpg'));
+    }
+
+    /**
+     * get the detail image link for article
+     */
+    public function getSliderImageAttribute()
+    {   
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('detail') : asset('images/img_2.jpg'));
+    }
+
+     /**
+     * get the slider image link for article
+     */
+    public function getDetailImageAttribute()
+    {   
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('slider') : asset('images/img_2.jpg'));
+    }
+
+    /**
+     * get the homepage image link for article
+     */
+    public function getCategoryImageAttribute()
+    {
+        return (($this->getMedia('articles')->count() > 0) ? env('APP_URL').$this->getFirstMedia('articles')->getUrl('category') : asset('images/img_2.jpg'));
+    }
+
+    /**
+     * get the detail image link for article
+     */
+    public function getDateAttribute()
+    {
+        return date('d-M-Y', strtotime($this->created_at));
+    }
+
+    
+    /**
+     * get the excerpt
+     */
+    public function getCategoriesTaggedAttribute()
+    {
+        return $this->categories()->get();
     }
 
     /**
@@ -67,7 +159,6 @@ class Article extends Model implements HasMedia
      * Defining relationship with category table
      * 
      */
-
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'article_categories');
@@ -77,7 +168,6 @@ class Article extends Model implements HasMedia
      * Defining relationship with user table
      * 
      */
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -125,23 +215,21 @@ class Article extends Model implements HasMedia
     /**
      * Function to fetch all articles depending on the user logged in
      */
-    Public function allArticles()
+    public static function allArticles()
     {   
         //To fetch all articles for admin and for other users only the articles posted by them
         if(auth()->user()->is_admin)
         {
-            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at']);
+            $articles = Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status']);
         }
         else
         {  
             $articles=auth()->user()->articles()->get();
         }
         
-        
         return Datatables::of($articles)
             ->editColumn('paid_status', function($articles){
                 $paid_status= $articles->paid_status;
-
                 if($paid_status == 0)
                 {
                     return "<p class='text-danger'>Unpaid </p>";
@@ -150,7 +238,7 @@ class Article extends Model implements HasMedia
                 {
                    return "<p class='text-success'> Paid </p>";
                 }
-                elseif ($paid_status == 1)
+                elseif ($paid_status == 2)
                 {
                    return "<p class='text-warning'> Failed </p>";
                 }
@@ -166,7 +254,7 @@ class Article extends Model implements HasMedia
                 {
                    return "<p class='text-success'> Published </p>";
                 }
-                elseif ($status == 1)
+                elseif ($status == 2)
                 {
                    return "<p class='text-warning'> Unapproved </p>";
                 }
@@ -178,9 +266,20 @@ class Article extends Model implements HasMedia
                 return date("d-M-Y", strtotime($articles->created_at));
             })
             ->addColumn('action', function($articles){
-                $edit_route=route('edit-article', $articles->id);
-                $delete_route=route('delete-article', $articles->id);
-                return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='" . $delete_route . "' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
+                $edit_route = route('edit-article', $articles->id);
+                $delete_route = route('delete-article', $articles->id);
+                if(auth()->user()->is_admin == 1)
+                {
+                    $feature_class = ($articles->is_featured == 1) ? 'star': 'star-o';
+                    $make_featured = "<a href='".route('feature-article', $articles->id)."' class='btn btn-warning'><i class='fa fa-".$feature_class."'></i></a> ";
+                }
+                else
+                {
+                    $make_featured='';
+                }
+                
+
+                return "<a href='" . $edit_route . "' class='btn btn-primary'><i class='fa fa-edit'></i></a>" . " <a href='" . $delete_route . "' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' ><i class='fa fa-trash'></i></a> ".$make_featured;
             })
             ->escapeColumns(['action'])
             ->make(true);
@@ -189,7 +288,7 @@ class Article extends Model implements HasMedia
     /**
      * to add and update articles
      */
-    public function addUpdateArticle($request, $id)
+    public static function addUpdateArticle($request, $id)
     {   
         $data = $request->validated();//to validate the data
         $result = array();
@@ -218,7 +317,7 @@ class Article extends Model implements HasMedia
             {  
                 $article->title = $data['title'];
                 $article->details = $data['details'];
-                $article->user_id = auth()->user()->id;
+                $article->user_id = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
                 $article->slug = $data['title'];
 
                 if($request->has('approve_status'))
@@ -276,21 +375,25 @@ class Article extends Model implements HasMedia
     /**
      * To show the article detail and update the view count
      */
-    public function articleDetail($slug)
+    public static function articleDetail($slug)
     {
-       $data = Article::select(['id', 'title', 'details', 'user_id', 'approve_status', 'created_at', 'updated_at'])->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])->first();
+       $data = Article::select(['id', 'title', 'details', 'user_id', 'slug', 'approve_status', 'created_at', 'updated_at'])
+            ->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])
+            ->first();
 
-       //to increase the view count on visting the view page
+       //to increase the views count on visting the article details page
        if($data)
        {
-            $data->increment('views_count');
+           $data->increment('views_count');
        }
+
         return $data;
     }
+
     /**
      * To destroy the article
      */
-    public function deleteArticle($id)
+    public static function deleteArticle($id)
     {
         $article = Article::find($id);
 
@@ -321,12 +424,13 @@ class Article extends Model implements HasMedia
         }
         return $result;
     }
+
     /**
      * Show the popular articles.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function popular()
+    public static function popular()
     {   
         $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
             ->where(['approve_status'=> '1', 'paid_status'=>'1'])
@@ -335,12 +439,13 @@ class Article extends Model implements HasMedia
             ->get();
         return  $articles;
     }
+
     /**
      * Show the related articles.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function related($slug)
+    public static function related($slug)
     {   
          $article_categories = Article::where(['slug' => $slug, 'approve_status' =>'1', 'paid_status'=>'1'])
             ->first()
@@ -357,22 +462,24 @@ class Article extends Model implements HasMedia
             
         return  $related_articles;
     }
+
     /**
      * Show the latest article.
      * @param string $slug
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function latestArticle()
+    public static function latestArticle()
     {   
         return Article::where(['approve_status'=>'1', 'paid_status' => '1'])
             ->withCount(['comments' => function($query){
                 $query->where('approve_status', '1');
-            }])->latest();              
+            }])->latest();
     }
+
     /**
      * to update status after successful payment
      */
-    public function updateStatus($article)
+    public static function updateStatus($article)
     {   
         $updated = $article->update(['paid_status'=> '1']);
         $result = array();
@@ -386,7 +493,27 @@ class Article extends Model implements HasMedia
             $result['errFlag'] = 1;
         }
 
-        return $result; 
+        return $result;
+    }
+    /**
+     * To make articles featured
+     */
+    public static function makeFeatured($article)
+    {
+        $article->is_featured = !($article->is_featured);
+        return $article->save();
+    }
+    /**
+     * to fetch the featured articles
+     */
+    public static function featuredArticles()
+    {
+        return Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
+                ->where(['approve_status'=> '1', 'paid_status'=>'1', 'is_featured'=> '1'])
+                ->withCount(['comments' => function($query){
+                    $query->where('approve_status', '1');
+                }])
+                ->get();
     }
     
 }
