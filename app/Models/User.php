@@ -83,6 +83,14 @@ class User extends Authenticatable
   }
 
   /**
+   * defining relationship with Todo
+   */
+  public function Todos()
+  {
+      return $this->hasMany(Todo::class);
+  }
+
+  /**
    * to register new user
    */
   public static function registerUser($data)

@@ -48,7 +48,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Nayanika\\Todo\\" : "packages/Nayanika/todo/src"
         },
         "classmap": [
             "database/seeds",
@@ -57,6 +58,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Nayanika\\Todo\\" : "packages/Nayanika/todo/src",
             "Tests\\": "tests/"
         }
     },

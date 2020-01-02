@@ -205,7 +205,8 @@ return [
         /**
          * laravel-vue-datatable
          */
-        JamesDordoy\LaravelVueDatatable\Providers\LaravelVueDatatableServiceProvider::class
+        JamesDordoy\LaravelVueDatatable\Providers\LaravelVueDatatableServiceProvider::class,
+        Nayanika\Todo\TodoServiceProvider::class
     ],
 
     /*

@@ -60,12 +60,12 @@
               Categories</a>
               <a class="dropdown-item" href="{{ route('all-comments') }}">Comments</a>
               @endif
-                <a class="dropdown-item" href="{{ route('all-articles') }}">Articles</a>         
+                <a class="dropdown-item" href="{{ route('all-articles') }}">Articles</a>
+                <a class="dropdown-item" href="{{ route('Tasks') }}">Todo List</a>       
             </div>
           </li>
           @endif
-          
-        </ul>        
+        </ul>
       </div>
     </div>
   </nav>

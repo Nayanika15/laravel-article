@@ -1,0 +1,22 @@
+{
+    "name": "nayanika/todo",
+    "authors": [
+        {
+            "name": "nayanika15",
+            "email": "nayanikapanigrahi1115@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+    	"psr-4":{
+    		"Nayanika\\Todo\\": "src/"
+    	}
+    },
+    "extra": {
+	    "laravel": {
+	        "providers": [
+	            "Nayanika\\Todo\\TodoServiceProvider"
+	        ]
+	    }
+	}
+}
