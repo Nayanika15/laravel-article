@@ -1,0 +1,50 @@
+[
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.bind() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352369767
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.offset() requires a valid DOM element\"",
+        "source": "console-api",
+        "timestamp": 1575352369768
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.unbind() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352369770
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.load() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352369773
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.bind() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352371045
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.offset() requires a valid DOM element\"",
+        "source": "console-api",
+        "timestamp": 1575352371045
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.unbind() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352371046
+    },
+    {
+        "level": "WARNING",
+        "message": "http:\/\/article.com\/templates\/wordify\/js\/jquery-migrate-3.0.0.js 61:11 \"JQMIGRATE: jQuery.fn.load() is deprecated\"",
+        "source": "console-api",
+        "timestamp": 1575352371048
+    }
+]
