@@ -1,4 +1,11 @@
 <?php return array (
+  'barryvdh/laravel-cors' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\Cors\\ServiceProvider',
+    ),
+  ),
   'beyondcode/laravel-dump-server' => 
   array (
     'providers' => 
@@ -22,6 +29,34 @@
     'aliases' => 
     array (
       'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
+  'jamesdordoy/laravelvuedatatable' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'JamesDordoy\\LaravelVueDatatable\\Providers\\LaravelVueDatatableServiceProvider',
+    ),
+  ),
+  'laravel-notification-channels/webpush' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'NotificationChannels\\WebPush\\WebPushServiceProvider',
+    ),
+  ),
+  'laravel/dusk' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Dusk\\DuskServiceProvider',
+    ),
+  ),
+  'laravel/passport' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Passport\\PassportServiceProvider',
     ),
   ),
   'laravel/socialite' => 
@@ -59,13 +94,6 @@
     array (
       'Form' => 'Collective\\Html\\FormFacade',
       'Html' => 'Collective\\Html\\HtmlFacade',
-    ),
-  ),
-  'nayanika/todo' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Nayanika\\Todo\\TodoServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
