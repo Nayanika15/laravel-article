@@ -1,0 +1,105 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#errError {
+  position: relative;
+  height: 40vh;
+}
+
+#errError .errError {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.errError {
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.errError .err {
+  height: 190px;
+}
+
+.errError .err h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 146px;
+  font-weight: 700;
+  margin: 0px;
+  color: #232323;
+}
+
+.errError .err h1>span {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  background-size: cover;
+  -webkit-transform: scale(1.4);
+      -ms-transform: scale(1.4);
+          transform: scale(1.4);
+  z-index: -1;
+}
+
+.e404{
+  background-image: url('../images/emoji.png');
+}
+.e503{
+  background-image: url('../images/sleep.jpeg');
+}
+
+.errError h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  color: #232323;
+}
+
+.errError p {
+  font-family: 'Montserrat', sans-serif;
+  color: #787878;
+  font-weight: 300;
+}
+
+.errError a {
+  font-family: 'Montserrat', sans-serif;
+  display: inline-block;
+  padding: 12px 30px;
+  font-weight: 700;
+  background-color: #6a46f2;
+  color: #fff;
+  border-radius: 40px;
+  text-decoration: none;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.errError a:hover {
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 767px) {
+  .errError .err {
+    height: 115px;
+  }
+  .errError .err h1 {
+    font-size: 86px;
+  }
+  .errError .err h1>span {
+    width: 86px;
+    height: 86px;
+  }
+}

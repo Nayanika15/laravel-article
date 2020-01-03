@@ -22,10 +22,11 @@
           @if(isset($article->id) && ($article->paid_status == '0'))
             @include('payment.form', ['article_id' => $article->id])
           @endif
+
           @if(isset($article->id))
-            {!! Form::open(['url' => 'article/add/'.$article->id, 'id' => 'article-form', 'files' => true]) !!}
+            {!! Form::open(['url' => 'article/add/'.$article->id, 'class' => 'validate-form', 'files' => true]) !!}
           @else
-            {!! Form::open(['url' => 'article/add', 'id' => 'article-form', 'files' => true]) !!}
+            {!! Form::open(['url' => 'article/add', 'class' => 'validate-form', 'files' => true]) !!}
           @endif
             <div class="row">
               <div class="col-md-12 form-group">
@@ -105,6 +106,7 @@
   </section>
 @endsection
 @section('scripts')
+  <script src="https://js.stripe.com/v3/"></script>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
  <script>

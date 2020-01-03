@@ -15,14 +15,14 @@
         <div class="col-md-12 col-lg-8 main-content">
           @include('common.message')
           @if(isset($categories->id))
-            {!! Form::open(['url' => 'admin/add-category/'.$categories->id, 'id' => 'category-form']) !!}
+            {!! Form::open(['url' => 'admin/add-category/'.$categories->id, 'class' => 'validate-form']) !!}
           @else
-            {!! Form::open(['url' => 'admin/add-category', 'id' => 'category-form']) !!}
+            {!! Form::open(['url' => 'admin/add-category', 'class' => 'validate-form']) !!}
           @endif
             <div class="row">
               <div class="col-md-12 form-group">
                 {{ Form::label ('Category Name') }}
-                {{ Form::text ('name',($categories->name)?? $categories->name ??'',array ('placeholder'=>'Enter category name', 'maxlength'=>50, 'class' => 'form-control')) }}
+                {{ Form::text ('name',($categories->name)?? $categories->name ??'',array ('placeholder'=>'Enter category name', 'maxlength'=>50, 'class' => 'form-control', 'id' => 'name')) }}
                 
                 @error('name')
                   <span class="validate-error" role="alert">

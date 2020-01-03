@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 
 use Twilio\Rest\Client;
@@ -18,6 +19,7 @@ class MobileVerificationController extends Controller
 	{
 	  // Initialize the Authy API and the Twilio Client
 	  $this->authy = new AuthyApi(config('app.twilio')['AUTHY_API_KEY']);
+
 	  // Twilio credentials
 	  $this->sid = config('app.twilio')['TWILIO_ACCOUNT_SID'];
 	  $this->authToken = config('app.twilio')['TWILIO_AUTH_TOKEN'];
@@ -29,44 +31,26 @@ class MobileVerificationController extends Controller
     public function SendCode($mobile)
     {
     	//sending verification code by twilio
-	    if(request()->ajax())
-	    {	
-	    	try
-	    	{
-        		$response = $this->authy->phoneVerificationStart($mobile, '91', 'sms');    	
-		    	if($response->ok())
-				{
-					$msg = 'Verification code sent.';
-				}
-				else
-				{
-					$msg = 'Please enter a valid mobile number.';
-				}
+	    try
+    	{
+    		$response = $this->authy->phoneVerificationStart($mobile, '91', 'sms');    	
+	    	if($response->ok())
+			{
+				$msg = 'Verification code sent.';
+			}
+			else
+			{
+				$msg = 'Please enter a valid mobile number.';
+			}
 
-				return $msg; 
-		    } 
-		    catch (Exception $e)
-		    {
-		        report($e);
-		        return false;
-		    }
-		}
+			return $msg; 
+	    }
+	    catch (Exception $e)
+	    {	
+	    	return print($e->getMessage());
+	    }
 	
     }
-    /**
-	 * Function to verify code sent to user
-	 */
-    public function VerifyCode($data)
-    {	
-    	$response = $this->authy->phoneVerificationCheck($request->mobile, '91', $request->code);
-    	if($response->ok())
-    	{
-    		return 1;
-    	}
-    	else
-    	{
-    		return 0;
-    	}
-    }
+    
             
 }

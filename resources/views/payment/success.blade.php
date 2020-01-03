@@ -34,5 +34,4 @@
     </div>
   </section>
 @endsection
-@section('scripts')
 

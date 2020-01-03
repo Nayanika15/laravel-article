@@ -19,8 +19,7 @@ class CategoryController extends Controller
     {   
         if(request()->ajax())
         {
-            $categories = new Category;
-            return $categories->allCategories();
+            return Category::allCategories();
         }
 
         return view('site.wordify.categories.view');
@@ -33,10 +32,8 @@ class CategoryController extends Controller
      * @return  \Illuminate\Http\Response
      */
     public function destroy($id)
-    {  
-        $category = new Category;
-        $result = $category->deleteCategory($id);
-
+    {
+        $result = Category::deleteCategory($id);
         return redirect()->route('view-category')
                     ->with($result['msgType'], $result['msg']);
     }
@@ -47,9 +44,8 @@ class CategoryController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function create($id=0)
-    {   
-        $category = new Category;
-        $categories = ($id != 0)?$category-> getCategory($id) : array();
+    { 
+        $categories = ($id != 0) ? Category::getCategory($id) : array();
         
         if ($id != 0 && empty($categories)) 
         {
@@ -66,12 +62,12 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request,$id=0) 
     {   
-        $category = new Category;
-        $result = $category->addUpdate($request,$id);
+        
+        $result = Category::addUpdate($request,$id);
         if($result['errFlag'] == 0)
         {   
             return redirect()->route($result['route'])
-                        ->with('success', $result['msg']);
+                    ->with('success', $result['msg']);
         }
         else
         {
@@ -87,11 +83,9 @@ class CategoryController extends Controller
      */
     public function detail($slug)
     {   
-        $article = new Article;
-        $category = new Category;
         $data = array();
-        $data['categoryArticles'] = $category->categoryDetail($slug);
-        $data['category']=$category->getSlugCategory($slug);
+        $data['categoryArticles'] = Category::categoryDetail($slug);
+        $data['category']=Category::getSlugCategory($slug);
 
         if(!empty($data['categoryArticles']))
         {

@@ -16,7 +16,7 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('comment');
-            $table->unsignedBigInteger('user_id')->nullable();;
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('article_id');
             $table->enum('approve_status',[0,1,2])
                 ->default(0)

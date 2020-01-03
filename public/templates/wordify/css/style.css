@@ -1371,3 +1371,13 @@ blockquote {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+.error {
+    color: #ff0000;
+    font-style: italic;
+    font-size: 90%;
+}
+.btn-social-icon{
+    border-style: solid;
+    border-color: #ced4da;
+    color: #5b6c7b;
+}
