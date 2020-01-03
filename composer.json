@@ -18,7 +18,8 @@
         "spatie/laravel-medialibrary": "^7.0.0",
         "stripe/stripe-php": "^7.3",
         "twilio/sdk": "^5.36",
-        "yajra/laravel-datatables-oracle": "^9.6"
+        "yajra/laravel-datatables-oracle": "^9.6",
+        "nayanika/todo":"dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -29,6 +30,14 @@
         "nunomaduro/collision": "^2.0",
         "phpunit/phpunit": "^7.5"
     },
+    "repositories": [
+     {
+         "type": "vcs",
+         "url": "https://github.com/Nayanika15/todo.git"
+     }
+    ],
+
+
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
