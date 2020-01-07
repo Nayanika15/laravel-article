@@ -95,7 +95,7 @@ class Article extends Model implements HasMedia
      */
     public function getAddedByAttribute()
     {
-        return $this->user->name;
+        return ($this->user)?$this->user->name:'guest';
     }
 
     /**
@@ -500,10 +500,30 @@ class Article extends Model implements HasMedia
     /**
      * To make articles featured
      */
-    public static function makeFeatured($article)
-    {
-        $article->is_featured = !($article->is_featured);
-        return $article->save();
+    public static function makeFeatured($id)
+    {   
+        $article = Article::find($id)->first();
+        $result = array();
+        if($article->count())
+        {
+            $article->is_featured = !($article->is_featured);
+            $saved = $article->save();
+            //return 0 if action completed successfully else return 1
+            if($saved)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        //return 2 if article not found
+        else
+        {
+            return 2;
+        }
+        
     }
     
     /**

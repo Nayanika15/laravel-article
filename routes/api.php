@@ -26,6 +26,7 @@ Route::prefix('article')->group(function ()
 	Route::post('add', 'Api\ArticleController@add')->middleware('auth:api');
 	Route::any('list', 'Api\ArticleController@list');
 	Route::get('{slug}', 'Api\ArticleController@detail');
+	Route::get('feature/{id}', 'Api\ArticleController@feature');
 });
 
 Route::prefix('category')->group(function () 

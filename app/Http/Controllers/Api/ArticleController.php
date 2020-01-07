@@ -33,24 +33,15 @@ class ArticleController extends Controller
 		try {
 
 			$result = Article::latestArticle()
-						->get()
-						->each(function ($item, $key) 
-						{
-						    $item['created_date'] = date('d-M-y', strtotime($item['created_at']));
-						    $item['user_name'] = ($item->user->name == '') ? 'guest' : $item->user->name;
-						    $item['image'] = $item->homepage_image;
-			    		})
-			    		->map(function ($item, $key)
-			    		{	
-			    			return collect($item)->only(['title', 'created_date', 'created_by', 'image', 'slug', 'comments_count'])->toArray();
-  						});
+        ->paginate(4);
 
 			return response()->json([
             'message' => 'Success',
             'result' => $result
         	], 200);
 		
-		} catch (Exception $e) {
+		}
+    catch (Exception $e) {
 			return response()->json([
             'message' =>  $e->getMessage()
         	], 200);
@@ -223,5 +214,15 @@ class ArticleController extends Controller
   public function featuredArticles()
   {
   	return response()->json(Article::featuredArticles(), 200);
+  }
+
+  /**
+   * Api to make article featured
+   * @param int id
+   */
+  public function feature(int $id)
+  { 
+    $result = Article::makeFeatured($id);
+    return response()->json(["errFlag" => $result], 200);
   }
 }

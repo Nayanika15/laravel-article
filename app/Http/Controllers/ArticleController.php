@@ -271,7 +271,7 @@ class ArticleController extends Controller
     {
       $result = Article::makeFeatured($article);
       
-      if($result)
+      if($result == 0)
       {
         return redirect()->route('all-articles')
           ->with('success', 'Article featured successfully.');
