@@ -103,16 +103,7 @@ class ArticleController extends Controller
 	 */
 	public function list(Request $request)
 	{	
-		/*$length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $orderBy = $request->input('dir', 'asc');
-        $searchValue = $request->input('search');
-		$query = Article::dataTableQuery($column, $orderBy, $searchValue)
-			->paginate($length);
-
-        return new DataTableCollectionResource($query);*/
-
-        return response()->json(Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status'])->get(), 200);
+		return response()->json(Article::select(['id', 'title', 'user_id', 'approve_status', 'created_at', 'updated_at', 'is_featured', 'paid_status'])->get(), 200);
 	}
 
 	/**

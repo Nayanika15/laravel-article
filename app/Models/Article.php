@@ -91,7 +91,7 @@ class Article extends Model implements HasMedia
     }
 
     /**
-     * get the module permalink
+     * get the user name
      */
     public function getAddedByAttribute()
     {
@@ -107,7 +107,7 @@ class Article extends Model implements HasMedia
     }
 
     /**
-     * get the detail image link for article
+     * get the slider image link for article
      */
     public function getSliderImageAttribute()
     {   
@@ -131,7 +131,7 @@ class Article extends Model implements HasMedia
     }
 
     /**
-     * get the detail image link for article
+     * get the formatted date for article
      */
     public function getDateAttribute()
     {

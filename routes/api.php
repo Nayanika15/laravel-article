@@ -37,8 +37,14 @@ Route::prefix('category')->group(function ()
 	Route::get('active', 'Api\CategoryController@activeCategories');
 	Route::get('{slug}', 'Api\CategoryController@detail');
 });
+Route::prefix('comment')->group(function () 
+{
+	Route::post('add/{id}', 'Api\CommentController@store');
+	Route::get('list', 'Api\CommentController@list');
+	Route::get('approve/{id}', 'Api\CommentController@approve');
+});
 
 Route::post('doPayment', 'Api\ArticleController@doPayment')->middleware('auth:api');;
 Route::get('sideBar', 'Api\HomeController@sideBar');
-Route::post('feedback', 'Api\FeedbackController@add');//->middleware('auth:api');
+Route::post('feedback', 'Api\FeedbackController@add');
 Route::get('verify-mobile/{mobile}',  'Api\FeedbackController@verifyMobile');

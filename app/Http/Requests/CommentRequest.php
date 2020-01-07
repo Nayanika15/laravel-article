@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Requests;
+
+use Authy\AuthyApi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
-
 class CommentRequest extends FormRequest
 {
     /**
@@ -24,10 +25,10 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      => auth()->check() ? '':'required|max:50',
-            'email'     => auth()->check() ? '':'required|email|max:50',
-            'mobile'    => auth()->check() ? '':'required|max:10',
-            'code'      => auth()->check() ? '':'required',
+            'name'      => (Auth::guard('api')->user() || auth()->check()) ? '':'required|max:50',
+            'email'     => (Auth::guard('api')->user() || auth()->check()) ? '':'required|email|max:50',
+            'mobile'    => (Auth::guard('api')->user() || auth()->check()) ? '':'required|max:10',
+            'code'      => (Auth::guard('api')->user() || auth()->check()) ? '':'required',
             'comment'   => 'required' 
         ];
     }

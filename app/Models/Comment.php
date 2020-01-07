@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use DataTables;
 
 use App\Jobs\SendMail;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 class Comment extends Model
 {	
+
 	 /**
      * The attributes that are mass assignable.
      *
@@ -19,6 +21,13 @@ class Comment extends Model
     protected $fillable = [
         'comment', 'article_id', 'user_id', 'name', 'email', 'approve_status'
     ];
+
+    /**
+     * The attributes that will be appended to json response.
+     *
+     * @var array
+     */
+    protected $appends = ['added_by', 'date'];
 
 	/**
 	 * Defining relationship with user
@@ -37,6 +46,22 @@ class Comment extends Model
     }
 
     /**
+     * get the module permalink
+     */
+    public function getAddedByAttribute()
+    {   
+        return ($this->user)?$this->user->name:$this->name;
+    }
+
+    /**
+     * get the detail image link for article
+     */
+    public function getDateAttribute()
+    {
+        return date('d-M-Y', strtotime($this->created_at));
+    }
+
+    /**
      * To store comment for article
      * @param int article id, string comment content
      */
@@ -47,10 +72,10 @@ class Comment extends Model
     	if(!empty($data) && !empty($article))
     	{  
             $comment = new Comment(['comment' => $data['comment']]);
-            if(auth()->check())
+            if(auth()->check() || Auth::guard('api')->user())
             {
                 $comment->approve_status = '1';
-                $comment->user()->associate(auth()->user()->id);                
+                $comment->user()->associate(Auth::guard('api')->user()?Auth::guard('api')->user()->id:auth()->user()->id);                
                 $result['msg']  = 'Comment was submitted successfully.';
             }
             else
