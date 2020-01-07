@@ -118,7 +118,7 @@ class ArticleController extends Controller
   {
     $result = Article::deleteArticle($id);
 
-    if($result)
+    if($result["errFlag"] == 0)
     {
       return redirect()->route($result['route'])
             ->with($result['msgType'], $result['msg']);
@@ -264,28 +264,9 @@ class ArticleController extends Controller
    * @return \Illuminate\Contracts\Support\Renderable
    */
   public function featured($id)
-  {
-    $article = Article::find($id);
-          
-    if(!empty($article))
-    {
-      $result = Article::makeFeatured($article);
-      
-      if($result == 0)
-      {
-        return redirect()->route('all-articles')
-          ->with('success', 'Article featured successfully.');
-      }
-      else
-      {
-        return redirect()->route('all-articles')
-          ->with('ErrorMessage', 'There is some error.');
-      }
-    }
-    else
-    {
-      return redirect()->route('all-articles')
-        ->with('ErrorMessage', 'Article was not found.');
-    }    
+  { 
+    $result = Article::makeFeatured($id);
+    return redirect()->route("all-articles")
+          ->with($result['msgType'], $result['msg']);  
   }
 }

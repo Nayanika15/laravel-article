@@ -27,6 +27,7 @@ Route::prefix('article')->group(function ()
 	Route::any('list', 'Api\ArticleController@list');
 	Route::get('{slug}', 'Api\ArticleController@detail');
 	Route::get('feature/{id}', 'Api\ArticleController@feature');
+	Route::get('delete/{id}', 'Api\ArticleController@delete');
 });
 
 Route::prefix('category')->group(function () 

@@ -225,4 +225,14 @@ class ArticleController extends Controller
     $result = Article::makeFeatured($id);
     return response()->json(["errFlag" => $result], 200);
   }
+
+  /**
+   * Api to delete article
+   * @param int id
+   */
+  public function delete(int $id)
+  { 
+    $result = Article::deleteArticle($id);
+    return response()->json(["errFlag" => $result["errFlag"]], 200);
+  }
 }

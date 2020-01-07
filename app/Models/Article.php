@@ -398,32 +398,51 @@ class Article extends Model implements HasMedia
     public static function deleteArticle($id)
     {
         $article = Article::find($id);
-
-         if((auth()->user()->is_admin !== 1) && ($article->user_id !== auth()->user()->id))
-        {
-            return redirect()->route('all-articles')
-                ->with('ErrorMessage', 'You are not authorised for this action.');
-        }
         
-        $action             = $article->delete();
-        $result             = array();
-        $result['route']    = 'all-articles';
+        if($article->count())
+        {
+            $is_admin = (Auth::guard('api')->user())?Auth::guard('api')->user()->is_admin:auth()->user()->is_admin;
+            $user_id = (Auth::guard('api')->user())?Auth::guard('api')->user()->id:auth()->user()->id;
 
-        //to delete the media associated on deleting the article successfully
-        if($action)
-        {   
-            $article->categories()->detach();
-            $article->clearMediaCollection();
-            $result['msg']      = 'Article has been deleted.';
-            $result['errFlag']  = 0;
-            $result['msgType']  = 'success';
+            //check if logged user is admin or if is the owner of the article
+             if(($is_admin !== 1) && ($article->user_id !== $user_id))
+            {
+                
+                $result['msg']      = 'You are not authorised for this action.';
+                $result['errFlag']  = 2;
+                $result['msgType']  = 'ErrorMessage';
+            }
+            else
+            {
+                $action             = $article->delete();
+                $result             = array();
+                $result['route']    = 'all-articles';
+
+                //to delete the media associated on deleting the article successfully
+                if($action)
+                {
+                    $article->categories()->detach();
+                    $article->clearMediaCollection();
+                    $result['msg']      = 'Article has been deleted.';
+                    $result['errFlag']  = 0;
+                    $result['msgType']  = 'success';
+                }
+                else
+                {   
+                    $result['errFlag']  = 1;
+                    $result['msg']      = 'There is some error.';
+                    $result['msgType']  = 'ErrorMessage';
+                }
+            }
         }
         else
-        {   
-            $result['errFlag']  = 1;
-            $result['msg']      = 'There is some error.';
+        {
+            $result['errFlag']  = 3;
+            $result['msg']      = 'Article not found';
             $result['msgType']  = 'ErrorMessage';
         }
+        
+        
         return $result;
     }
 
@@ -502,28 +521,51 @@ class Article extends Model implements HasMedia
      */
     public static function makeFeatured($id)
     {   
-        $article = Article::find($id)->first();
+        $article = Article::find($id);
         $result = array();
+
+        $article = Article::find($id);
+        
         if($article->count())
         {
-            $article->is_featured = !($article->is_featured);
-            $saved = $article->save();
-            //return 0 if action completed successfully else return 1
-            if($saved)
+            $is_admin = (Auth::guard('api')->user())?Auth::guard('api')->user()->is_admin:auth()->user()->is_admin;
+            
+            //check if logged user is admin
+             if($is_admin !== 1)
             {
-                return 0;
+                
+                $result['msg']      = 'You are not authorised for this action.';
+                $result['errFlag']  = 2;
+                $result['msgType']  = 'ErrorMessage';
             }
             else
             {
-                return 1;
+                $article->is_featured = !($article->is_featured);
+                $saved = $article->save();
+
+                //if featured successfully
+                if($saved)
+                {
+                    $result['msg']      = 'Article featured successfully.';
+                    $result['errFlag']  = 0;
+                    $result['msgType']  = 'success';
+                }
+                else
+                {   
+                    $result['errFlag']  = 1;
+                    $result['msg']      = 'There is some error.';
+                    $result['msgType']  = 'ErrorMessage';
+                }
             }
         }
-        //return 2 if article not found
         else
         {
-            return 2;
+            $result['errFlag']  = 3;
+            $result['msg']      = 'Article not found';
+            $result['msgType']  = 'ErrorMessage';
         }
         
+        return $result;
     }
     
     /**
