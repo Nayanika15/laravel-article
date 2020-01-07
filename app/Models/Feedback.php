@@ -25,26 +25,28 @@ class Feedback extends Model
      */
     public static function saveMessage($data)
     {
-    	$feedback = new Feedback();
-    	$feedback->name = $data['name'];
-        $feedback->email = $data['email'];
-        $feedback->mobile = $data['mobile'];
+    	$feedback          = new Feedback();
+    	$feedback->name    = $data['name'];
+        $feedback->email   = $data['email'];
+        $feedback->mobile  = $data['mobile'];
         $feedback->message = $data['message'];
+
         if(Auth::guard('api')->user())
         {
             $feedback->user_id = Auth::guard('api')->user()->id;
         }
-        
-        
+               
         $saved = $feedback->save();
 
         if($saved)
         {   
+            //sending mail to user
             Mail::to($feedback->email)->send(new FeedbackMail($feedback));
 
-            $admin = User::where('is_admin', '1')->first();
+            //fetching email address of admin and sending notification mail for new comment submission
+            $admin      = User::where('is_admin', '1')->first();
             Mail::to($admin->email)->send(new FeedbackMailAdmin($feedback));
-        	$message = 'Feedback was submitted successfully.';
+        	$message   = 'Feedback was submitted successfully.';
         }
         else
         {
@@ -52,6 +54,5 @@ class Feedback extends Model
         }
 
         return $message;
-
     }
 }

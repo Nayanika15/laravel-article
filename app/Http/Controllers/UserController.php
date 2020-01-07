@@ -34,13 +34,14 @@ class UserController extends Controller
 
     /**
      * Authenicate the data provided.
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
     {   
         $credentials = $request->only('email', 'password');
 
+        //if authenticated redirect to dashboard
         if(Auth::attempt($credentials))
         {
             return redirect()->intended('dashboard');
@@ -50,6 +51,7 @@ class UserController extends Controller
             return back()->withInput()->with('ErrorMessage', 'Invalid User Credentials.');
         }
     }
+
     /**
      * To logout the user
      * @return \Illuminate\Http\Response
@@ -61,8 +63,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Show the form for creating a new resource.     *
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -147,19 +148,22 @@ class UserController extends Controller
     }
 
     /**
-     *To update the mobile number if not provided 
+     *To update the mobile number if not provided
+     * @param Request $request
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function updateMobile(Request $request)
     {   
-        $validatedData = $request->validate([
-            'mobile' => 'required|unique:users|max:10',
-            'code' => 'required',
+        $validatedData  = $request->validate([
+            'mobile'    => 'required|unique:users|max:10',
+            'code'      => 'required',
         ]);
 
         if(!empty($validatedData))
         {
             //to verify user with mobile number
             $verify = new AuthyApi(config('app.twilio')['AUTHY_API_KEY']);
+
             try
             {
                 $verification = $verify->phoneVerificationCheck($validatedData['mobile'], '91', $validatedData['code']);
@@ -198,10 +202,9 @@ class UserController extends Controller
         else
         {
             return redirect()->route('add-phone')
-                    ->with('ErrorMessage', 'Enter valid data.')
-                    ->withInput();
+                ->with('ErrorMessage', 'Enter valid data.')
+                ->withInput();
         }
-        
     }
        
     /**
@@ -310,15 +313,15 @@ class UserController extends Controller
             else
             {
                 return redirect()->route('forgot-password')
-                        ->with('ErrorMessage', 'Incorrect verification code entered.')
-                        ->withInput();
+                    ->with('ErrorMessage', 'Incorrect verification code entered.')
+                    ->withInput();
             }
         }
         else
         {
             return redirect()->route('forgot-password')
-                    ->with('ErrorMessage', 'Enter valid data.')
-                    ->withInput();
+                ->with('ErrorMessage', 'Enter valid data.')
+                ->withInput();
         }
         
     }

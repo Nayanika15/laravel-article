@@ -26,7 +26,7 @@ class Category extends Model
      * datatable columns
      */
      protected $dataTableColumns = [
-        'id' => [
+        'id'    => [
             'searchable' => false,
         ],
         'name' => [
@@ -90,18 +90,16 @@ class Category extends Model
     public static function allCategories()
     {
         $category = Category::select(['id', 'name', 'created_at', 'updated_at']);
+        return Datatables::of($category)
+            ->editColumn('created_at', function($category){
+                return date("d-M-Y", strtotime($category->created_at));
+            })
+            ->addColumn('action', function($category){
+                $edit_route=route('edit-category', $category->id);
+                $delete_route=route('destroy-category', $category->id);
 
-
-        return Datatables::of($category);/*
-                ->editColumn('created_at', function($category){
-                    return date("d-M-Y", strtotime($category->created_at));
-                })
-                ->addColumn('action', function($category){
-                    $edit_route=route('edit-category', $category->id);
-                    $delete_route=route('destroy-category', $category->id);
-
-                    return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='".$delete_route."' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
-                });*/
+                return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='".$delete_route."' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
+            });
     }
 
     /**
@@ -130,7 +128,7 @@ class Category extends Model
         else
         {   
             $result['msg'] = 'This category cannot be deleted as some articles are tagged.';
-                $result['msgType'] = 'ErrorMessage';
+            $result['msgType'] = 'ErrorMessage';
         }
 
     return $result;
@@ -158,30 +156,31 @@ class Category extends Model
             if($id !=0 && empty($category))
             {
                 
-                $result['errFlag'] = 1;
-                $result['msg'] = 'Category was not found.';
-                $result['route'] = 'add-category';
+                $result['errFlag']  = 1;
+                $result['msg']      = 'Category was not found.';
+                $result['route']    = 'add-category';
                
             }
             else
             {  
                 $category->name = ucfirst($data['name']);
                 $category->slug = $data['name'];
-                $action = ($id == 0) ? 'Added' : 'Updated';
-                $saved = $category->save();
+                $action         = ($id == 0) ? 'Added' : 'Updated';
+                $saved          = $category->save();
+
                 if($saved)
                 {
-                    $result['errFlag']= 0;
-                    $result['msg']= 'Category was '. $action . ' successfully.';
-                    $result['route']= 'view-category';
+                    $result['errFlag']  = 0;
+                    $result['msg']      = 'Category was '. $action . ' successfully.';
+                    $result['route']    = 'view-category';
                 }
             }
         }
         else
         {
-            $result['errFlag'] = 1;
-            $result['msg'] = '';
-            $result['route'] = $route;
+            $result['errFlag']  = 1;
+            $result['msg']      = '';
+            $result['route']    = $route;
         }
         return $result;
     }
@@ -206,6 +205,7 @@ class Category extends Model
      })->withCount('articles')->get();    
     
     }
+    
     /**
      * To fetch the category from slug
      */
@@ -220,10 +220,13 @@ class Category extends Model
     public static function categoryDetail($slug)
     {
 
-    $data = Category::where('slug', $slug)->whereHas('articles', function($query){
-        $query->where('approve_status', '1');
-     })->first();
-    return $data->articles()->latest()->Paginate(env('PAGINATE_LIMIT', 4));
+        $data = Category::where('slug', $slug)->whereHas('articles', function($query){
+            $query->where('approve_status', '1');
+         })->first();
+
+        return $data->articles()
+            ->latest()
+            ->Paginate(env('PAGINATE_LIMIT', 4));
     }
 
     /**
@@ -231,6 +234,8 @@ class Category extends Model
      */
     public static function getAllCategories()
     {
-        return Category::select('id', 'name')->pluck('name', 'id')->toArray();
+        return Category::select('id', 'name')
+            ->pluck('name', 'id')
+            ->toArray();
     }
 }

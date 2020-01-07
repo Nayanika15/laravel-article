@@ -63,8 +63,7 @@
                 <a class="dropdown-item" href="{{ route('all-articles') }}">Articles</a>         
             </div>
           </li>
-          @endif
-          
+          @endif          
         </ul>        
       </div>
     </div>

@@ -9,14 +9,14 @@ class LatestArticleComposer
     /**
      * The user repository implementation.
      *
-     * @var UserRepository
+     * @var article
      */
     protected $article;
 
     /**
      * Create a new article composer.
      *
-     * @param  UserRepository  $users
+     * @param  article $article
      * @return void
      */
     public function __construct(Article $article)

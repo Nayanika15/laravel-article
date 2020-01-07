@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DataTables;
 
+use App\Jobs\SendMail;
 use App\Mail\CommentMail;
 use Illuminate\Support\Facades\Mail; 
 
@@ -50,36 +51,41 @@ class Comment extends Model
             {
                 $comment->approve_status = '1';
                 $comment->user()->associate(auth()->user()->id);                
-                $result['msg']= 'Comment was submitted successfully.';
+                $result['msg']  = 'Comment was submitted successfully.';
             }
             else
             {  
-                $comment->name = $data['name'];
-                $comment->email = $data['email'];
-                $comment->mobile = $data['mobile'];
-                $result['msg']= 'Comment was submitted successfully and will be published after approval.';
+                $comment->name      = $data['name'];
+                $comment->email     = $data['email'];
+                $comment->mobile    = $data['mobile'];
+                $result['msg']      = 'Comment was submitted successfully and will be published after approval.';
             }
     		$article = Article::find($id);
 			$saved = $article->comments()->save($comment);
 
     		if($saved)
     		{   
-                Mail::to($article->user->email)->send(new CommentMail($saved));
-    			$result['errFlag']= 0;
-                $result['msgType'] = 'success';
+                //sending mail to user
+                //Mail::to($article->user->email)->send(new CommentMail($saved));
+                
+                //adding mail to queue
+                $commentDetails = new CommentMail($saved);
+                SendMail::dispatch($article->user->email, $commentDetails);
+    			$result['errFlag']  = 0;
+                $result['msgType']  = 'success';
     		}
             else
             {
-                $result['errFlag']= 1;
-                $result['msg']= 'There is some error';
-                $result['msgType'] = 'ErrorMessage';
+                $result['errFlag']  = 1;
+                $result['msg']      = 'There is some error';
+                $result['msgType']  = 'ErrorMessage';
             }
     	}
         else
         {
-            $result['errFlag']= 1;
-            $result['msg']= 'Article was not found.';
-            $result['msgType'] = 'ErrorMessage';
+            $result['errFlag']  = 1;
+            $result['msg']      = 'Article was not found.';
+            $result['msgType']  = 'ErrorMessage';
         }
 
         return $result;
@@ -87,10 +93,15 @@ class Comment extends Model
 
     /**
      * get active comments
+     * @param string $slug
      */
     public static function activeComments($slug)
     {
-    return Article::where('slug', $slug)->first()->comments()->where('approve_status', '1')->get();
+    return Article::where('slug', $slug)
+        ->first()
+        ->comments()
+        ->where('approve_status', '1')
+        ->get();
     }
 
     /**
@@ -149,7 +160,8 @@ class Comment extends Model
             ->make(true); 
     }
     /**
-     * approve comments
+     * function to approve comment
+     * @param int $id
      */
     public static function approveComment($id)
     {   
@@ -158,13 +170,13 @@ class Comment extends Model
         
         if($updated)
         {   
-            $result['msg'] = 'Comment approved successfully';
-            $result['msgType'] = 'success'; 
+            $result['msg']      = 'Comment approved successfully';
+            $result['msgType']  = 'success'; 
         }
         else
         {
-            $result['msg'] = 'There is some error';
-            $result['msgType']= 'ErrorMessage';
+            $result['msg']      = 'There is some error';
+            $result['msgType']  = 'ErrorMessage';
         }
         return $result;
     }

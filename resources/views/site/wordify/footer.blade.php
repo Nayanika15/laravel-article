@@ -9,6 +9,7 @@
 
         <p>Lorem ipsum dolor sit amet sa ksal sk sa, consectetur adipisicing elit. Ipsa harum inventore reiciendis. <a href="#">Read More</a></p>
       </div>
+
       <div class="col-md-6 ml-auto">
         <div class="row">
           <div class="col-md-7">
@@ -51,6 +52,7 @@
         </div>
       </div>
     </div>
+    
     <div class="row">
       <div class="col-md-12 text-center">
         <p class="small">

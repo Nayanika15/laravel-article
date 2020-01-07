@@ -24,11 +24,11 @@ class FeedbackRequest extends FormRequest
     public function rules()
     {
         return [
-           'name' => auth()->check() ? '':'required|max:50',
-            'email' => auth()->check() ? '':'required|email|max:50',
-            'mobile' => auth()->check() ? '':'required|max:10',
-            'code' => auth()->check() ? '':'required',
-            'message' => 'required' 
+           'name'       => auth()->check() ? '':'required|max:50',
+            'email'     => auth()->check() ? '':'required|email|max:50',
+            'mobile'    => auth()->check() ? '':'required|max:10',
+            'code'      => auth()->check() ? '':'required',
+            'message'   => 'required' 
         ];
     }
 }

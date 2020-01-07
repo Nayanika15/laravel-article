@@ -1,7 +1,9 @@
 @extends('layouts.wordify')
+
 @section('title')
   Login - {{ env('SITE_TITLE') }}
 @endsection
+
 @section('content')
   <section class="site-section">
     <div class="container">
@@ -39,28 +41,29 @@
     </div>
   </section>
 @endsection
+
 @section('scripts')
   <script type="text/javascript">
-  $(document).ready(function() 
-  {
-   $("#verify").click(function()
-   {
-      var mobile= $('#mobile').val();
-      if( mobile != '')
-      {
-        $.ajax({
-                url: "{!! url('/verify-mobile/" + mobile + "') !!}",
-                method: 'GET',
-                success: function(data) {
-                    $('.status').html(data);
-                }
-              });
-      }
-      else
-      {
-        alert("Please enter a valid mobile number.");
-      }
+    $(document).ready(function() 
+    {
+     $("#verify").click(function()
+     {
+        var mobile= $('#mobile').val();
+        if( mobile != '')
+        {
+          $.ajax({
+            url: "{!! url('/verify-mobile/" + mobile + "') !!}",
+            method: 'GET',
+            success: function(data) {
+                $('.status').html(data);
+            }
+          });
+        }
+        else
+        {
+          alert("Please enter a valid mobile number.");
+        }
+      });
     });
-  });
   </script>
 @endsection

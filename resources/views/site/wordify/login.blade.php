@@ -1,7 +1,9 @@
 @extends('layouts.wordify')
+
 @section('title')
   Login - {{ env('SITE_TITLE') }}
 @endsection
+
 @section('content')
   <section class="site-section">
     <div class="container">
@@ -24,6 +26,7 @@
                   </span>
                 @enderror
               </div>
+
               <div class="col-md-12 form-group">
                 {{ Form::label ('Password') }}
                 {{ Form::password ('password', array ('placeholder'=>'Enter password', 'maxlength'=>50, 'class' => 'form-control', 'required' => 'required')) }}
@@ -35,6 +38,7 @@
                 @enderror
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-12 form-group">
                 {{ Form::submit('Login', array('class'=>'btn btn-primary')) }}
@@ -43,7 +47,7 @@
                 <a href="{{ url('reset-password') }}">Forgot password</a>
               </div>
             </div>
-            {!! Form::close() !!}
+          {!! Form::close() !!}
         </div>
       </div>
     </div>

@@ -24,10 +24,10 @@ class ArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:50',
-            'categories'=>'required',
-            'details' => 'required',
-            'approve_status' => 'sometimes|required'
+            'title'             => 'required|max:50',
+            'categories'        =>'required',
+            'details'           => 'required',
+            'approve_status'    => 'sometimes|required'
         ];
     }
 }

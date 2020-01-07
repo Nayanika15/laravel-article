@@ -15,24 +15,25 @@ class payment extends Model
     protected $fillable = [
     	'article_id', 'user_id', 'amount', 'token_id', 'status', 'message'
     ];
+
     /**
      * Defining relationship with users table
      * 
      */
-
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     /**
      * Defining relationship with articles table
      * 
      */
-
     public function article()
     {
         return $this->belongsTo(Article::class);
     }
+
     /**
      * To store payment for article
      * @param int article id, string comment content
@@ -44,7 +45,7 @@ class payment extends Model
         
     	if(!empty($data) && !empty($article))
     	{  
-            $payment = new Payment();
+            $payment         = new Payment();
             $payment->user()->associate(auth()->user()->id);
             $payment->amount = 100;
 
@@ -52,16 +53,16 @@ class payment extends Model
             if($status == 0)
             {	
 
-                $payment->status = $status;
-                $payment->token_id = '';
-                $payment->message = $data->getMessage();
+                $payment->status    = $status;
+                $payment->token_id  = '';
+                $payment->message   = $data->getMessage();
 
             }
             else
             {  
-            	$payment->status = $status;
-                $payment->token_id = $data['id'];
-                $payment->message = 'success';
+            	$payment->status    = $status;
+                $payment->token_id  = $data['id'];
+                $payment->message   = 'success';
             }
 
     		try 

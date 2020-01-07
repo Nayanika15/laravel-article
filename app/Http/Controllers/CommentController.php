@@ -11,6 +11,8 @@ class CommentController extends Controller
 {	
 	/**
 	 * To store comment for a article
+     * @param \App\Http\Requests\CommentRequest $request, int $id
+     * @return \Illuminate\Contracts\Support\Renderable
 	 */
     public function store(CommentRequest $request, $id)
     {
@@ -63,6 +65,7 @@ class CommentController extends Controller
 
     /**
      * To show all comments
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function list()
     {
@@ -76,6 +79,8 @@ class CommentController extends Controller
 
    /**
      * get active comments
+     * @param int $id
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function approve($id)
     {

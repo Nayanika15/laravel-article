@@ -1,0 +1,924 @@
+
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+  Please use the argument -v to see more details.
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+  Please use the argument -v to see more details.
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+
+  Exception trace:
+  Exception trace:
+
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+  Please use the argument -v to see more details.
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+  Please use the argument -v to see more details.
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+  Exception trace:
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+  Please use the argument -v to see more details.
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+
+   Symfony\Component\Debug\Exception\FatalThrowableError  : Class 'Aws\Sqs\SqsClient' not found
+
+  at /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+    22|             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+    23|         }
+    24| 
+    25|         return new SqsQueue(
+  > 26|             new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+    27|         );
+    28|     }
+    29| 
+    30|     /**
+
+  Exception trace:
+
+  1   Illuminate\Queue\Connectors\SqsConnector::connect()
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:157
+
+  2   Illuminate\Queue\QueueManager::resolve("sqs")
+      /var/www/html/laravel-article/vendor/laravel/framework/src/Illuminate/Queue/QueueManager.php:138
+
+  Please use the argument -v to see more details.
+[2020-01-06 11:39:45][1] Processing: App\Jobs\SendMail
+[2020-01-06 11:39:46][1] Processed:  App\Jobs\SendMail
+[2020-01-06 11:39:46][2] Processing: App\Mail\CommentMail
+[2020-01-06 11:39:49][2] Processed:  App\Mail\CommentMail

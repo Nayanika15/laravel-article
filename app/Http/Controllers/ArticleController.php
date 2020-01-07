@@ -23,7 +23,7 @@ use Stripe\Error\Base;
 
 
 class ArticleController extends Controller
-{   
+{
   protected $article;
 
   /**
@@ -42,7 +42,7 @@ class ArticleController extends Controller
   
   /**
    * Show the list of all articles.
-   *
+   * @param int id
    * @return \Illuminate\Contracts\Support\Renderable
    */
   public function create($id=0)
@@ -52,8 +52,8 @@ class ArticleController extends Controller
     //to fetch all the added categories
     $all_categories = Category::getAllCategories();
     
-    if ($id != 0 && empty($article))
-    {   
+    if($id != 0 && empty($article))
+    {
       return redirect()->route('all-articles')
                 ->with('ErrorMessage', 'Article was not found.');
     }
@@ -65,17 +65,21 @@ class ArticleController extends Controller
                   ->with('ErrorMessage', 'You are not authorised for this action.');
       }
 
-      $sel_categories = ($id==0) ? array() : $article->categories->pluck('id')->toArray();
+      $sel_categories = ($id==0)?array() : $article->categories->pluck('id')->toArray();
 
       return view('site.wordify.articles.add')
-                ->with(['categories' => $all_categories, 'article' => $article, 'selected' => $sel_categories]);
+                ->with([
+                  'categories' => $all_categories,
+                  'article' => $article,
+                  'selected' => $sel_categories
+                ]);
     }        
   }
 
   /**
    * Store or update article details to the database.
    *
-   * @param \App\Http\Requests\CategoryRequest $request
+   * @param \App\Http\Requests\ArticleRequest $request, int id
    * @return \Illuminate\Http\Response
    */
   public function store(ArticleRequest $request, $id=0) 
@@ -85,6 +89,8 @@ class ArticleController extends Controller
     if($result['errFlag'] == 0)
     { 
       $article = Article::find($result['article_id']);
+
+      //check if payment not done redirect to do payment 
       if($article->paid_status == '0')
         {
           return $this->makePayment($result['article_id']);
@@ -92,26 +98,26 @@ class ArticleController extends Controller
       else
         {
           return redirect()->route($result['route'])
-                ->with('success', $result['msg']);   
+            ->with('success', $result['msg']);   
         }
     }
     else
     {
       return redirect()->route($result['route'])
-                ->with('ErrorMessage', $result['msg'])
-                ->withInput();
+        ->with('ErrorMessage', $result['msg'])
+        ->withInput();
     }
   }
 
   /**
    * Delete article record.
-   *
    * @param int $id
    * @return  \Illuminate\Http\Response
    */
   public function destroy($id)
   {
     $result = Article::deleteArticle($id);
+
     if($result)
     {
       return redirect()->route($result['route'])
@@ -125,7 +131,7 @@ class ArticleController extends Controller
       
   }
 
-    /**
+  /**
    * Show the detail of article.
    * @param string $slug
    * @return \Illuminate\Contracts\Support\Renderable
@@ -139,17 +145,19 @@ class ArticleController extends Controller
 
     if(!empty($data['article']))
     {  
-        return view('site.wordify.articles.detail')->with('data', $data); 
+      return view('site.wordify.articles.detail')->with('data', $data); 
     }
     else
     {
-        return redirect()->route('homepage');
+      return redirect()->route('homepage');
     }
             
   }
 
   /**
    * to redirect user to payment page
+   * @param int $article_id
+   * @return  \Illuminate\Contracts\Support\Renderable
    */
   public function makePayment($article_id)
   {
@@ -158,6 +166,7 @@ class ArticleController extends Controller
 
   /**
    * to redirect user to success page on payemnt successful
+   * @return  \Illuminate\Contracts\Support\Renderable
    */
 
   public function succesful()
@@ -168,7 +177,7 @@ class ArticleController extends Controller
 
   /**
    * to create payment request
-   *
+   * @param request $request
    * @return \Illuminate\Http\Response
    */
   public function doPayment(Request $request)
@@ -180,12 +189,12 @@ class ArticleController extends Controller
       {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $customer = Customer::create(array(
-          'email' => $request->stripeEmail,
+        $customer   = Customer::create(array(
+          'email'   => $request->stripeEmail,
           'source'  => $request->stripeToken
         ));
 
-        $charge = Charge::create(array(
+        $charge      = Charge::create(array(
           'customer' => $customer->id,
           'amount'   => 100*100,
           'currency' => 'inr'
@@ -195,8 +204,8 @@ class ArticleController extends Controller
         {   
           //to save the transaction details if success
           $payment->savePayment($charge, $request->article_id, '1');
-          $article = Article::find($request->article_id);
-          $result = Article::updateStatus($article);
+          $article  = Article::find($request->article_id);
+          $result   = Article::updateStatus($article);
           if($result['errFlag'] == 0)
           {
             return redirect()->route('successful-payment');
@@ -241,8 +250,8 @@ class ArticleController extends Controller
       }
     //to save the transaction details even if failed
     $payment->savePayment($e, $request->article_id, '0');
-
     \Log::info($errorMessages);
+
      //return with error message  
     return redirect()->route('add-article')
         ->withErrors($errorMessages)
@@ -251,6 +260,8 @@ class ArticleController extends Controller
 
   /**
    * to make article featured article
+   * @param int id
+   * @return \Illuminate\Contracts\Support\Renderable
    */
   public function featured($id)
   {
@@ -258,25 +269,23 @@ class ArticleController extends Controller
           
     if(!empty($article))
     {
-
       $result = Article::makeFeatured($article);
       
       if($result)
       {
         return redirect()->route('all-articles')
-                        ->with('success', 'Article featured successfully.');
+          ->with('success', 'Article featured successfully.');
       }
       else
       {
         return redirect()->route('all-articles')
-                        ->with('ErrorMessage', 'There is some error.');
+          ->with('ErrorMessage', 'There is some error.');
       }
     }
     else
     {
       return redirect()->route('all-articles')
-                        ->with('ErrorMessage', 'Article was not found.');
-    }
-    
+        ->with('ErrorMessage', 'Article was not found.');
+    }    
   }
 }

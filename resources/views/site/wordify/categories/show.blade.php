@@ -4,19 +4,19 @@
 @endsection
 
 @section('content') 
-@php($categoryArticles = $data['categoryArticles'])
-@php($category = $data['category'])
-    <section class="site-section pt-5">
-      <div class="container">
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <h2 class="mb-4">Category: {{ $category->name }}</h2>
-          </div>
+  @php($categoryArticles = $data['categoryArticles'])
+  @php($category = $data['category'])
+  <section class="site-section pt-5">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h2 class="mb-4">Category: {{ $category->name }}</h2>
         </div>
-        <div class="row blog-entries">
-          <div class="col-md-12 col-lg-8 main-content">
-            <div class="row mb-5 mt-5">
-              <div class="col-md-12">
+      </div>
+      <div class="row blog-entries">
+        <div class="col-md-12 col-lg-8 main-content">
+          <div class="row mb-5 mt-5">
+            <div class="col-md-12">
               @foreach($categoryArticles as $article)
                 <div class="post-entry-horzontal">
                   <a href="{{ url($article->permalink) }}">
@@ -38,23 +38,24 @@
                     </span>
                   </a>
                 </div>
-                  @endforeach
-              </div>
-               <!-- END post -->              
+              @endforeach
             </div>
-            <div class="row mt-5">
-              <div class="col-md-12 text-center">
-                <nav aria-label="Page navigation" class="text-center">
-                  {{ $categoryArticles->links() }}
-                </nav>
-              </div>
+             <!-- END post -->              
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-12 text-center">
+              <nav aria-label="Page navigation" class="text-center">
+                {{ $categoryArticles->links() }}
+              </nav>
             </div>
           </div>
-          <!-- END main-content -->
-        @include('site/wordify/side-bar')
-           <!-- END sidebar -->
         </div>
+        <!-- END main-content -->
+        @include('site/wordify/side-bar')
+         <!-- END sidebar -->
       </div>
-    </section>
-    @endsection
+    </div>
+  </section>
+@endsection
   

@@ -89,29 +89,32 @@ class User extends Authenticatable
       $result = array();
       if (!empty($data))
       {   
-        $user = new User;
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->mobile = $data['mobile'];
+        $user           = new User;
+        $user->name     = $data['name'];
+        $user->email    = $data['email'];
+        $user->mobile   = $data['mobile'];
         $user->password = Hash::make($data['password']);
-        $saved = $user->save();
+        $saved          = $user->save();
         
         if($saved)
-        {   
+        {
+          //fetching email address for admin
           $admin = User::where('is_admin', '1')->first();
           Mail::to($admin->email)->send(new RegistrationMailAdmin($user));
+
+          //sending mail to user on successful registration
           Mail::to($user->email)->send(new RegistrationMailUser($user));
-          $result['errFlag']= 0;
-          $result['msg']= 'Registration completed successfully.Please login to go to your dashboard.';
-          $result['route']= 'login';
-          $result['user'] = $user;
+          $result['errFlag'] = 0;
+          $result['msg']  = 'Registration completed successfully.Please login to go to your dashboard.';
+          $result['route']  = 'login';
+          $result['user']   = $user;
             
         }
         else
         {   
-          $result['errFlag'] = 1;
-          $result['msg'] = 'There is some error.';
-          $result['route'] = 'do-registration';
+          $result['errFlag']  = 1;
+          $result['msg']      = 'There is some error.';
+          $result['route']    = 'do-registration';
         }          
       }
       
@@ -133,19 +136,18 @@ class User extends Authenticatable
       
       if($saved)
       {   
-          $result['errFlag']  = 0;
-          $result['msg']      = 'Registration completed successfully.Please login to go to your dashboard.';
-          $result['route']    = 'login';
+        $result['errFlag']  = 0;
+        $result['msg']      = 'Registration completed successfully.Please login to go to your dashboard.';
+        $result['route']    = 'login';
           
       }
       else
       {   
-          $result['errFlag']  = 1;
-          $result['msg']      = 'There is some error.';
-          $result['route']    = 'add-phone';
+        $result['errFlag']  = 1;
+        $result['msg']      = 'There is some error.';
+        $result['route']    = 'add-phone';
       }          
-    }
-    
+    }    
     return $result;
   }
 
@@ -170,10 +172,11 @@ class User extends Authenticatable
         {
           $mailData           = array('user' => $user, 'password'=> $password);             
           $admin              = User::where('is_admin', '1')->first();
-        
+          
+          //sending mail to admin on password reset
           Mail::to($admin->email)->send(new ResetPasswordMailAdmin($user));
+          //sending mail to user on successfull password reset
           Mail::to($user->email)->send(new ResetPasswordMailUser($mailData));
-
           $result['errFlag']  = 0;
           $result['msg']      = 'Password reset successfully.';
           $result['route']    = 'login';
@@ -199,7 +202,6 @@ class User extends Authenticatable
       $result['msg']      = 'Enter valid data.';
       $result['route']    = 'reset-password';
     }
-
     return $result;
   }
 }

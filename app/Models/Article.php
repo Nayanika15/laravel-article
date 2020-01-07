@@ -98,7 +98,7 @@ class Article extends Model implements HasMedia
         return $this->user->name;
     }
 
-     /**
+    /**
      * get the homepage image link for article
      */
     public function getHomepageImageAttribute()
@@ -306,23 +306,21 @@ class Article extends Model implements HasMedia
             }
 
             if($id !=0 && empty($article))
-            {
-                
-                $result['errFlag'] = 1;
-                $result['msg'] = 'Article was not found.';
-                $result['route'] = 'add-article';
-               
+            {                
+                $result['errFlag']  = 1;
+                $result['msg']      = 'Article was not found.';
+                $result['route']    = 'add-article';               
             }
             else
             {  
-                $article->title = $data['title'];
-                $article->details = $data['details'];
-                $article->user_id = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
-                $article->slug = $data['title'];
+                $article->title     = $data['title'];
+                $article->details   = $data['details'];
+                $article->user_id   = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
+                $article->slug      = $data['title'];
 
                 if($request->has('approve_status'))
                 {
-                    $article->approve_status=$data['approve_status'];
+                    $article->approve_status = $data['approve_status'];
                 }
                 
                 $action = ($id == 0) ? 'added' : 'updated';
@@ -344,30 +342,30 @@ class Article extends Model implements HasMedia
                         if($id == 0)
                         {
                             $admin = User::where('is_admin', '1')->first();
-                            Mail::to($admin->email)->send(new ArticleMail($article));   
+                            Mail::to($admin->email)->send(new ArticleMail($article));
                         }
                         
                     }
 
-                    $result['errFlag']= 0;
-                    $result['msg']= 'Article was '. $action . ' successfully.';
-                    $result['route']= 'all-articles';
-                    $result['article_id']= $article->id;
+                    $result['errFlag']      = 0;
+                    $result['msg']          = 'Article was '. $action . ' successfully.';
+                    $result['route']        = 'all-articles';
+                    $result['article_id']   = $article->id;
                     
                 }
                 else
                 {   
-                    $result['errFlag'] = 1;
-                    $result['msg'] = 'There is some error.';
-                    $result['route'] = $route;
+                    $result['errFlag']  = 1;
+                    $result['msg']      = 'There is some error.';
+                    $result['route']    = $route;
                 }
             }
         }
          else
         {
-            $result['errFlag'] = 1;
-            $result['msg'] = '';
-            $result['route'] = $route;
+            $result['errFlag']  = 1;
+            $result['msg']      = '';
+            $result['route']    = $route;
         }
 
         return $result;
@@ -378,7 +376,11 @@ class Article extends Model implements HasMedia
     public static function articleDetail($slug)
     {
        $data = Article::select(['id', 'title', 'details', 'user_id', 'slug', 'approve_status', 'created_at', 'updated_at'])
-            ->where(['slug' => $slug, 'approve_status' =>'1', 'paid_status' => '1'])
+            ->where([
+                'slug' => $slug,
+                'approve_status' =>'1',
+                'paid_status' => '1'
+            ])
             ->first();
 
        //to increase the views count on visting the article details page
@@ -399,28 +401,28 @@ class Article extends Model implements HasMedia
 
          if((auth()->user()->is_admin !== 1) && ($article->user_id !== auth()->user()->id))
         {
-            return redirect()->route('all-articles')->with('ErrorMessage', 'You are not authorised for this action.');
+            return redirect()->route('all-articles')
+                ->with('ErrorMessage', 'You are not authorised for this action.');
         }
         
-        $action = $article->delete();
-        $result = array();
-        $result['route'] = 'all-articles';
+        $action             = $article->delete();
+        $result             = array();
+        $result['route']    = 'all-articles';
 
         //to delete the media associated on deleting the article successfully
         if($action)
         {   
             $article->categories()->detach();
             $article->clearMediaCollection();
-            $result['msg'] = 'Article has been deleted.';
-            $result['errFlag'] = 0;
-            $result['msgType'] = 'success';
+            $result['msg']      = 'Article has been deleted.';
+            $result['errFlag']  = 0;
+            $result['msgType']  = 'success';
         }
         else
         {   
-            $result['errFlag'] = 1;
-            $result['msg'] = 'There is some error.';
-            $result['msgType'] = 'ErrorMessage'; 
-              
+            $result['errFlag']  = 1;
+            $result['msg']      = 'There is some error.';
+            $result['msgType']  = 'ErrorMessage';
         }
         return $result;
     }
@@ -465,7 +467,6 @@ class Article extends Model implements HasMedia
 
     /**
      * Show the latest article.
-     * @param string $slug
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public static function latestArticle()
@@ -495,6 +496,7 @@ class Article extends Model implements HasMedia
 
         return $result;
     }
+
     /**
      * To make articles featured
      */
@@ -503,6 +505,7 @@ class Article extends Model implements HasMedia
         $article->is_featured = !($article->is_featured);
         return $article->save();
     }
+    
     /**
      * to fetch the featured articles
      */

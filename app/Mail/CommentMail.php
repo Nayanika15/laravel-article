@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Comment;
 
-class CommentMail extends Mailable
+class CommentMail extends Mailable implements ShouldQueue
 {
      use Queueable, SerializesModels;
 
@@ -30,7 +30,8 @@ class CommentMail extends Mailable
      * @return $this
      */
     public function build()
-    {
+    {   
+        
         return $this->markdown('mails.comments.new-comment')
             ->with('comment', $this->comment);
     }

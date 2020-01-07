@@ -3,14 +3,13 @@
   Pay -{{ env('SITE_TITLE') }}
 @endsection
 @section('content')
-    <section class="site-section">
+  <section class="site-section">
     <div class="container">
       <div class="row mb-4">
         <div class="col-md-6">
           <h1 class="mb-4">Payment Successfull !!!</h1>
         </div>
-      </div>
-      
+      </div>      
       <div class="row blog-entries">
         <div class="col-md-12 col-lg-12 main-content">
            <div class="alert-box">

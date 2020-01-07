@@ -1,7 +1,9 @@
 @extends('layouts.wordify')
+
 @section('title')
   Forgot password - {{ env('SITE_TITLE') }}
 @endsection
+
 @section('content')
   <section class="site-section">
     <div class="container">
@@ -10,6 +12,7 @@
           <h1 class="mb-4">Forgot password</h1>
         </div>
       </div>
+
       <div class="row blog-entries">
         <div class="col-md-8 col-lg-8 main-content">
           @include('common.message')
@@ -46,39 +49,41 @@
                 @enderror
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-12 form-group">
                 {{ Form::submit('Submit', array('class'=>'btn btn-primary')) }}
                 <a href="{{ url('/') }}" class="btn btn-danger">Cancel</a>
               </div>
             </div>
-            {!! Form::close() !!}
+          {!! Form::close() !!}
         </div>
       </div>
     </div>
   </section>
 @endsection
+
 @section('scripts')
-<script type="text/javascript">
-  $(document).ready(function() {
-   $("#verify").click(function()
-   {
-      var mobile= $('#mobile').val();
-      if( mobile != '')
-      {
-        $.ajax({
-                  url: "{!! url('/verify-mobile/" + mobile + "') !!}",
-                  method: 'GET',
-                  success: function(data) {
-                      $('.status').html(data);
-                  }
-              });
-      }
-      else
-      {
-        alert("Please enter a valid mobile number.");
-      }
+  <script type="text/javascript">
+    $(document).ready(function() {
+     $("#verify").click(function()
+     {
+        var mobile= $('#mobile').val();
+        if( mobile != '')
+        {
+          $.ajax({
+            url: "{!! url('/verify-mobile/" + mobile + "') !!}",
+            method: 'GET',
+            success: function(data) {
+                $('.status').html(data);
+            }
+          });
+        }
+        else
+        {
+          alert("Please enter a valid mobile number.");
+        }
+      });
     });
-  });
-</script>
+  </script>
 @endsection

@@ -21,7 +21,6 @@ class CategoryController extends Controller
         {
             return Category::allCategories();
         }
-
         return view('site.wordify.categories.view');
     }
 
@@ -38,9 +37,9 @@ class CategoryController extends Controller
                     ->with($result['msgType'], $result['msg']);
     }
 
-      /**
+     /**
      * Show the add category page for add and update.
-     *
+     * @param int $id
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function create($id=0)
@@ -54,6 +53,7 @@ class CategoryController extends Controller
 
         return view('site.wordify.categories.add', compact('categories'));
     }
+
      /**
      * Store or update Category details to the database.
      *
@@ -61,7 +61,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $request,$id=0) 
-    {   
+    {
         
         $result = Category::addUpdate($request,$id);
         if($result['errFlag'] == 0)
@@ -76,16 +76,17 @@ class CategoryController extends Controller
                     ->withInput();
         }
     }
-      /**
+
+    /**
      * Fetch active articles in a particular category.
      * @param string $slug
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function detail($slug)
     {   
-        $data = array();
+        $data                     = array();
         $data['categoryArticles'] = Category::categoryDetail($slug);
-        $data['category']=Category::getSlugCategory($slug);
+        $data['category']         = Category::getSlugCategory($slug);
 
         if(!empty($data['categoryArticles']))
         {
@@ -94,7 +95,6 @@ class CategoryController extends Controller
         else
         {
             return redirect()->route('homepage');
-        }
-              
+        }              
     }
 }

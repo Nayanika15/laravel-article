@@ -1,7 +1,9 @@
 @extends('layouts.wordify')
+
 @section('title')
   Dashboard-{{ env('SITE_TITLE') }}
 @endsection
+
 @section('content')
   <section class="site-section">
     <div class="container">
@@ -20,8 +22,7 @@
           </div>
           @else
             Hi <span class="user">{{ Auth::user()->name }}</span> this is your dashboard.
-          @endif
-          
+          @endif          
         </div>
       </div>
     </div>

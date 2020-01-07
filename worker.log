@@ -1,0 +1,4 @@
+[2020-01-06 09:38:30][1805] Processing: App\Jobs\SendMail
+[2020-01-06 09:38:30][1806] Processing: App\Mail\CommentMail
+[2020-01-06 09:38:31][1805] Processed:  App\Jobs\SendMail
+[2020-01-06 09:38:33][1806] Processed:  App\Mail\CommentMail
