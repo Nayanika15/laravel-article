@@ -294,7 +294,7 @@ class Article extends Model implements HasMedia
         $result = array();
         $route = ($id == 0)? 'add-article' : 'edit-article';
         if (!empty($data))
-        {   
+        { 
 
             if($id == 0)
             {
@@ -327,10 +327,10 @@ class Article extends Model implements HasMedia
                 $saved = $article->save();
                 
                 if($saved)
-                {
-                    $article->categories()->sync($data['categories']);
+                {   
+                    $article->categories()->sync($data['categories']);                    
                     if($request->hasFile('image'))
-                    {   
+                    {  
                         $images = $article->getMedia();
                         if(empty($images))
                         {

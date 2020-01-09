@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Payment;
 
@@ -31,7 +32,6 @@ class ArticleController extends Controller
 	public function latest()
 	{	
 		try {
-
 			$result = Article::latestArticle()
         ->paginate(4);
 
@@ -57,7 +57,7 @@ class ArticleController extends Controller
 	{	
 		$result = array(); 
 		try
-		{	
+		{
 			$result['article'] = Article::articleDetail($slug)
 				->load('categories');
 
@@ -120,6 +120,81 @@ class ArticleController extends Controller
             'result' => $result], 200);
 	    }
 	}
+
+  /**
+   * Api to update articles
+   * @param int id, request
+   */
+  public function update(ArticleRequest $request, int $id)
+  { 
+    $article = Article::find($id);
+    
+    //check if the logged user is admin or owner of the article
+    if((Auth::guard('api')->user()->is_admin !== 1) && ($article->user_id !== Auth::guard('api')->user()->id))
+    {
+      return response()->json([
+        'message' => 'You are not authorised for this action.',
+        'errFlag' => 2,
+        'result' => $result], 200);
+    }
+    else
+    {
+      $result = Article::addUpdateArticle($request, $id);
+      if($result['errFlag'] == 0)
+      {
+        $article = Article::find($result['article_id']);
+        $result['paid_status'] = $article->paid_status;
+        return response()->json([
+            'message' => 'Success',
+            'result' => $result], 200);
+      }
+      else
+      {
+        return response()->json([
+            'message' => 'error',
+            'result' => $result], 200);
+      }
+    }
+  }
+
+  /**
+   * Api to fetch article to edit
+   * @param int id
+   */
+  public function edit(int $id)
+  {
+    $article = Article::find($id);
+    $is_admin = (Auth::guard('api')->user())?Auth::guard('api')->user()->is_admin:auth()->user()->is_admin;
+    $user_id = (Auth::guard('api')->user())?Auth::guard('api')->user()->id:auth()->user()->id;
+    
+    if($id == 0 || empty($article))
+    { 
+      return response()->json([
+        'message' => 'Article was not found.',
+        'errFlag' => 1,
+        'result' => $result], 200);
+    }
+    //check if logged user is admin or if is the owner of the article
+    else if(($is_admin !== 1) && ($article->user_id !== $user_id))
+    { 
+      return response()->json([
+        'message' => 'You are not authorised for this action.',
+        'errFlag' => 2,
+        'result' => $result], 200);
+    }
+    else
+    {
+      $result = $article;
+      //to fetch all the tagged categories
+      $result['categories_tagged'] = $article->categories->pluck('id')->toArray();
+      //to fetch all the added categories
+      $result['all_categories'] = Category::select('name', 'id')->get();
+      return response()->json([
+        'message' => 'Success',
+        'errFlag' => 0,
+        'result' => $result], 200);
+    }
+  }
 
 	/**
    * to create payment request
@@ -231,7 +306,7 @@ class ArticleController extends Controller
    * @param int id
    */
   public function delete(int $id)
-  { 
+  {
     $result = Article::deleteArticle($id);
     return response()->json(["errFlag" => $result["errFlag"]], 200);
   }

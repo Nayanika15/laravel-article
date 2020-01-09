@@ -73,7 +73,7 @@ class ArticleController extends Controller
                   'article' => $article,
                   'selected' => $sel_categories
                 ]);
-    }        
+    }       
   }
 
   /**

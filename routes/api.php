@@ -24,6 +24,8 @@ Route::prefix('article')->group(function ()
 	Route::get('featured', 'Api\ArticleController@featuredArticles');
 	Route::get('latest', 'Api\ArticleController@latest');
 	Route::post('add', 'Api\ArticleController@add')->middleware('auth:api');
+	Route::get('edit/{id}', 'Api\ArticleController@edit')->middleware('auth:api');
+	Route::put('update/{id}', 'Api\ArticleController@update')->middleware('auth:api');
 	Route::any('list', 'Api\ArticleController@list');
 	Route::get('{slug}', 'Api\ArticleController@detail');
 	Route::get('feature/{id}', 'Api\ArticleController@feature');
