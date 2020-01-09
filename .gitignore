@@ -1,5 +1,9 @@
 /storage/app/public
 /public/storage
+/public/css
+/public/js
+/public/fonts
+/public/images
 /node_modules
 /public/hot
 /public/storage
