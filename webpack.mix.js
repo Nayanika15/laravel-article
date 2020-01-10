@@ -30,10 +30,13 @@ mix.js('public/templates/wordify/js/main.js', 'public/js/main.js')
 		'public/templates/wordify/css/style.css',
 		'public/templates/wordify/css/styleError.css',
 		'public/templates/wordify/fonts/ionicons/css/ionicons.min.css',
-		'public/templates/wordify/fonts/fontawesome/css/font-awesome.min.css',
 		'public/templates/wordify/fonts/flaticon/font/flaticon.css'
 		], 'public/css/app.css')
 		.options({
 	      processCssUrls: false
-	   	})
+		   })
+	.sass('public/templates/wordify/fonts/fontawesome/css/font-awesome.min.scss','public/fonts/fontawesome/css/font-awesome.min.css')
+		.options({
+			processCssUrls: false
+		 })
 	.copyDirectory('public/templates/wordify/fonts', 'public/fonts');

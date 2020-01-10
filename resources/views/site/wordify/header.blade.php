@@ -39,11 +39,11 @@
           <li class="nav-item">
             <a class="nav-link active" href="/">Home</a>
           </li>
-          @if($active_categories)
+          @if(Cache::get('active_categories'))
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>                  
+            <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>               
             <div class="dropdown-menu" aria-labelledby="dropdown05">
-              @foreach($active_categories as $category)
+              @foreach(Cache::get('active_categories') as $category)
               <a class="dropdown-item" href="{{ url($category->permalink) }}">{{ $category->name }}</a>
               @endforeach
             </div>                  

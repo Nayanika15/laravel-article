@@ -2,6 +2,7 @@
 namespace App\Http\Composer;
 
 use Illuminate\View\View;
+use Cache;
 use App\Models\Category;
 
 class ActiveCategoriesComposer
@@ -33,7 +34,9 @@ class ActiveCategoriesComposer
      */
     public function compose(View $view)
     {   
-        $active_categories = Category::activeCategories();
+        $active_categories = $value = Cache::rememberForever('active_categories', function () {
+            return Category::activeCategories();
+        });
         $view->with('active_categories', $active_categories);
     }
 }
