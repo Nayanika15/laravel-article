@@ -34,7 +34,7 @@ class ActiveCategoriesComposer
      */
     public function compose(View $view)
     {   
-        $active_categories = $value = Cache::rememberForever('active_categories', function () {
+        $active_categories = Cache::rememberForever('active_categories', function () {
             return Category::activeCategories();
         });
         $view->with('active_categories', $active_categories);

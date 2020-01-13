@@ -319,7 +319,9 @@ class Article extends Model implements HasMedia
                 $article->slug      = $data['title'];
 
                 if($request->has('approve_status'))
-                {
+                {   
+                    //to remove active categories from cache
+                    Cache::forget('active_categories');
                     $article->approve_status = $data['approve_status'];
                 }
                 
