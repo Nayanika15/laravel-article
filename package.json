@@ -13,14 +13,18 @@
     "axios": "^0.16.2",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.1.1",
-    "jquery": "^3.1.1",
-    "laravel-mix": "^1.0",
+    "jquery": "^3.4.1",
+    "laravel-mix": "^1.7.2",
     "lodash": "^4.17.4",
     "sass-loader": "^7.1.0",
     "vue": "^2.1.10"
   },
   "dependencies": {
     "ajv": "^6.10.2",
-    "node-sass": "^4.13.0"
+    "bootstrap": "^4.4.1",
+    "bootstrap-confirmation2": "^4.1.0",
+    "jquery.stellar": "^0.6.2",
+    "node-sass": "^4.13.0",
+    "popper": "^1.0.1"
   }
 }

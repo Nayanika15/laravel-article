@@ -1,12 +1,6 @@
 {
+    "/js/app.js": "/js/app.js",
+    "/fonts/fontawesome/css/font-awesome.min.css": "/fonts/fontawesome/css/font-awesome.min.css",
     "/js/main.js": "/js/main.js",
-    "/js/bootstrap.min.js": "/js/bootstrap.min.js",
-    "/js/jquery-3.2.1.min.js": "/js/jquery-3.2.1.min.js",
-    "/js/jquery-migrate-3.0.0.js": "/js/jquery-migrate-3.0.0.js",
-    "/js/jquery.stellar.min.js": "/js/jquery.stellar.min.js",
-    "/js/jquery.waypoints.min.js": "/js/jquery.waypoints.min.js",
-    "/js/owl.carousel.min.js": "/js/owl.carousel.min.js",
-    "/js/popper.min.js": "/js/popper.min.js",
-    "/js/validatorFile.js": "/js/validatorFile.js",
     "/css/app.css": "/css/app.css"
 }

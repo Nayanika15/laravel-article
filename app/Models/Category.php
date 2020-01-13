@@ -99,7 +99,8 @@ class Category extends Model
                 $delete_route=route('destroy-category', $category->id);
 
                 return "<a href='" . $edit_route . "' class='btn btn-primary'>Edit</a>" . " <a href='".$delete_route."' class='btn btn-danger delete' onclick='return confirm(\"Are you sure?\")' >Delete</a>";
-            });
+            })
+            ->make(true);
     }
 
     /**
@@ -199,11 +200,9 @@ class Category extends Model
      */
     public static function activeCategories()
     {
-
-    return Category::whereHas('articles', function($query){
-        $query->where('approve_status', '1');
-     })->withCount('articles')->get();    
-    
+        return Category::whereHas('articles', function($query){
+            $query->where('approve_status', '1');
+        })->withCount('articles')->get();
     }
     
     /**

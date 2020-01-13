@@ -1,3 +1,4 @@
+
 window._ = require('lodash');
 
 /**
@@ -7,11 +8,16 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
+	console.log('adding packgaes');
     window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-} catch (e) {}
+    require('./jquery-migrate-3.0.0');
+    require( './jquery.stellar.min' );
+    require( './owl.carousel.min' );
+    require('./jquery.waypoints.min');
+    require('bootstrap-sass');
+} catch (e) {
+	console.log(e);
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -20,7 +26,6 @@ try {
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -49,7 +54,5 @@ if (token) {
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
+//     key: 'your-pusher-key'
 // });

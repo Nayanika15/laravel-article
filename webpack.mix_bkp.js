@@ -11,10 +11,15 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js','public/js')
-	.js(['public/templates/wordify/js/main.js',
-		'public/templates/wordify/js/validatorFile.js'
-		], 'public/js/main.js')
+mix.js('public/templates/wordify/js/main.js', 'public/js/main.js')
+	.copy('public/templates/wordify/js/bootstrap.min.js', 'public/js/bootstrap.min.js')
+	.copy('public/templates/wordify/js/jquery-3.2.1.min.js', 'public/js/jquery-3.2.1.min.js')
+	.copy('public/templates/wordify/js/jquery-migrate-3.0.0.js', 'public/js/jquery-migrate-3.0.0.js')
+	.copy('public/templates/wordify/js/jquery.stellar.min.js', 'public/js/jquery.stellar.min.js')
+	.copy('public/templates/wordify/js/jquery.waypoints.min.js', 'public/js/jquery.waypoints.min.js')
+	.copy('public/templates/wordify/js/owl.carousel.min.js', 'public/js/owl.carousel.min.js')
+	.copy('public/templates/wordify/js/popper.min.js', 'public/js/popper.min.js')
+	.scripts('public/templates/wordify/js/validatorFile.js', 'public/js/validatorFile.js')
 	.copyDirectory('public/templates/wordify/images', 'public/images')
 	.styles([
 		'public/templates/wordify/css/style.css',

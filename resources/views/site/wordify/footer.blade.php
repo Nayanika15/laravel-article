@@ -57,7 +57,7 @@
       <div class="col-md-12 text-center">
         <p class="small">
       <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-      Copyright &copy;<script>document.write(new Date().getFullYear());</script> All Rights Reserved | This template is made with <i class="fa fa-heart text-danger" aria-hidden="true"></i>
+      Copyright &copy;All Rights Reserved | This template is made with <i class="fa fa-heart text-danger" aria-hidden="true"></i>
       <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
       </p>
       </div>
