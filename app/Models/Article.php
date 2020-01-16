@@ -468,18 +468,19 @@ class Article extends Model implements HasMedia
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public static function related($slug)
+    public static function related($article)
     {   
-         $article_categories = Article::where(['slug' => $slug, 'approve_status' =>'1', 'paid_status'=>'1'])
-            ->first()
-            ->categories
+        $article_categories = $article->categories()
             ->pluck('id')->toArray();
 
-        $related_articles = Article::wherehas('categories', function($query) use($article_categories){
+        $related_articles = Article::where('id', '!=', $article->id)
+            ->wherehas('categories', function($query) use($article_categories){
                 $query->whereIn('id', $article_categories);
-            })->withCount(['comments' => function($query){
+            })
+            ->withCount(['comments' => function($query){
                 $query->where(['approve_status'=>'1']);
-            }])->inRandomOrder()
+            }])
+            ->inRandomOrder()
             ->limit(3)
             ->get();
             

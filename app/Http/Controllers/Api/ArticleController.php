@@ -58,28 +58,36 @@ class ArticleController extends Controller
 		$result = array(); 
 		try
 		{
-			$result['article'] = Article::articleDetail($slug)
-				->load('categories');
+      $result['article'] = Article::articleDetail($slug)
+  				->load('categories');
 
-			$result['active_comments'] = Comment::activeComments($slug)
-				->map(function ($item, $key)
-	    		{	
-	    			$item['created_date'] = date('d-M-y', strtotime($item['created_at']));;
-	    			return collect($item)->only(['comment', 'created_date', 'name'])->toArray();
-				});
+      //check if article found the fetch the related articles and active comments
+      if(isset($result['article']))
+      {
+  			$result['active_comments'] = Comment::activeComments($result['article'])
+  				->map(function ($item, $key)
+  	    		{	
+  	    			$item['created_date'] = date('d-M-y', strtotime($item['created_at']));
+  	    			return collect($item)->only(['comment', 'created_date', 'name'])->toArray();
+  				  });
 
-			$result['related_articles'] = Article::related($slug)
-				->map(function ($item, $key)
-	    		{	
-	    			$item['created_date'] = date('d-M-y', strtotime($item['created_at']));
-	    			$item['image'] = $item->detail_image;
-	    			//$item['detail_link'] = $item->permalink;
-	    			return collect($item)->only(['title', 'comments_count', 'slug', 'created_date','image']);
-				});
-			
-			return response()->json([
-            'message' => 'Success',
-            'result' => $result], 200);
+  			$result['related_articles'] = Article::related($result['article'])
+  				->map(function ($item, $key)
+  	    		{	
+              $item['created_date'] = date('d-M-y', strtotime($item['created_at']));
+                $item['image'] = $item->detail_image;
+                return collect($item)->only(['title', 'comments_count', 'slug', 'created_date','image']);
+  				  });
+  			
+  			return response()->json([
+              'message' => 'Success',
+              'result' => $result], 200);
+      }
+      else
+      {
+        return response()->json([
+          'message' => 'error'], 200);
+      }
 		}
 		catch (Exception $e) 
 		{

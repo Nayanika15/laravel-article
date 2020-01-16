@@ -138,13 +138,13 @@ class ArticleController extends Controller
    */
   public function detail($slug)
   { 
-    $data = array();
-    $data['related_articles'] = Article::related($slug);
+    $data = array();    
     $data['article'] = Article::articleDetail($slug);
-    $data['comments']= Comment::activeComments($slug);
-
-    if(!empty($data['article']))
-    {  
+    //check if article found the fetch the related articles and active comments
+    if(isset($data['article']))
+    {
+      $data['related_articles'] = Article::related($data['article']);
+      $data['comments']= Comment::activeComments($data['article']);
       return view('site.wordify.articles.detail')->with('data', $data); 
     }
     else

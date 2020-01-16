@@ -11,7 +11,7 @@ use App\Mail\CommentMail;
 use Illuminate\Support\Facades\Mail; 
 
 class Comment extends Model
-{	
+{
 
 	 /**
      * The attributes that are mass assignable.
@@ -120,11 +120,9 @@ class Comment extends Model
      * get active comments
      * @param string $slug
      */
-    public static function activeComments($slug)
+    public static function activeComments($article)
     {
-    return Article::where('slug', $slug)
-        ->first()
-        ->comments()
+    return $article->comments()
         ->where('approve_status', '1')
         ->get();
     }
