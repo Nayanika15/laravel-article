@@ -458,7 +458,7 @@ class Article extends Model implements HasMedia
         $articles = Article::select(['id', 'title', 'user_id','created_at', 'updated_at', 'slug'])
             ->where(['approve_status'=> '1', 'paid_status'=>'1'])
             ->orderBy('views_count', 'desc')
-            ->limit(4)
+            ->limit(env('POPULAR_ARTICLE_LIMIT', 4))
             ->get();
         return  $articles;
     }
@@ -481,7 +481,7 @@ class Article extends Model implements HasMedia
                 $query->where(['approve_status'=>'1']);
             }])
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(env('RELATED_ARTICLE_LIMIT', 3))
             ->get();
             
         return  $related_articles;

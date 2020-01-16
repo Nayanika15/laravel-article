@@ -33,7 +33,7 @@ class LatestArticleComposer
      */
     public function compose(View $view)
     {   
-        $latest_articles = $this->article->latestArticle()->limit(3)->get();
+        $latest_articles = $this->article->latestArticle()->limit(env('LATEST_ARTICLE_LIMIT', 3))->get();
         $view->with('latest_articles', $latest_articles);
     }
 }
