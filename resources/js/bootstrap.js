@@ -8,8 +8,7 @@ window._ = require('lodash');
  */
 
 try {
-	console.log('adding packgaes');
-    window.$ = window.jQuery = require('jquery');
+	window.$ = window.jQuery = require('jquery');
     require('./jquery-migrate-3.0.0');
     require( './jquery.stellar.min' );
     require( './owl.carousel.min' );
