@@ -295,14 +295,7 @@ class Article extends Model implements HasMedia
         $result = array();
         $route = ($id == 0)? 'add-article' : 'edit-article';
         
-        if($id == 0)
-        {
-            $article = new Article;
-        }
-        else
-        {
-            $article = Article::find($id);
-        }
+        $category = Article::firstOrNew(array('id' => $id));
 
         if($id !=0 && empty($article))
         {                

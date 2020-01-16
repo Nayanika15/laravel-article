@@ -141,18 +141,11 @@ class Category extends Model
      * To store or update category
      */
     public static function addUpdate($data,$id)
-    {
+    {   
         $result = array();
-        if($id == 0)
-        {
-            $category = new Category;
-        }
-        else
-        {
-            $category = Category::find($id);
-        }
-
-        if($id !=0 && empty($category))
+        $category = Category::firstOrNew(array('id' => $id));
+       
+        if($id !=0 && isset($category))
         {
             
             $result['errFlag']  = 1;
