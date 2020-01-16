@@ -112,27 +112,30 @@ class Category extends Model
         $result = array();
 
         if(empty($countArticles))
-        {   
+        {  
             $action= Category::find($id)->delete();
             if($action)
             {   
                 $result['msg'] = 'Category has been deleted.';
                 $result['msgType'] = 'success';
+                $result['errFlag']  = 0;
                 
             }
             else
             {
                 $result['msg'] = 'There is some error.';
-                $result['msgType'] = 'ErrorMessage'; 
+                $result['msgType'] = 'ErrorMessage';
+                $result['errFlag']  = 1;
             } 
         }
         else
-        {   
+        {  
             $result['msg'] = 'This category cannot be deleted as some articles are tagged.';
             $result['msgType'] = 'ErrorMessage';
+            $result['errFlag']  = 2;
         }
 
-    return $result;
+        return $result;
     }
       /**
      * To store or update category

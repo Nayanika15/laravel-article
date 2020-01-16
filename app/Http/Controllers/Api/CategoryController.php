@@ -19,7 +19,7 @@ use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 class CategoryController extends Controller
 {	
 	/**
-	 * Function to fetch details of the requested article
+	 * Function to fetch details of the requested category
 	 * @param string slug
 	 */
 	public function detail($slug)
@@ -114,6 +114,16 @@ class CategoryController extends Controller
 	public function editCategory(int $id)
 	{
 		return response()->json(Category::find($id),200);
+	}
+
+	/**
+   	* Api to delete category
+   	* @param int id
+   	*/
+	public function delete(int $id)
+	{
+		$result = Category::deleteCategory($id);
+		return response()->json(["errFlag" => $result["errFlag"]], 200);
 	}
 	
 }
