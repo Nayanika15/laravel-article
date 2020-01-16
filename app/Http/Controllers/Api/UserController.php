@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -9,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Requests\UserRequest;
 
+use Authy\AuthyApi;
 
 class UserController extends Controller
 {
@@ -93,5 +93,59 @@ class UserController extends Controller
     { 
         $user = Auth::user();
         return response()->json(['success' => $user], $this-> successStatus); 
+    }
+
+    /**
+     * To reset password of the user
+     */
+    public function updatePassword(Request $request)
+    {   
+        $validatedData = Validator::make($request->all(), 
+         [
+            'mobile'               => 'required|max:10',
+            'code'                 => 'required',
+            'password'             => 'required|confirmed',
+            'password_confirmation'=> 'required'
+        ]);
+        
+        if(!$validatedData->fails())
+        {
+            //to verify user with mobile number
+            $verify = new AuthyApi(config('app.twilio')['AUTHY_API_KEY']);
+            try
+            {
+               $verification = $verify->phoneVerificationCheck($request['mobile'], '91', $request['code']);
+            }
+            catch (Exception $e)
+            {
+               return response()->json(['msg' => $e->getMessage()], 200);
+            }
+
+             //if user is verified 
+            if($verification->ok())
+            {
+               $result = User::resetPassword($request);
+               if($result['errFlag'] == 0)
+               { 
+                 return response()->json($result, 200);
+               }
+               else
+               {
+                 return response()->json($result, 200);
+               }
+            }
+            else
+            {
+               return response()->json(['msg' => 'Incorrect verification code entered.'], 200);
+            }
+        }
+        else
+        {   
+            $errMsg = array();
+            foreach ($validatedData->errors()->getMessages() as $item) {
+                array_push($errMsg, $item);
+            }
+            return response()->json(['msg' => 'Enter valid data', 'error'=> $errMsg], 400);
+        }        
     }
 }
