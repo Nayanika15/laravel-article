@@ -83,29 +83,40 @@ class ArticleController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function store(ArticleRequest $request, $id=0) 
-  {
-    $result = Article::addUpdateArticle($request, $id);
+  { 
+    $data = $request->validated();//to validate the data
+    if (!empty($data))
+    {
+      $result = Article::addUpdateArticle($data, $id);
 
-    if($result['errFlag'] == 0)
-    { 
-      $article = Article::find($result['article_id']);
+      if($result['errFlag'] == 0)
+      {
+        $article = Article::find($result['article_id']);
 
-      //check if payment not done redirect to do payment 
-      if($article->paid_status == '0')
-        {
-          return $this->makePayment($result['article_id']);
-        }
+        //check if payment not done redirect to do payment
+        if($article->paid_status == '0')
+          {
+            return $this->makePayment($result['article_id']);
+          }
+        else
+          {
+            return redirect()->route($result['route'])
+              ->with('success', $result['msg']);   
+          }
+      }
       else
-        {
-          return redirect()->route($result['route'])
-            ->with('success', $result['msg']);   
-        }
+      {
+        return redirect()->route($result['route'])
+          ->with('ErrorMessage', $result['msg'])
+          ->withInput();
+      }
     }
     else
     {
-      return redirect()->route($result['route'])
-        ->with('ErrorMessage', $result['msg'])
-        ->withInput();
+      $route = ($id == 0)? 'add-article' : 'edit-article';
+      return redirect()->route($route)
+          ->with('ErrorMessage', "Enter valid data.")
+          ->withInput();
     }
   }
 
@@ -182,76 +193,81 @@ class ArticleController extends Controller
    */
   public function doPayment(Request $request)
   {
-    $payment = new Payment;
-    \Log::info($request->all());
+    $article  = Article::find($request->article_id);
+    //To check if article found
+    if($article->count())
+    {
+      $payment = new Payment;
+      \Log::info($request->all());
 
-    try 
-      {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+      try 
+        {
+          Stripe::setApiKey(env('STRIPE_SECRET', 'sk_test_o8mqyUEEcwMxjQBEBmL5gML000iVdsn8cH'));
+          $customer   = Customer::create(array(
+            'email'   => auth()->user()->email,
+            'source'  => $request->stripeToken
+          ));
+          $charge      = Charge::create(array(
+            'customer' => $customer->id,
+            'amount'   => 100*100,
+            'currency' => 'inr'
+          ));
 
-        $customer   = Customer::create(array(
-          'email'   => $request->stripeEmail,
-          'source'  => $request->stripeToken
-        ));
-
-        $charge      = Charge::create(array(
-          'customer' => $customer->id,
-          'amount'   => 100*100,
-          'currency' => 'inr'
-        ));
-
-        if($charge['status'] == 'succeeded') 
-        {   
-          //to save the transaction details if success
-          $payment->savePayment($charge, $request->article_id, '1');
-          $article  = Article::find($request->article_id);
-          $result   = Article::updateStatus($article);
-          if($result['errFlag'] == 0)
-          {
-            return redirect()->route('successful-payment');
+          if($charge['status'] == 'succeeded') 
+          {   
+            //to save the transaction details if success
+            $payment->savePayment($charge, $request->article_id, '1');
+            $result   = Article::updateStatus($article);
+            if($result['errFlag'] == 0)
+            {
+              return redirect()->route('successful-payment');
+            }
           }
+
         }
-
-      }
-      catch(Card $e) 
-      {
-        // Since it's a decline, \Stripe\Error\Card will be caught
-        $errorMessages = $e->getMessage();
-      }
-      catch (RateLimit $e)
-      {
-        // Too many requests made to the API too quickly
-        $errorMessages = $e->getMessage();
-      }
-      catch (InvalidRequest $e)
-      {
-        // Invalid parameters were supplied to Stripe's API
-        $errorMessages = $e->getMessage();
-      } 
-      catch (Authentication $e)
-      {
-        // Authentication with Stripe's API failed
-        $errorMessages = $e->getMessage();
-      }
-      catch (ApiConnection $e)
-      {
-        // Network communication with Stripe failed
-        $errorMessages = $e->getMessage();
-      }
-      catch (Base $e)
-      {
-        // Display a very generic error to the user
-        $errorMessages = $e->getMessage();
-      } 
-      catch (Exception $e)
-      {
-        // Something else happened, completely unrelated to Stripe
-        $errorMessages = $e->getMessage();
-      }
-    //to save the transaction details even if failed
-    $payment->savePayment($e, $request->article_id, '0');
-    \Log::info($errorMessages);
-
+        catch(Card $e) 
+        {
+          // Since it's a decline, \Stripe\Error\Card will be caught
+          $errorMessages = $e->getMessage();
+        }
+        catch (RateLimit $e)
+        {
+          // Too many requests made to the API too quickly
+          $errorMessages = $e->getMessage();
+        }
+        catch (InvalidRequest $e)
+        {
+          // Invalid parameters were supplied to Stripe's API
+          $errorMessages = $e->getMessage();
+        } 
+        catch (Authentication $e)
+        {
+          // Authentication with Stripe's API failed
+          $errorMessages = $e->getMessage();
+        }
+        catch (ApiConnection $e)
+        {
+          // Network communication with Stripe failed
+          $errorMessages = $e->getMessage();
+        }
+        catch (Base $e)
+        {
+          // Display a very generic error to the user
+          $errorMessages = $e->getMessage();
+        } 
+        catch (Exception $e)
+        {
+          // Something else happened, completely unrelated to Stripe
+          $errorMessages = $e->getMessage();
+        }
+      //to save the transaction details even if failed
+      $payment->savePayment($e, $request->article_id, '0');
+      \Log::info($errorMessages);
+    }
+    else{
+      $errorMessages = "Article was not found.";
+    }
+    
      //return with error message  
     return redirect()->route('add-article')
         ->withErrors($errorMessages)

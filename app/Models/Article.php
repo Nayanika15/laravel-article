@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
+use Cache;
 use DataTables;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Models\Media;
@@ -288,90 +289,80 @@ class Article extends Model implements HasMedia
     /**
      * to add and update articles
      */
-    public static function addUpdateArticle($request, $id)
+    public static function addUpdateArticle($data, $id)
     {   
-        $data = $request->validated();//to validate the data
+        
         $result = array();
         $route = ($id == 0)? 'add-article' : 'edit-article';
-        if (!empty($data))
-        { 
+        
+        if($id == 0)
+        {
+            $article = new Article;
+        }
+        else
+        {
+            $article = Article::find($id);
+        }
 
-            if($id == 0)
-            {
-                $article = new Article;
-            }
-            else
-            {
-                $article = Article::find($id);
-            }
+        if($id !=0 && empty($article))
+        {                
+            $result['errFlag']  = 1;
+            $result['msg']      = 'Article was not found.';
+            $result['route']    = 'add-article';               
+        }
+        else
+        {  
+            $article->title     = $data['title'];
+            $article->details   = $data['details'];
+            $article->user_id   = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
+            $article->slug      = $data['title'];
 
-            if($id !=0 && empty($article))
-            {                
-                $result['errFlag']  = 1;
-                $result['msg']      = 'Article was not found.';
-                $result['route']    = 'add-article';               
+            if($data->has('approve_status'))
+            {   
+                //to remove active categories from cache
+                Cache::forget('active_categories');
+                $article->approve_status = $data['approve_status'];
+            }
+            
+            $action = ($id == 0) ? 'added' : 'updated';
+            $saved = $article->save();
+            
+            if($saved)
+            {   
+                $article->categories()->sync($data['categories']);                    
+                if($data->hasFile('image'))
+                {  
+                    $images = $article->getMedia();
+                    if(empty($images))
+                    {
+                        $article->clearMediaCollection();
+                    }
+                    
+                    $article->addMedia($data->file('image'))
+                           ->toMediaCollection('articles');
+                    if($id == 0)
+                    {
+                        $admin = User::where('is_admin', '1')->first();
+                        Mail::to($admin->email)->send(new ArticleMail($article));
+                    }
+                    
+                }
+
+                $result['errFlag']      = 0;
+                $result['msg']          = 'Article was '. $action . ' successfully.';
+                $result['route']        = 'all-articles';
+                $result['article_id']   = $article->id;                    
             }
             else
             {  
-                $article->title     = $data['title'];
-                $article->details   = $data['details'];
-                $article->user_id   = Auth::guard('api')->user() ? Auth::guard('api')->user()->id:auth()->user()->id;
-                $article->slug      = $data['title'];
-
-                if($request->has('approve_status'))
-                {   
-                    //to remove active categories from cache
-                    Cache::forget('active_categories');
-                    $article->approve_status = $data['approve_status'];
-                }
-                
-                $action = ($id == 0) ? 'added' : 'updated';
-                $saved = $article->save();
-                
-                if($saved)
-                {   
-                    $article->categories()->sync($data['categories']);                    
-                    if($request->hasFile('image'))
-                    {  
-                        $images = $article->getMedia();
-                        if(empty($images))
-                        {
-                            $article->clearMediaCollection();
-                        }
-                        
-                        $article->addMedia($request->file('image'))
-                               ->toMediaCollection('articles');
-                        if($id == 0)
-                        {
-                            $admin = User::where('is_admin', '1')->first();
-                            Mail::to($admin->email)->send(new ArticleMail($article));
-                        }
-                        
-                    }
-
-                    $result['errFlag']      = 0;
-                    $result['msg']          = 'Article was '. $action . ' successfully.';
-                    $result['route']        = 'all-articles';
-                    $result['article_id']   = $article->id;
-                    
-                }
-                else
-                {   
-                    $result['errFlag']  = 1;
-                    $result['msg']      = 'There is some error.';
-                    $result['route']    = $route;
-                }
+                $result['errFlag']  = 1;
+                $result['msg']      = 'There is some error.';
+                $result['route']    = $route;
             }
         }
-         else
-        {
-            $result['errFlag']  = 1;
-            $result['msg']      = '';
-            $result['route']    = $route;
-        }
-
-        return $result;
+    return $result;
     }
+
     /**
      * To show the article detail and update the view count
      */

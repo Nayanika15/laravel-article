@@ -52,42 +52,66 @@ class CategoryController extends Controller
 	 * Add new category API
 	 */
 	public function add(CategoryRequest $request)
-	{
-		$result = Category::addUpdate($request, 0);
-		if($result)
-        {   
-        	return response()->json([ 'result' =>
-            $result ], 200);
-        }
-        else
-        {	
-        	$result['msg'] = 'There is some error.Please try again.';
-        	$result['errFlag'] = 1;
-            $result['route'] = 'add-category';
-        	return response()->json([
-            'result' => $result ], 200);
-        }
+	{	
+		$data = $request->validated();//to validate the data
+
+		if (!empty($data))
+        {
+			$result = Category::addUpdate($data, 0);
+			if($result)
+	        {   
+	        	return response()->json([ 'result' =>
+	            $result ], 200);
+	        }
+	        else
+	        {	
+	        	$result['msg'] = 'There is some error.Please try again.';
+	        	$result['errFlag'] = 1;
+	            $result['route'] = 'add-category';
+	        	return response()->json([
+	            'result' => $result ], 200);
+	        }
+	    }
+	    else
+	    {
+	    	$result['msg'] = 'Please enter valid data.';
+	        $result['errFlag'] = 1;
+	    	return response()->json([
+	            'result' => $result ], 200);
+	    }
 	}
 
 	/**
-	 * Add new category API
+	 * Api to update category
 	 */
 	public function update(CategoryRequest $request, int $id)
-	{
-		$result = Category::addUpdate($request, $id);
-		if($result)
-        {   
-        	return response()->json([ 'result' =>
-            $result ], 200);
-        }
-        else
-        {	
-        	$result['msg'] = 'There is some error.Please try again.';
-        	$result['errFlag'] = 1;
-            $result['route'] = 'add-category';
-        	return response()->json([
-            'result' => $result ], 200);
-        }
+	{	
+		$data = $request->validated();//to validate the data
+
+		if (!empty($data))
+        {
+			$result = Category::addUpdate($data, $id);
+			if($result)
+	        {   
+	        	return response()->json([ 'result' =>
+	            $result ], 200);
+	        }
+	        else
+	        {	
+	        	$result['msg'] = 'There is some error.Please try again.';
+	        	$result['errFlag'] = 1;
+	            $result['route'] = 'add-category';
+	        	return response()->json([
+	            'result' => $result ], 200);
+	        }
+	    }
+	    else
+	    {
+	    	$result['msg'] = 'Please enter valid data.';
+	        $result['errFlag'] = 1;
+	    	return response()->json([
+	            'result' => $result ], 200);
+	    }
 	}
 
 	/**
@@ -95,17 +119,7 @@ class CategoryController extends Controller
 	 */
 	public function list(Request $request)
 	{	
-		/*$length = $request->input('length');
-        $column = $request->input('column'); //Index
-        $orderBy = $request->input('dir', 'asc');
-        $searchValue = $request->input('search');
-		$query = Category::dataTableQuery($column, $orderBy, $searchValue)
-			->paginate($length);
-
-        return new DataTableCollectionResource($query);*/
-
-        return response()->json(Category::select(['id', 'name', 'created_at', 'updated_at'])->paginate(10), 200);
-
+		return response()->json(Category::select(['id', 'name', 'created_at', 'updated_at'])->paginate(env('PAGINATE_LIMIT', 10)), 200);
 	}
 
 	/**

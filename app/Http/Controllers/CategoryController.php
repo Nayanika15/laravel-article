@@ -62,18 +62,28 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request,$id=0) 
     {
-        
-        $result = Category::addUpdate($request,$id);
-        if($result['errFlag'] == 0)
-        {   
-            return redirect()->route($result['route'])
+        $data = $request->validated();//to validate the data
+
+        if (!empty($data))
+        {
+            $result = Category::addUpdate($data,$id);
+            if($result['errFlag'] == 0)
+            {   
+                return redirect()->route($result['route'])
                     ->with('success', $result['msg']);
+            }
+            else
+            {
+                return redirect()->route($result['route'])
+                    ->with('ErrorMessage', $result['msg'])
+                    ->withInput();
+            }
         }
         else
         {
-            return redirect()->route($result['route'])
-                    ->with('ErrorMessage', $result['msg'])
-                    ->withInput();
+           return redirect()->route('add-category')
+                ->with('ErrorMessage', "Enter Valid data.")
+                ->withInput(); 
         }
     }
 

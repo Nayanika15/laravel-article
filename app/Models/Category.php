@@ -73,7 +73,7 @@ class Category extends Model
      */
  	  public function countArticles()
     {   
-        return $this->hasMany(ArticleCategories::class);
+        return $this->hasMany(ArticleCategories::class)->count();
     }
 
     /**
@@ -108,10 +108,10 @@ class Category extends Model
      */
     public static function deleteCategory($id)
     {
-        $countArticles = Category::find($id)->countArticles()->count();
+        $countArticles = Category::find($id)->countArticles();
         $result = array();
-
-        if(empty($countArticles))
+        
+        if($countArticles == 0)
         {  
             $action= Category::find($id)->delete();
             if($action)
@@ -140,52 +140,41 @@ class Category extends Model
       /**
      * To store or update category
      */
-    public static function addUpdate($request,$id)
+    public static function addUpdate($data,$id)
     {
-        
-        $data = $request->validated();//to validate the data
         $result = array();
-
-        if (!empty($data))
-        {   
-            if($id == 0)
-            {
-                $category = new Category;
-            }
-            else
-            {
-                $category = Category::find($id);
-            }
-
-            if($id !=0 && empty($category))
-            {
-                
-                $result['errFlag']  = 1;
-                $result['msg']      = 'Category was not found.';
-                $result['route']    = 'add-category';
-               
-            }
-            else
-            {  
-                $category->name = ucfirst($data['name']);
-                $category->slug = $data['name'];
-                $action         = ($id == 0) ? 'Added' : 'Updated';
-                $saved          = $category->save();
-
-                if($saved)
-                {
-                    $result['errFlag']  = 0;
-                    $result['msg']      = 'Category was '. $action . ' successfully.';
-                    $result['route']    = 'view-category';
-                }
-            }
+        if($id == 0)
+        {
+            $category = new Category;
         }
         else
         {
-            $result['errFlag']  = 1;
-            $result['msg']      = '';
-            $result['route']    = $route;
+            $category = Category::find($id);
         }
+
+        if($id !=0 && empty($category))
+        {
+            
+            $result['errFlag']  = 1;
+            $result['msg']      = 'Category was not found.';
+            $result['route']    = 'add-category';
+           
+        }
+        else
+        {  
+            $category->name = ucfirst($data['name']);
+            $category->slug = $data['name'];
+            $action         = ($id == 0) ? 'Added' : 'Updated';
+            $saved          = $category->save();
+
+            if($saved)
+            {
+                $result['errFlag']  = 0;
+                $result['msg']      = 'Category was '. $action . ' successfully.';
+                $result['route']    = 'view-category';
+            }
+        }
+        
         return $result;
     }
 

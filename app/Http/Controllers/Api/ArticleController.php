@@ -109,8 +109,11 @@ class ArticleController extends Controller
 	 * Api to add new articles
 	 */
 	public function add(ArticleRequest $request)
-	{
-		$result = Article::addUpdateArticle($request, 0);
+	{ 
+    $data = $request->validated();//to validate the data
+    if (!empty($data))
+    {
+  		$result = Article::addUpdateArticle($data, 0);
 
 	    if($result['errFlag'] == 0)
 	    { 
@@ -127,6 +130,13 @@ class ArticleController extends Controller
             'message' => 'error',
             'result' => $result], 200);
 	    }
+    }
+    else
+    {
+      return response()->json([
+        'message' => 'Enter valid data.',
+        'result' => $result], 200);
+    }
 	}
 
   /**
@@ -146,21 +156,31 @@ class ArticleController extends Controller
         'result' => $result], 200);
     }
     else
-    {
-      $result = Article::addUpdateArticle($request, $id);
-      if($result['errFlag'] == 0)
+    { 
+      $data = $request->validated();//to validate the data
+      if (!empty($data))
       {
-        $article = Article::find($result['article_id']);
-        $result['paid_status'] = $article->paid_status;
-        return response()->json([
-            'message' => 'Success',
-            'result' => $result], 200);
+        $result = Article::addUpdateArticle($data, $id);
+        if($result['errFlag'] == 0)
+        {
+          $article = Article::find($result['article_id']);
+          $result['paid_status'] = $article->paid_status;
+          return response()->json([
+              'message' => 'Success',
+              'result' => $result], 200);
+        }
+        else
+        {
+          return response()->json([
+              'message' => 'error',
+              'result' => $result], 200);
+        }
       }
       else
       {
         return response()->json([
-            'message' => 'error',
-            'result' => $result], 200);
+              'message' => 'Enter Valid data.',
+              'result' => $result], 200);
       }
     }
   }
@@ -214,7 +234,6 @@ class ArticleController extends Controller
   	$payment = new Payment;
 
   	\Log::info($request->all());
-   
     try 
       {
         Stripe::setApiKey(env('STRIPE_SECRET'));
