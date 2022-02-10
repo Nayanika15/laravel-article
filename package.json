@@ -24,7 +24,7 @@
     "bootstrap": "^4.4.1",
     "bootstrap-confirmation2": "^4.1.0",
     "jquery.stellar": "^0.6.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "popper": "^1.0.1"
   }
 }
